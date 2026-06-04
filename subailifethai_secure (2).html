@@ -1,0 +1,1831 @@
+<!DOCTYPE html>
+<html lang="th" class="h-full bg-slate-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>subailifethai.com - สมุนไพรและสุขภาพไทย</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                            850: '#064e3b',
+                        },
+                        accent: {
+                            50: '#fff7ed',
+                            500: '#f97316',
+                            600: '#ea580c',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Prompt', 'Be Vietnam Pro', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts: Prompt (Thai) & Be Vietnam Pro (Vietnamese) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&family=Prompt:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Firebase SDK: Auth + Firestore + Storage -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-storage-compat.js"></script>
+    
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .toast-active {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased text-slate-800 flex flex-col min-h-screen">
+
+    <!-- Navigation Header -->
+    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Branding subailifethai.com -->
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="changeTab('home')">
+                    <div class="bg-gradient-to-r from-emerald-600 to-teal-500 p-2.5 rounded-2xl text-white shadow-md shadow-primary-500/20">
+                        <i class="fa-solid fa-mortar-pestle text-xl"></i>
+                    </div>
+                    <div>
+                        <span class="text-xl font-black bg-gradient-to-r from-emerald-700 to-teal-600 bg-clip-text text-transparent">subailifethai.com</span>
+                        <span class="hidden md:inline-block text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full ml-2 font-bold uppercase tracking-wider">สุขภาพและสมุนไพรไทย</span>
+                    </div>
+                </div>
+
+                <!-- Navigation Tabs (Thai client views, Vietnamese admin view) -->
+                <div class="flex items-center space-x-4">
+                    <nav class="flex space-x-1 sm:space-x-2 bg-slate-100 p-1 rounded-xl">
+                        <button id="nav-home" onclick="changeTab('home')" class="flex items-center space-x-2 px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition duration-200 bg-white text-primary-700 shadow-sm">
+                            <i class="fa-solid fa-prescription-bottle-medical"></i>
+                            <span>รีวิวสินค้า</span>
+                        </button>
+                        <button id="nav-blog" onclick="changeTab('blog')" class="flex items-center space-x-2 px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition duration-200 text-slate-600 hover:text-slate-950">
+                            <i class="fa-solid fa-book-medical"></i>
+                            <span>บทความสุขภาพ</span>
+                        </button>
+                        <button id="nav-admin" onclick="changeTab('admin')" class="hidden flex items-center space-x-2 px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition duration-200 text-rose-600 hover:text-rose-800 bg-rose-50/50 hover:bg-rose-50 border border-rose-100">
+                            <i class="fa-solid fa-user-gear"></i>
+                            <span class="hidden sm:inline">Quản trị (Admin)</span>
+                            <span class="sm:hidden">Admin</span>
+                        </button>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- ================= HOME VIEW (Thai: รีวิวสินค้า) ================= -->
+        <div id="view-home" class="space-y-8">
+            <!-- Hero and Consolidated Top Search Bar -->
+            <div class="bg-gradient-to-br from-emerald-950 via-slate-900 to-teal-950 rounded-3xl p-6 sm:p-10 text-white relative overflow-hidden shadow-xl">
+                <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(16,185,129,0.15),transparent_45%)]"></div>
+                <div class="relative z-10 max-w-3xl space-y-4">
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                        🇹🇭 สมุนไพรไทยตำรับโบราณและผลิตภัณฑ์เพื่อสุขภาพแท้ 100%
+                    </span>
+                    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight">
+                        ค้นหาและรีวิว <span class="text-emerald-400">ผลิตภัณฑ์เพื่อสุขภาพ</span>
+                    </h1>
+                    <p class="text-slate-300 text-xs sm:text-sm leading-relaxed max-w-2xl">
+                        วิเคราะห์ส่วนประกอบ เจาะลึกข้อมูลยาหม่องนวดคลายเส้น ชาสมุนไพร อาหารเสริม และอุปกรณ์ดูแลสุขภาพส่งตรงจากไทย
+                    </p>
+                    
+                    <!-- Search Inputs Section (At the top of products) -->
+                    <div class="pt-2 flex flex-col sm:flex-row gap-3">
+                        <div class="relative flex-grow">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </div>
+                            <input type="text" id="search-input" onkeyup="filterPosts()" placeholder="ค้นหายาหม่อง, ชาโสม, ผลิตภัณฑ์สมุนไพร..." class="block w-full pl-10 pr-4 py-3 border border-transparent bg-white/10 hover:bg-white/15 focus:bg-white text-white focus:text-slate-900 placeholder-slate-400 rounded-2xl transition duration-200 focus:ring-2 focus:ring-primary-500 focus:outline-none text-xs sm:text-sm">
+                        </div>
+                        <div class="sm:w-48">
+                            <select id="sort-select" onchange="filterPosts()" class="w-full text-xs sm:text-sm font-semibold text-slate-900 bg-white border border-slate-200 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary-500 transition">
+                                <option value="newest">ใหม่ล่าสุด</option>
+                                <option value="oldest">เก่าที่สุด</option>
+                                <option value="price-high">ราคา: สูงไปต่ำ</option>
+                                <option value="price-low">ราคา: ต่ำไปสูง</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CATEGORY LIST ABOVE PRODUCTS -->
+            <div class="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm space-y-4">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-xs sm:text-sm font-bold text-slate-900 flex items-center space-x-2">
+                        <i class="fa-solid fa-folder-open text-emerald-600"></i>
+                        <span>หมวดหมู่ผลิตภัณฑ์หลัก</span>
+                    </h3>
+                </div>
+                
+                <!-- Horizontal Category Scrollbar -->
+                <div class="flex items-center space-x-2 overflow-x-auto pb-2 no-scrollbar" id="categories-list-container">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+
+            <!-- MAIN POSTS GRID SECTION -->
+            <div class="space-y-6">
+                <!-- Result Label -->
+                <div class="flex justify-between items-center border-b border-slate-200 pb-3">
+                    <div>
+                        <h2 class="text-base font-extrabold text-slate-900" id="current-category-title">บทความรีวิวทั้งหมด</h2>
+                        <p class="text-xs text-slate-500" id="posts-count-label">กำลังแสดง 0 รายการ</p>
+                    </div>
+                </div>
+
+                <!-- Product Grid Container -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="blog-posts-container">
+                    <!-- Populated dynamically -->
+                </div>
+
+                <!-- Empty State -->
+                <div id="empty-posts-state" class="hidden flex-col items-center justify-center py-20 bg-white rounded-3xl border border-dashed border-slate-200 text-center">
+                    <div class="text-slate-300 text-6xl mb-4">
+                        <i class="fa-solid fa-file-circle-question"></i>
+                    </div>
+                    <h3 class="text-sm font-bold text-slate-700">ไม่พบสินค้าหรือบทความรีวิวที่ค้นหา</h3>
+                    <p class="text-xs text-slate-400 mt-1 max-w-sm">โปรดลองใช้คำค้นหาอื่นหรือเลือกหมวดหมู่อื่นเพื่อค้นหาอีกครั้ง</p>
+                    <button onclick="clearFilters()" class="mt-4 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold transition">
+                        รีเซ็ตการค้นหาทั้งหมด
+                    </button>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- ================= BLOG VIEW (Thai: บทความสุขภาพ) ================= -->
+        <div id="view-blog" class="hidden space-y-8">
+            <!-- Blog Banner -->
+            <div class="bg-gradient-to-br from-teal-900 via-slate-900 to-emerald-950 rounded-3xl p-6 sm:p-10 text-white relative overflow-hidden shadow-xl">
+                <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(20,184,166,0.15),transparent_45%)]"></div>
+                <div class="relative z-10 max-w-3xl space-y-4">
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-teal-500/10 text-teal-400 border border-teal-500/20">
+                        🍃 คลังความรู้สุขภาพ ทริคการบำบัดรักษา และไลฟ์สไตล์ที่สมดุล
+                    </span>
+                    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight">
+                        บทความน่ารู้ <span class="text-teal-400">คู่สุขภาพดี</span>
+                    </h1>
+                    <p class="text-slate-300 text-xs sm:text-sm leading-relaxed max-w-2xl">
+                        แหล่งรวมความรู้เรื่องการดูแลร่างกาย วิธีการเลือกใช้สมุนไพรบรรเทาโรค และไลฟ์สไตล์เพื่อยกระดับคุณภาพชีวิตที่ดีของคุณ
+                    </p>
+
+                    <!-- Blog Search bar (Top of Blog) -->
+                    <div class="pt-2 relative max-w-xl">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </div>
+                        <input type="text" id="blog-search-input" onkeyup="filterBlogs()" placeholder="ค้นหาบทความสุขภาพ เคล็ดลับการบำบัด..." class="block w-full pl-10 pr-4 py-3 border border-transparent bg-white/10 hover:bg-white/15 focus:bg-white text-white focus:text-slate-900 placeholder-slate-400 rounded-2xl transition duration-200 focus:ring-2 focus:ring-primary-500 focus:outline-none text-xs sm:text-sm">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Blog Grid Section -->
+            <div class="space-y-6">
+                <div class="flex justify-between items-center border-b border-slate-200 pb-3">
+                    <div>
+                        <h2 class="text-base font-extrabold text-slate-900">คลังบทความสาระความรู้</h2>
+                        <p class="text-xs text-slate-500" id="blogs-count-label">กำลังแสดง 0 บทความ</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="blog-knowledge-container">
+                    <!-- Populated dynamically -->
+                </div>
+
+                <!-- Empty Blog State -->
+                <div id="empty-blogs-state" class="hidden flex-col items-center justify-center py-20 bg-white rounded-3xl border border-dashed border-slate-200 text-center">
+                    <div class="text-slate-300 text-6xl mb-4">
+                        <i class="fa-solid fa-feather"></i>
+                    </div>
+                    <h3 class="text-sm font-bold text-slate-700">ไม่พบสาระความรู้ที่ต้องการค้นหา</h3>
+                    <p class="text-xs text-slate-400 mt-1 max-w-sm">ลองเปลี่ยนคำค้นหาหลักใหม่อีกครั้ง</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- POST DETAIL MODAL (Thai text interface) -->
+        <div id="post-detail-modal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-950/40 backdrop-blur-sm flex items-center justify-center p-4">
+            <div class="bg-white rounded-3xl max-w-3xl w-full max-h-[90vh] flex flex-col overflow-hidden shadow-2xl relative">
+                <!-- Close Button -->
+                <button onclick="closePostDetail()" class="absolute right-4 top-4 z-10 bg-white/80 hover:bg-white text-slate-700 hover:text-slate-900 h-10 w-10 rounded-full flex items-center justify-center shadow-md border border-slate-100 transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+
+                <!-- Scrollable Body -->
+                <div class="overflow-y-auto custom-scrollbar flex-grow">
+                    <!-- Banner Cover -->
+                    <div class="relative h-64 sm:h-80 bg-slate-100">
+                        <img id="detail-image" src="" alt="Cover" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent"></div>
+                        <div class="absolute bottom-6 left-6 right-6 text-white space-y-2">
+                            <span id="detail-category-tag" class="inline-block text-xs font-semibold bg-emerald-600 text-white px-3 py-1 rounded-full">
+                                หมวดหมู่
+                            </span>
+                            <h2 id="detail-title" class="text-xl sm:text-2xl font-bold leading-tight">
+                                หัวข้อบทความ
+                            </h2>
+                            <div class="flex items-center space-x-4 text-xs text-slate-300">
+                                <span class="flex items-center space-x-1">
+                                    <i class="fa-regular fa-calendar-days"></i>
+                                    <span id="detail-date">1 มิถุนายน 2569</span>
+                                </span>
+                                <span class="flex items-center space-x-1">
+                                    <i class="fa-solid fa-user-doctor"></i>
+                                    <span>ผู้เชี่ยวชาญ subailifethai.com</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Content body -->
+                    <div class="p-6 sm:p-8 space-y-6">
+                        <!-- Product highlights card inside article (Only shown for product review types) -->
+                        <div id="detail-product-card" class="bg-emerald-50/50 border border-emerald-100 rounded-2xl p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                            <div class="flex items-center space-x-3">
+                                <div class="bg-emerald-100 text-emerald-700 p-3 rounded-xl text-lg flex-shrink-0">
+                                    <i class="fa-solid fa-prescription-bottle-medical"></i>
+                                </div>
+                                <div>
+                                    <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">ผลิตภัณฑ์ประเมิน</div>
+                                    <div class="font-bold text-slate-950 text-xs sm:text-sm" id="detail-product-name">ชื่อผลิตภัณฑ์</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-4 w-full sm:w-auto justify-between sm:justify-end border-t sm:border-t-0 pt-3 sm:pt-0 border-slate-200">
+                                <div class="text-right">
+                                    <span class="text-xs text-slate-400 block font-medium">ราคาโดยประมาณ</span>
+                                    <span class="text-base sm:text-lg font-extrabold text-amber-600" id="detail-product-price">0฿</span>
+                                </div>
+                                <a id="detail-product-link" href="#" target="_blank" rel="nofollow sponsored noopener noreferrer" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm px-5 py-2.5 rounded-xl transition shadow-md shadow-primary-500/10 flex items-center space-x-2">
+                                    <i class="fa-solid fa-bag-shopping"></i>
+                                    <span>ซื้อสินค้าเลย</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Main Text Body -->
+                        <article class="prose max-w-none text-slate-600 leading-relaxed text-xs sm:text-sm space-y-4 whitespace-pre-line border-t border-slate-100 pt-4" id="detail-content">
+                            รายละเอียดเนื้อหา...
+                        </article>
+                    </div>
+                </div>
+
+                <!-- Footer details of the modal -->
+                <div class="bg-slate-50 border-t border-slate-100 px-6 py-4 flex justify-between items-center text-[10px] text-slate-500">
+                    <span>คำเตือน: บทความเพื่อความรู้เท่านั้น ไม่สามารถแทนที่การวินิจฉัยทางการแพทย์เฉพาะทางได้</span>
+                    <button onclick="closePostDetail()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold rounded-lg transition text-xs">
+                        ปิดหน้าต่าง
+                    </button>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- ================= ADMIN DASHBOARD PANEL VIEW (Vietnamese: 100%) ================= -->
+        <div id="view-admin" class="hidden space-y-8">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div>
+                    <h1 class="text-xl sm:text-2xl font-black text-slate-950 flex items-center space-x-3">
+                        <i class="fa-solid fa-gears text-emerald-600"></i>
+                        <span>Quản Trị Hệ Thống subailifethai.com</span>
+                    </h1>
+                    <p class="text-xs text-slate-500 mt-1">
+                        Quản lý các bài viết sức khỏe, cập nhật sản phẩm thương mại Thái Lan và thay đổi danh sách danh mục (Folders).
+                    </p>
+                </div>
+                <!-- Mini Tab Navigation within Admin Panel -->
+                <div class="flex space-x-2 bg-slate-100 p-1 rounded-xl w-full sm:w-auto">
+                    <button id="admin-subtab-posts" onclick="toggleAdminSubTab('posts')" class="flex-1 sm:flex-initial px-4 py-2 text-xs font-bold rounded-lg bg-white shadow-sm text-slate-800">
+                        <i class="fa-solid fa-file-waveform mr-1.5 text-emerald-600"></i> Quản lý Bài Viết
+                    </button>
+                    <button id="admin-subtab-categories" onclick="toggleAdminSubTab('categories')" class="flex-1 sm:flex-initial px-4 py-2 text-xs font-bold rounded-lg text-slate-600 hover:text-slate-950">
+                        <i class="fa-solid fa-folder-tree mr-1.5 text-teal-600"></i> Danh Mục (Folders)
+                    </button>
+                </div>
+            </div>
+
+
+            <!-- ADMIN SECURITY GATE: Firebase Auth -->
+            <div id="admin-auth-card" class="hidden bg-white border border-rose-100 rounded-3xl p-6 shadow-sm space-y-4">
+                <div class="flex items-start gap-3">
+                    <div class="h-11 w-11 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center flex-shrink-0">
+                        <i class="fa-solid fa-shield-halved text-lg"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-black text-slate-950">Khu quản trị bảo mật</h3>
+                        <p class="text-xs text-slate-500 mt-1 leading-relaxed">
+                            Chỉ email admin được cấp quyền mới có thể đăng nhập, thêm, sửa hoặc xóa dữ liệu. Người xem thường chỉ đọc nội dung công khai. Để mở trang admin, thêm ?admin=1 vào cuối URL.
+                        </p>
+                    </div>
+                </div>
+
+                <form id="admin-login-form" onsubmit="loginAdmin(event)" class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <input type="email" id="admin-login-email" placeholder="Email admin" required class="text-xs px-3 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-rose-500 focus:outline-none">
+                    <input type="password" id="admin-login-password" placeholder="Mật khẩu" required class="text-xs px-3 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-rose-500 focus:outline-none">
+                    <button type="submit" class="bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-xl px-4 py-3 transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-right-to-bracket"></i>
+                        Đăng nhập Admin
+                    </button>
+                </form>
+
+                <div id="admin-logged-in-box" class="hidden flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-emerald-50 border border-emerald-100 rounded-2xl p-4">
+                    <div class="text-xs text-emerald-800 font-bold">
+                        <i class="fa-solid fa-circle-check mr-1"></i>
+                        Đã đăng nhập: <span id="admin-current-email"></span>
+                    </div>
+                    <button onclick="logoutAdmin()" class="bg-white hover:bg-emerald-100 border border-emerald-200 text-emerald-700 text-xs font-bold rounded-xl px-4 py-2 transition">
+                        Đăng xuất
+                    </button>
+                </div>
+
+                <div class="text-[10px] text-slate-400 leading-relaxed">
+                    Firebase config đã được gắn. Bạn cần bật Firebase Authentication Email/Password, Firestore và Storage trước khi deploy.
+                </div>
+            </div>
+
+            <!-- SUB-TAB 1: Manage Posts (Admin - Vietnamese) -->
+            <div id="admin-section-posts" class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+                <!-- Left: Post Creation and Editing Form -->
+                <div class="xl:col-span-1 bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-5 h-fit">
+                    <h3 id="form-post-title" class="text-xs sm:text-sm font-bold text-slate-900 border-b border-slate-100 pb-3 flex items-center space-x-2">
+                        <i class="fa-solid fa-circle-plus text-emerald-500"></i>
+                        <span>Tạo bài viết mới</span>
+                    </h3>
+                    
+                    <form id="post-form" onsubmit="savePost(event)" class="space-y-4">
+                        <input type="hidden" id="post-id">
+                        
+                        <!-- Select Post Type -->
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Loại bài viết <span class="text-rose-500">*</span></label>
+                            <select id="post-type" onchange="togglePostFormFields()" required class="w-full text-xs px-3 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:outline-none bg-white transition">
+                                <option value="review">Đánh giá sản phẩm (Hiển thị ở Trang chủ)</option>
+                                <option value="blog">Cẩm nang sức khỏe (Hiển thị ở mục Blog)</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Tiêu đề (Tiếng Thái) <span class="text-rose-500">*</span></label>
+                            <input type="text" id="post-title" required placeholder="Ví dụ: รีวิวยาหม่องสมุนไพรสูตรเย็น..." class="w-full text-xs px-3 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:outline-none transition">
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Chuyên mục <span class="text-rose-500">*</span></label>
+                                <select id="post-category" required class="w-full text-xs px-3 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:outline-none bg-white transition">
+                                    <!-- Populated by JS -->
+                                </select>
+                            </div>
+                            <div id="product-name-container">
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Tên sản phẩm (Tiếng Thái) <span class="text-rose-500">*</span></label>
+                                <input type="text" id="post-product-name" placeholder="Ví dụ: ยาหม่องเสือ" class="w-full text-xs px-3 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:outline-none transition">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3" id="product-details-container">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Giá tham khảo (Baht ฿) <span class="text-rose-500">*</span></label>
+                                <input type="number" id="post-product-price" min="0" placeholder="Ví dụ: 150" class="w-full text-xs px-3 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:outline-none transition">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Link mua hàng</label>
+                                <input type="url" id="post-product-link" placeholder="https://..." class="w-full text-xs px-3 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:outline-none transition">
+                            </div>
+                        </div>
+
+                        <!-- Direct File Upload for Image -->
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Hình ảnh bài viết <span class="text-rose-500">*</span></label>
+                            
+                            <!-- Toggle URL / Direct File Upload -->
+                            <div class="flex space-x-2 mb-2 p-1 bg-slate-100 rounded-lg">
+                                <button type="button" onclick="setImageSourceMode('file')" id="btn-img-file" class="flex-1 py-1.5 text-[10px] font-bold rounded-md bg-white shadow-sm text-slate-800">
+                                    Tải ảnh trực tiếp
+                                </button>
+                                <button type="button" onclick="setImageSourceMode('url')" id="btn-img-url" class="flex-1 py-1.5 text-[10px] font-bold rounded-md text-slate-600 hover:text-slate-800">
+                                    Dùng liên kết (URL)
+                                </button>
+                            </div>
+
+                            <!-- Image File Box -->
+                            <div id="img-file-box" class="border-2 border-dashed border-slate-200 hover:border-emerald-500 transition rounded-xl p-4 text-center cursor-pointer relative bg-slate-50/50">
+                                <input type="file" id="post-image-file" accept="image/*" onchange="previewImageFile(event)" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                                <div class="space-y-1">
+                                    <i class="fa-solid fa-cloud-arrow-up text-slate-400 text-2xl"></i>
+                                    <div class="text-[10px] text-slate-500 font-semibold">Bấm để duyệt tệp hoặc kéo thả hình ảnh vào đây</div>
+                                    <div class="text-[8px] text-slate-400">Hỗ trợ JPG, PNG, WEBP. Ảnh tự động đồng bộ lên Firebase Storage.</div>
+                                </div>
+                            </div>
+
+                            <!-- Image URL input -->
+                            <div id="img-url-box" class="hidden">
+                                <input type="url" id="post-image-url" placeholder="https://images.unsplash.com/..." class="w-full text-xs px-3 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:outline-none transition">
+                            </div>
+
+                            <!-- Image preview area -->
+                            <div id="image-preview-container" class="hidden mt-3 p-2 border border-slate-100 rounded-2xl bg-slate-50 relative flex items-center justify-between">
+                                <div class="flex items-center space-x-3 truncate">
+                                    <img id="image-preview" src="" class="w-12 h-12 rounded-lg object-cover">
+                                    <span class="text-[10px] text-slate-500 truncate" id="image-filename">preview.jpg</span>
+                                </div>
+                                <button type="button" onclick="removeImagePreview()" class="h-6 w-6 rounded-full bg-slate-200 hover:bg-rose-100 hover:text-rose-600 transition flex items-center justify-center text-[10px]">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Nội dung bài viết (Tiếng Thái) <span class="text-rose-500">*</span></label>
+                            <textarea id="post-content" required rows="6" placeholder="Viết nội dung bài bằng tiếng Thái..." class="w-full text-xs px-3 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:outline-none transition resize-y"></textarea>
+                        </div>
+
+                        <div class="flex space-x-2 pt-2">
+                            <button type="submit" class="flex-grow bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-3 rounded-xl transition shadow-md shadow-emerald-500/10 flex items-center justify-center space-x-1">
+                                <i class="fa-solid fa-floppy-disk"></i>
+                                <span id="submit-btn-text">Đăng bài viết</span>
+                            </button>
+                            <button type="button" id="cancel-edit-btn" onclick="resetPostForm()" class="hidden bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs py-3 px-4 rounded-xl transition">
+                                Hủy sửa
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Right: Existing Posts List Table -->
+                <div class="xl:col-span-2 bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-4">
+                    <h3 class="text-xs sm:text-sm font-bold text-slate-900 border-b border-slate-100 pb-3 flex items-center space-x-2">
+                        <i class="fa-solid fa-list-check text-emerald-500"></i>
+                        <span>Danh sách bài viết đã đăng</span>
+                    </h3>
+
+                    <!-- Table Component -->
+                    <div class="overflow-x-auto custom-scrollbar">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-slate-50 border-b border-slate-150 text-slate-500 text-[10px] font-bold uppercase tracking-wider">
+                                    <th class="py-3 px-4 rounded-l-lg">Ảnh & Tiêu đề (Thái)</th>
+                                    <th class="py-3 px-4">Phân loại</th>
+                                    <th class="py-3 px-4 text-right">Giá trị sản phẩm</th>
+                                    <th class="py-3 px-4 text-center rounded-r-lg">Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-posts-table-body" class="divide-y divide-slate-100">
+                                <!-- Populated dynamically by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Table Empty State -->
+                    <div id="admin-table-empty" class="hidden text-center py-12 text-slate-400 text-xs">
+                        <i class="fa-solid fa-file-invoice text-4xl mb-3 block text-slate-300"></i>
+                        Chưa có dữ liệu bài viết thảo dược nào.
+                    </div>
+                </div>
+            </div>
+
+            <!-- SUB-TAB 2: Manage Categories (Directories) -->
+            <div id="admin-section-categories" class="hidden grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Left: Category Editor Form -->
+                <div class="md:col-span-1 bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-5 h-fit">
+                    <h3 id="form-category-title" class="text-xs sm:text-sm font-bold text-slate-900 border-b border-slate-100 pb-3 flex items-center space-x-2">
+                        <i class="fa-solid fa-folder-plus text-emerald-500"></i>
+                        <span>Thêm danh mục mới</span>
+                    </h3>
+
+                    <form id="category-form" onsubmit="saveCategory(event)" class="space-y-4">
+                        <input type="hidden" id="category-id">
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Tên chuyên mục (Tiếng Thái) <span class="text-rose-500">*</span></label>
+                            <input type="text" id="category-name-input" required placeholder="Ví dụ: ยาหม่อง & ยาดม..." class="w-full text-xs px-3 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:outline-none transition">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Biểu tượng <span class="text-rose-500">*</span></label>
+                            <div class="grid grid-cols-4 gap-2 text-center" id="icon-selector">
+                                <!-- Generated by JS as icon selections -->
+                            </div>
+                            <input type="hidden" id="category-icon" value="fa-solid fa-circle">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Nhãn màu sắc hiển thị</label>
+                            <div class="grid grid-cols-5 gap-2" id="color-selector">
+                                <!-- Generated dynamically -->
+                            </div>
+                            <input type="hidden" id="category-color" value="emerald">
+                        </div>
+
+                        <div class="flex space-x-2 pt-2">
+                            <button type="submit" class="flex-grow bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-3 rounded-xl transition shadow-md shadow-emerald-500/10 flex items-center justify-center space-x-1">
+                                <i class="fa-solid fa-folder-open"></i>
+                                <span id="submit-cat-btn-text">Lưu chuyên mục</span>
+                            </button>
+                            <button type="button" id="cancel-cat-edit-btn" onclick="resetCategoryForm()" class="hidden bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs py-3 px-4 rounded-xl transition">
+                                Hủy sửa
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Right: Directory manager list -->
+                <div class="md:col-span-2 bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-4">
+                    <div>
+                        <h3 class="text-xs sm:text-sm font-bold text-slate-900 flex items-center space-x-2">
+                            <i class="fa-solid fa-folder-tree text-teal-600"></i>
+                            <span>Tất cả chuyên mục sức khỏe</span>
+                        </h3>
+                        <p class="text-xs text-slate-500 mt-1">Quản lý, chỉnh sửa trực tiếp biểu tượng, màu sắc và cấu trúc của các thư mục.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" id="admin-categories-grid">
+                        <!-- Populated dynamically by JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Custom Dialog Confirmation Modal (Vietnamese) -->
+    <div id="confirm-modal" class="hidden fixed inset-0 z-[100] bg-slate-950/50 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl space-y-4 text-center">
+            <div class="text-rose-500 text-5xl">
+                <i class="fa-solid fa-circle-exclamation"></i>
+            </div>
+            <div>
+                <h3 class="text-sm font-bold text-slate-900" id="confirm-title">Xác nhận thao tác</h3>
+                <p class="text-xs text-slate-500 mt-1 leading-relaxed" id="confirm-message">Bạn có muốn tiếp tục hành động này không?</p>
+            </div>
+            <div class="flex space-x-3 pt-2">
+                <button id="confirm-cancel-btn" class="flex-1 py-2 px-4 border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-bold rounded-xl transition">
+                    Bỏ qua
+                </button>
+                <button id="confirm-success-btn" class="flex-1 py-2 px-4 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-xl transition shadow-md shadow-rose-500/10">
+                    Xác nhận
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast message container -->
+    <div class="fixed bottom-5 right-5 z-50 pointer-events-none space-y-2 max-w-sm w-full" id="toast-container">
+        <!-- Dynamically appended -->
+    </div>
+
+    <!-- Footer of the page -->
+    <footer class="bg-white border-t border-slate-200 py-8 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-xs text-slate-400 space-y-2">
+            <div>© 2026 subailifethai.com. เว็บไซต์รีวิวและรวบรวมสาระสุขภาพสมุนไพรธรรมชาติชั้นนำ</div>
+            <div class="flex justify-center space-x-4">
+                <a href="#" class="hover:text-emerald-600">ข้อกำหนดการใช้งาน</a>
+                <span>•</span>
+                <a href="#" class="hover:text-emerald-600">นโยบายความเป็นส่วนตัว</a>
+                <span>•</span>
+                <a href="#" class="hover:text-emerald-600">ติดต่อโฆษณา</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // State variables
+        let posts = [];
+        let categories = [];
+        let selectedCategoryFilter = 'all';
+        let currentConfirmCallback = null;
+        let selectedImgSourceMode = 'file'; // 'file' or 'url'
+        let currentUploadedBase64 = "";
+
+        // Available Fonts and Palette details
+        const availableIcons = [
+            'fa-solid fa-prescription-bottle-medical', 'fa-solid fa-leaf', 'fa-solid fa-dumbbell', 
+            'fa-solid fa-bed', 'fa-solid fa-heart-pulse', 'fa-solid fa-stethoscope', 
+            'fa-solid fa-apple-whole', 'fa-solid fa-droplet', 'fa-solid fa-brain',
+            'fa-solid fa-capsules', 'fa-solid fa-kit-medical', 'fa-solid fa-spa'
+        ];
+
+        const colorPalette = {
+            emerald: 'bg-emerald-500 text-emerald-600 hover:bg-emerald-50 border-emerald-200',
+            sky: 'bg-sky-500 text-sky-600 hover:bg-sky-50 border-sky-200',
+            rose: 'bg-rose-500 text-rose-600 hover:bg-rose-50 border-rose-200',
+            amber: 'bg-amber-500 text-amber-600 hover:bg-amber-50 border-amber-200',
+            indigo: 'bg-indigo-500 text-indigo-600 hover:bg-indigo-50 border-indigo-200',
+            violet: 'bg-violet-500 text-violet-600 hover:bg-violet-50 border-violet-200',
+            teal: 'bg-teal-500 text-teal-600 hover:bg-teal-50 border-teal-200',
+            fuchsia: 'bg-fuchsia-500 text-fuchsia-600 hover:bg-fuchsia-50 border-fuchsia-200',
+            orange: 'bg-orange-500 text-orange-600 hover:bg-orange-50 border-orange-200',
+            slate: 'bg-slate-500 text-slate-600 hover:bg-slate-50 border-slate-200'
+        };
+
+        // Firebase security integration
+        // 1) Điền config thật của Firebase tại đây.
+        // 2) Bật Authentication > Sign-in method > Email/Password.
+        // 3) Tạo user admin bằng email trong ADMIN_EMAIL.
+        // 4) Dán Firestore/Storage Rules ở cuối file hướng dẫn đi kèm.
+        const ADMIN_EMAIL = 'ducduy271295@gmail.com';
+        const ADMIN_ENTRY_MODE = new URLSearchParams(window.location.search).get('admin') === '1' || window.location.hash === '#admin';
+        const firebaseConfig = {
+            apiKey: "AIzaSyB2WEw253DlimzByZUDiv1i-87WqM6InfQ",
+            authDomain: "duyaffiliateglobal.firebaseapp.com",
+            projectId: "duyaffiliateglobal",
+            storageBucket: "duyaffiliateglobal.firebasestorage.app",
+            messagingSenderId: "832643984656",
+            appId: "1:832643984656:web:c8b56313d5773c4e27c995",
+            measurementId: "G-VVTHRDH4JL"
+        };
+
+        let auth;
+        let firestore;
+        let storage;
+        let currentUser = null;
+        let isAdmin = false;
+        let firebaseReady = false;
+
+        function initFirebase() {
+            if (firebaseReady) return;
+
+            if (!firebaseConfig.apiKey || firebaseConfig.apiKey.includes('PASTE_')) {
+                showToast("Bạn chưa điền firebaseConfig. Web chỉ hiện giao diện, chưa lưu dữ liệu thật.", "warning");
+            }
+
+            if (!firebase.apps.length) {
+                firebase.initializeApp(firebaseConfig);
+            }
+
+            auth = firebase.auth();
+            firestore = firebase.firestore();
+            storage = firebase.storage();
+            firebaseReady = true;
+        }
+
+        function requireAdmin() {
+            if (!isAdmin) {
+                showToast("Bạn cần đăng nhập đúng email admin để thực hiện thao tác này.", "error");
+                changeTab('admin');
+                return false;
+            }
+            return true;
+        }
+
+        function updateAdminAuthUI() {
+            const card = document.getElementById('admin-auth-card');
+            const loginForm = document.getElementById('admin-login-form');
+            const loggedBox = document.getElementById('admin-logged-in-box');
+            const emailLabel = document.getElementById('admin-current-email');
+            const postsSection = document.getElementById('admin-section-posts');
+            const catsSection = document.getElementById('admin-section-categories');
+            const adminNav = document.getElementById('nav-admin');
+            if (adminNav) {
+                if (isAdmin || ADMIN_ENTRY_MODE) adminNav.classList.remove('hidden');
+                else adminNav.classList.add('hidden');
+            }
+
+            if (!card) return;
+            card.classList.remove('hidden');
+
+            if (isAdmin) {
+                loginForm.classList.add('hidden');
+                loggedBox.classList.remove('hidden');
+                emailLabel.innerText = currentUser.email;
+            } else {
+                loginForm.classList.remove('hidden');
+                loggedBox.classList.add('hidden');
+                if (postsSection) postsSection.classList.add('hidden');
+                if (catsSection) catsSection.classList.add('hidden');
+            }
+        }
+
+        async function loginAdmin(e) {
+            e.preventDefault();
+            try {
+                const email = document.getElementById('admin-login-email').value.trim();
+                const password = document.getElementById('admin-login-password').value;
+                const result = await auth.signInWithEmailAndPassword(email, password);
+
+                if (result.user.email !== ADMIN_EMAIL) {
+                    await auth.signOut();
+                    showToast("Email này không có quyền quản trị.", "error");
+                    return;
+                }
+
+                showToast("Đăng nhập admin thành công!");
+            } catch (err) {
+                console.error(err);
+                showToast("Đăng nhập thất bại. Kiểm tra email, mật khẩu hoặc Firebase Auth.", "error");
+            }
+        }
+
+        async function logoutAdmin() {
+            await auth.signOut();
+            showToast("Đã đăng xuất admin.", "warning");
+            changeTab('home');
+        }
+
+        async function getDBData(collectionName) {
+            const snap = await firestore.collection(collectionName).get();
+            return snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        }
+
+        async function saveDBData(collectionName, data) {
+            if (!requireAdmin()) throw new Error('Permission denied: admin only');
+            await firestore.collection(collectionName).doc(data.id).set(data, { merge: true });
+        }
+
+        async function deleteDBData(collectionName, id) {
+            if (!requireAdmin()) throw new Error('Permission denied: admin only');
+            await firestore.collection(collectionName).doc(id).delete();
+        }
+
+        async function dataUrlToBlob(dataUrl) {
+            const res = await fetch(dataUrl);
+            return await res.blob();
+        }
+
+        async function uploadImageIfNeeded(imageSource, postId) {
+            if (!imageSource || !imageSource.startsWith('data:image/')) return imageSource;
+            if (!requireAdmin()) throw new Error('Permission denied: admin only');
+
+            const blob = await dataUrlToBlob(imageSource);
+            const ext = blob.type && blob.type.includes('png') ? 'png' : blob.type && blob.type.includes('webp') ? 'webp' : 'jpg';
+            const fileRef = storage.ref().child(`posts/${postId}-${Date.now()}.${ext}`);
+            await fileRef.put(blob, { contentType: blob.type || 'image/jpeg' });
+            return await fileRef.getDownloadURL();
+        }
+
+        function escapeHTML(str = '') {
+            return String(str)
+                .replaceAll('&', '&amp;')
+                .replaceAll('<', '&lt;')
+                .replaceAll('>', '&gt;')
+                .replaceAll('"', '&quot;')
+                .replaceAll("'", '&#039;');
+        }
+
+        // Initialize App & seed data if necessary
+        async function initApp() {
+            try {
+                initFirebase();
+                renderIconSelector();
+                renderColorSelector();
+
+                auth.onAuthStateChanged(async (user) => {
+                    currentUser = user;
+                    isAdmin = !!(user && user.email === ADMIN_EMAIL);
+
+                    try {
+                        await loadAndRenderData();
+                        updateAdminAuthUI();
+                        if (ADMIN_ENTRY_MODE) changeTab('admin');
+                    } catch (err) {
+                        console.error("Data load failed", err);
+                        showToast("Không tải được dữ liệu Firebase. Hãy kiểm tra config và rules.", "error");
+                    }
+                });
+            } catch (err) {
+                console.error("App init failed", err);
+                showToast("Lỗi khởi tạo Firebase!", "error");
+            }
+        }
+
+        async function loadAndRenderData() {
+            categories = await getDBData('categories');
+            posts = await getDBData('posts');
+
+            posts.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+
+            // Seed mặc định chỉ chạy khi admin đăng nhập và database đang trống.
+            if (isAdmin && categories.length === 0) {
+                const seedCategories = [
+                    { id: 'cat-1', name: 'ยาหม่อง & น้ำมันนวด', icon: 'fa-solid fa-prescription-bottle-medical', color: 'emerald' },
+                    { id: 'cat-2', name: 'สมุนไพรแห้ง & ชาชง', icon: 'fa-solid fa-leaf', color: 'amber' },
+                    { id: 'cat-3', name: 'อาหารเสริมธรรมชาติ', icon: 'fa-solid fa-capsules', color: 'sky' },
+                    { id: 'cat-4', name: 'เครื่องนวด & อุปกรณ์สุขภาพ', icon: 'fa-solid fa-spa', color: 'rose' }
+                ];
+                for (const cat of seedCategories) await saveDBData('categories', cat);
+                categories = seedCategories;
+            }
+
+            if (isAdmin && posts.length === 0 && categories.length > 0) {
+                const seedPosts = [
+                    {
+                        id: 'post-1',
+                        type: 'review',
+                        title: 'รีวิวยาหม่องสมุนไพรสูตรเย็น สำหรับดูแลความสบายของไหล่และคอ',
+                        content: 'บทความนี้เป็นข้อมูลเพื่อการดูแลสุขภาพทั่วไป ไม่ใช่คำแนะนำทางการแพทย์\n\nยาหม่องสมุนไพรเป็นผลิตภัณฑ์ที่คนไทยนิยมใช้เพื่อให้ความรู้สึกผ่อนคลายบริเวณไหล่ คอ และกล้ามเนื้อหลังนั่งทำงานนาน ๆ\n\nจุดเด่น:\n- กลิ่นสมุนไพรให้ความรู้สึกสดชื่น\n- เหมาะสำหรับพกติดบ้านหรือโต๊ะทำงาน\n- ใช้ภายนอกเท่านั้น\n\nคำแนะนำ: หลีกเลี่ยงบริเวณรอบดวงตา แผลเปิด และผิวบอบบาง',
+                        categoryId: 'cat-1',
+                        productName: 'ยาหม่องสมุนไพรสูตรเย็น',
+                        productPrice: 120,
+                        productLink: 'https://shopee.co.th',
+                        image: 'https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&q=80&w=800',
+                        createdAt: new Date().toISOString()
+                    },
+                    {
+                        id: 'post-2',
+                        type: 'blog',
+                        title: '5 เคล็ดลับดูแลร่างกายเบา ๆ หลังทำงานหน้าคอมทั้งวัน',
+                        content: 'หลายคนที่ทำงานหน้าคอมนาน ๆ อาจรู้สึกตึงบริเวณคอ บ่า หรือหลังได้ง่าย การดูแลตัวเองอย่างสม่ำเสมอช่วยให้ร่างกายรู้สึกสบายขึ้น\n\n1. ลุกเดินทุก 45-60 นาที\n2. ยืดคอและไหล่เบา ๆ\n3. ดื่มน้ำให้เพียงพอ\n4. ปรับระดับหน้าจอให้พอดีกับสายตา\n5. พักสายตาเป็นระยะ\n\nบทความนี้เป็นเพียงข้อมูลทั่วไป ไม่ใช้แทนคำแนะนำจากผู้เชี่ยวชาญ',
+                        categoryId: 'cat-4',
+                        productName: '',
+                        productPrice: 0,
+                        productLink: '',
+                        image: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&q=80&w=800',
+                        createdAt: new Date().toISOString()
+                    }
+                ];
+                for (const post of seedPosts) await saveDBData('posts', post);
+                posts = seedPosts;
+            }
+
+            renderCategories();
+            renderPosts();
+            renderBlogs();
+            populateCategoryDropdown();
+            togglePostFormFields();
+            if (isAdmin) {
+                renderAdminPostsTable();
+                renderAdminCategoriesGrid();
+            }
+        }
+
+        // Tab Switching Logic
+        function changeTab(tab, subTab = 'posts') {
+            if (tab === 'admin' && !isAdmin && !ADMIN_ENTRY_MODE) {
+                showToast("Khu vực admin đã được ẩn. Thêm ?admin=1 vào cuối URL để mở trang đăng nhập.", "warning");
+                tab = 'home';
+            }
+            document.getElementById('view-home').classList.add('hidden');
+            document.getElementById('view-blog').classList.add('hidden');
+            document.getElementById('view-admin').classList.add('hidden');
+            
+            document.getElementById('nav-home').className = "flex items-center space-x-2 px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition duration-200 text-slate-600 hover:text-slate-950";
+            document.getElementById('nav-blog').className = "flex items-center space-x-2 px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition duration-200 text-slate-600 hover:text-slate-950";
+            document.getElementById('nav-admin').className = "flex items-center space-x-2 px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition duration-200 text-rose-600 hover:text-rose-800 bg-rose-50/50 hover:bg-rose-50 border border-rose-100";
+
+            if (tab === 'home') {
+                document.getElementById('view-home').classList.remove('hidden');
+                document.getElementById('nav-home').className = "flex items-center space-x-2 px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition duration-200 bg-white text-emerald-700 shadow-sm border border-slate-200";
+                renderCategories();
+                renderPosts();
+            } else if (tab === 'blog') {
+                document.getElementById('view-blog').classList.remove('hidden');
+                document.getElementById('nav-blog').className = "flex items-center space-x-2 px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition duration-200 bg-white text-emerald-700 shadow-sm border border-slate-200";
+                renderBlogs();
+            } else if (tab === 'admin') {
+                document.getElementById('view-admin').classList.remove('hidden');
+                document.getElementById('nav-admin').className = "flex items-center space-x-2 px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition duration-200 bg-rose-600 text-white shadow-sm shadow-rose-600/10";
+                updateAdminAuthUI();
+                if (isAdmin) {
+                    toggleAdminSubTab(subTab);
+                    renderAdminPostsTable();
+                    renderAdminCategoriesGrid();
+                }
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Form & Upload helper logic
+        function setImageSourceMode(mode) {
+            selectedImgSourceMode = mode;
+            const fileBox = document.getElementById('img-file-box');
+            const urlBox = document.getElementById('img-url-box');
+            const btnFile = document.getElementById('btn-img-file');
+            const btnUrl = document.getElementById('btn-img-url');
+
+            if (mode === 'file') {
+                fileBox.classList.remove('hidden');
+                urlBox.classList.add('hidden');
+                btnFile.className = "flex-1 py-1.5 text-[10px] font-bold rounded-md bg-white shadow-sm text-slate-800";
+                btnUrl.className = "flex-1 py-1.5 text-[10px] font-bold rounded-md text-slate-600 hover:text-slate-800";
+            } else {
+                fileBox.classList.add('hidden');
+                urlBox.classList.remove('hidden');
+                btnFile.className = "flex-1 py-1.5 text-[10px] font-bold rounded-md text-slate-600 hover:text-slate-800";
+                btnUrl.className = "flex-1 py-1.5 text-[10px] font-bold rounded-md bg-white shadow-sm text-slate-800";
+            }
+        }
+
+        function previewImageFile(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                currentUploadedBase64 = e.target.result;
+                
+                document.getElementById('image-preview').src = currentUploadedBase64;
+                document.getElementById('image-filename').innerText = file.name;
+                document.getElementById('image-preview-container').classList.remove('hidden');
+                showToast("Đã tải tệp ảnh lên tạm thời thành công!");
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function removeImagePreview() {
+            currentUploadedBase64 = "";
+            document.getElementById('post-image-file').value = "";
+            document.getElementById('image-preview-container').classList.add('hidden');
+        }
+
+        function togglePostFormFields() {
+            const type = document.getElementById('post-type').value;
+            const nameContainer = document.getElementById('product-name-container');
+            const detailsContainer = document.getElementById('product-details-container');
+
+            if (type === 'review') {
+                nameContainer.classList.remove('hidden');
+                detailsContainer.classList.remove('hidden');
+                document.getElementById('post-product-name').required = true;
+                document.getElementById('post-product-price').required = true;
+            } else {
+                nameContainer.classList.add('hidden');
+                detailsContainer.classList.add('hidden');
+                document.getElementById('post-product-name').required = false;
+                document.getElementById('post-product-price').required = false;
+            }
+        }
+
+        // Custom Toasts (Vietnamese feedback for admin tasks)
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `flex items-center space-x-3 p-4 rounded-xl shadow-lg border text-xs font-bold transition-all duration-300 transform translate-y-2 opacity-0 pointer-events-auto bg-white`;
+            
+            let iconColor = 'text-emerald-500';
+            let icon = 'fa-circle-check';
+            let borderColor = 'border-slate-100';
+            
+            if (type === 'error') {
+                iconColor = 'text-rose-500';
+                icon = 'fa-circle-xmark';
+                borderColor = 'border-rose-100';
+            } else if (type === 'warning') {
+                iconColor = 'text-amber-500';
+                icon = 'fa-triangle-exclamation';
+                borderColor = 'border-amber-100';
+            }
+            
+            toast.className += ` ${borderColor}`;
+            toast.innerHTML = `
+                <div class="${iconColor} text-lg"><i class="fa-solid ${icon}"></i></div>
+                <div class="text-slate-700">${message}</div>
+            `;
+            
+            container.appendChild(toast);
+            setTimeout(() => toast.classList.add('toast-active'), 50);
+
+            setTimeout(() => {
+                toast.classList.remove('toast-active');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Custom Vietnamese Confirm dialog (No Alert/Confirm allowed)
+        function askConfirm(title, msg, onConfirm) {
+            const modal = document.getElementById('confirm-modal');
+            document.getElementById('confirm-title').innerText = title;
+            document.getElementById('confirm-message').innerText = msg;
+            
+            modal.classList.remove('hidden');
+            currentConfirmCallback = onConfirm;
+        }
+
+        document.getElementById('confirm-cancel-btn').addEventListener('click', () => {
+            document.getElementById('confirm-modal').classList.add('hidden');
+            currentConfirmCallback = null;
+        });
+
+        document.getElementById('confirm-success-btn').addEventListener('click', () => {
+            document.getElementById('confirm-modal').classList.add('hidden');
+            if (currentConfirmCallback) {
+                currentConfirmCallback();
+                currentConfirmCallback = null;
+            }
+        });
+
+        // Formatter utilities
+        function formatDate(dateString) {
+            const d = new Date(dateString);
+            const monthsThai = [
+                'ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.',
+                'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'
+            ];
+            return `${d.getDate()} ${monthsThai[d.getMonth()]} ${d.getFullYear() + 543}`;
+        }
+
+        // Toggle admin panel tabs
+        function toggleAdminSubTab(subTab) {
+            document.getElementById('admin-section-posts').classList.add('hidden');
+            document.getElementById('admin-section-categories').classList.add('hidden');
+            
+            document.getElementById('admin-subtab-posts').className = "flex-1 sm:flex-initial px-4 py-2 text-xs font-bold rounded-lg text-slate-600 hover:text-slate-950";
+            document.getElementById('admin-subtab-categories').className = "flex-1 sm:flex-initial px-4 py-2 text-xs font-bold rounded-lg text-slate-600 hover:text-slate-950";
+
+            if (subTab === 'posts') {
+                document.getElementById('admin-section-posts').classList.remove('hidden');
+                document.getElementById('admin-subtab-posts').className = "flex-1 sm:flex-initial px-4 py-2 text-xs font-bold rounded-lg bg-white shadow-sm text-slate-800";
+            } else if (subTab === 'categories') {
+                document.getElementById('admin-section-categories').classList.remove('hidden');
+                document.getElementById('admin-subtab-categories').className = "flex-1 sm:flex-initial px-4 py-2 text-xs font-bold rounded-lg bg-white shadow-sm text-slate-800";
+            }
+        }
+
+        // Render Category Tags (Top of product reviews)
+        function renderCategories() {
+            const container = document.getElementById('categories-list-container');
+            container.innerHTML = '';
+
+            // 'All' Filter Button
+            const allActive = selectedCategoryFilter === 'all';
+            const allBtn = document.createElement('button');
+            allBtn.onclick = () => selectCategory('all');
+            allBtn.className = `flex-shrink-0 flex items-center space-x-2 px-4 py-2 rounded-2xl text-xs font-bold transition-all border ${
+                allActive 
+                    ? 'bg-emerald-600 text-white border-emerald-600 shadow-md shadow-emerald-500/10' 
+                    : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'
+            }`;
+            
+            const totalReviews = posts.filter(p => p.type === 'review').length;
+            allBtn.innerHTML = `
+                <span><i class="fa-solid fa-border-all"></i></span>
+                <span>ทั้งหมด</span>
+                <span class="px-1.5 py-0.5 rounded-full text-[9px] ${allActive ? 'bg-emerald-800 text-emerald-100' : 'bg-slate-200 text-slate-600'}">${totalReviews}</span>
+            `;
+            container.appendChild(allBtn);
+
+            // Dynamically populated category buttons
+            categories.forEach(cat => {
+                const isActive = selectedCategoryFilter === cat.id;
+                const count = posts.filter(p => p.categoryId === cat.id && p.type === 'review').length;
+                const palette = colorPalette[cat.color] || colorPalette.slate;
+                const textCol = palette.split(' ')[1];
+                
+                const btn = document.createElement('button');
+                btn.onclick = () => selectCategory(cat.id);
+                btn.className = `flex-shrink-0 flex items-center space-x-2 px-4 py-2 rounded-2xl text-xs font-bold transition-all border ${
+                    isActive 
+                        ? 'bg-slate-900 text-white border-slate-900 shadow-md' 
+                        : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
+                }`;
+
+                btn.innerHTML = `
+                    <span class="${isActive ? 'text-emerald-400' : textCol}"><i class="${cat.icon}"></i></span>
+                    <span>${escapeHTML(cat.name)}</span>
+                    <span class="px-1.5 py-0.5 rounded-full text-[9px] ${isActive ? 'bg-slate-800 text-slate-300' : 'bg-slate-200 text-slate-600'}">${count}</span>
+                `;
+                container.appendChild(btn);
+            });
+        }
+
+        function selectCategory(catId) {
+            selectedCategoryFilter = catId;
+            renderCategories();
+            filterPosts();
+        }
+
+        function clearFilters() {
+            document.getElementById('search-input').value = '';
+            selectedCategoryFilter = 'all';
+            renderCategories();
+            filterPosts();
+        }
+
+        // Filter Product Reviews (Home Section)
+        function filterPosts() {
+            const query = document.getElementById('search-input').value.toLowerCase().trim();
+            const sortVal = document.getElementById('sort-select').value;
+            
+            let filtered = posts.filter(post => {
+                const isReview = post.type === 'review' || !post.type; // Backward compat
+                const matchesCategory = selectedCategoryFilter === 'all' || post.categoryId === selectedCategoryFilter;
+                const matchesSearch = post.title.toLowerCase().includes(query) || 
+                                      post.content.toLowerCase().includes(query) || 
+                                      (post.productName && post.productName.toLowerCase().includes(query));
+                return isReview && matchesCategory && matchesSearch;
+            });
+
+            if (sortVal === 'newest') {
+                filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            } else if (sortVal === 'oldest') {
+                filtered.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+            } else if (sortVal === 'price-high') {
+                filtered.sort((a, b) => b.productPrice - a.productPrice);
+            } else if (sortVal === 'price-low') {
+                filtered.sort((a, b) => a.productPrice - b.productPrice);
+            }
+
+            let categoryName = "บทความรีวิวทั้งหมด";
+            if (selectedCategoryFilter !== 'all') {
+                const catObj = categories.find(c => c.id === selectedCategoryFilter);
+                if (catObj) categoryName = catObj.name;
+            }
+            document.getElementById('current-category-title').innerText = categoryName;
+            document.getElementById('posts-count-label').innerText = `กำลังแสดงทั้งหมด ${filtered.length} รายการ`;
+
+            renderPostsGrid(filtered);
+        }
+
+        // Render Product Review Cards (Home - Thai)
+        function renderPostsGrid(postsArray) {
+            const grid = document.getElementById('blog-posts-container');
+            const emptyState = document.getElementById('empty-posts-state');
+            grid.innerHTML = '';
+            
+            if (postsArray.length === 0) {
+                grid.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            grid.classList.remove('hidden');
+            emptyState.classList.add('hidden');
+
+            postsArray.forEach(post => {
+                const catObj = categories.find(c => c.id === post.categoryId) || { name: 'ไม่มีหมวดหมู่', color: 'slate', icon: 'fa-solid fa-circle' };
+                const palette = colorPalette[catObj.color] || colorPalette.slate;
+                const textCol = palette.split(' ')[1];
+
+                const card = document.createElement('div');
+                card.className = "group bg-white rounded-3xl overflow-hidden border border-slate-200 hover:border-emerald-500 transition duration-300 flex flex-col hover:shadow-lg";
+                
+                const photoUrl = post.image || `https://placehold.co/800x600/059669/ffffff?text=${encodeURIComponent(post.productName || 'Review')}`;
+
+                card.innerHTML = `
+                    <div class="relative h-48 sm:h-52 overflow-hidden bg-slate-100 cursor-pointer" onclick="openPostDetail('${post.id}')">
+                        <img src="${photoUrl}" alt="${escapeHTML(post.productName || "")}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.onerror=null;this.src='https://placehold.co/800x600/1e293b/ffffff?text=Image+Error'">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                        <span class="absolute top-4 left-4 inline-flex items-center space-x-1.5 px-3 py-1 rounded-full text-[10px] font-bold bg-white text-slate-800 shadow-sm border border-slate-100">
+                            <i class="${catObj.icon} ${textCol}"></i>
+                            <span>${escapeHTML(catObj.name)}</span>
+                        </span>
+                    </div>
+
+                    <div class="p-5 flex-grow flex flex-col justify-between space-y-4">
+                        <div class="space-y-2">
+                            <span class="text-[10px] text-slate-400 font-bold block uppercase tracking-wide flex items-center space-x-1">
+                                <i class="fa-regular fa-clock"></i>
+                                <span>${formatDate(post.createdAt)}</span>
+                            </span>
+                            <h3 class="font-bold text-xs sm:text-sm text-slate-950 group-hover:text-emerald-600 cursor-pointer line-clamp-2 transition leading-snug" onclick="openPostDetail('${post.id}')">
+                                ${escapeHTML(post.title)}
+                            </h3>
+                            <p class="text-xs text-slate-500 line-clamp-2 leading-relaxed">
+                                ${escapeHTML(post.content)}
+                            </p>
+                        </div>
+
+                        <div class="border-t border-slate-100 pt-4 flex justify-between items-center mt-auto">
+                            <div>
+                                <span class="text-[10px] text-slate-400 block font-semibold">ราคาประมาณ</span>
+                                <span class="text-xs sm:text-sm font-extrabold text-amber-600">${post.productPrice ? post.productPrice.toLocaleString('th-TH') : 0} ฿</span>
+                            </div>
+                            <button onclick="openPostDetail('${post.id}')" class="px-3 py-1.5 text-[10px] font-bold text-emerald-600 bg-emerald-50 rounded-lg group-hover:bg-emerald-600 group-hover:text-white transition duration-200 flex items-center space-x-1">
+                                <span>ดูรายละเอียด</span>
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Filter Blog Knowledge Articles
+        function filterBlogs() {
+            const query = document.getElementById('blog-search-input').value.toLowerCase().trim();
+            
+            const filtered = posts.filter(post => {
+                const isBlog = post.type === 'blog';
+                const matchesSearch = post.title.toLowerCase().includes(query) || 
+                                      post.content.toLowerCase().includes(query);
+                return isBlog && matchesSearch;
+            });
+
+            document.getElementById('blogs-count-label').innerText = `กำลังแสดงทั้งหมด ${filtered.length} บทความ`;
+            renderBlogsGrid(filtered);
+        }
+
+        // Render pure informational Blogs
+        function renderBlogsGrid(blogsArray) {
+            const grid = document.getElementById('blog-knowledge-container');
+            const emptyState = document.getElementById('empty-blogs-state');
+            grid.innerHTML = '';
+
+            if (blogsArray.length === 0) {
+                grid.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            grid.classList.remove('hidden');
+            emptyState.classList.add('hidden');
+
+            blogsArray.forEach(post => {
+                const catObj = categories.find(c => c.id === post.categoryId) || { name: 'สาระทั่วไป', color: 'teal', icon: 'fa-solid fa-circle' };
+                const palette = colorPalette[catObj.color] || colorPalette.teal;
+                const textCol = palette.split(' ')[1];
+
+                const card = document.createElement('div');
+                card.className = "group bg-white rounded-3xl overflow-hidden border border-slate-200 hover:border-teal-500 transition duration-300 flex flex-col hover:shadow-lg";
+                
+                const photoUrl = post.image || `https://placehold.co/800x600/0d9488/ffffff?text=HealthBlog`;
+
+                card.innerHTML = `
+                    <div class="relative h-48 sm:h-52 overflow-hidden bg-slate-100 cursor-pointer" onclick="openPostDetail('${post.id}')">
+                        <img src="${photoUrl}" alt="Blog Photo" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.onerror=null;this.src='https://placehold.co/800x600/1e293b/ffffff?text=No+Photo'">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                        <span class="absolute top-4 left-4 inline-flex items-center space-x-1.5 px-3 py-1 rounded-full text-[10px] font-bold bg-white text-slate-800 shadow-sm border border-slate-100">
+                            <i class="${catObj.icon} ${textCol}"></i>
+                            <span>${escapeHTML(catObj.name)}</span>
+                        </span>
+                    </div>
+
+                    <div class="p-5 flex-grow flex flex-col justify-between space-y-4">
+                        <div class="space-y-2">
+                            <span class="text-[10px] text-slate-400 font-bold block uppercase tracking-wide flex items-center space-x-1">
+                                <i class="fa-regular fa-clock"></i>
+                                <span>${formatDate(post.createdAt)}</span>
+                            </span>
+                            <h3 class="font-bold text-xs sm:text-sm text-slate-950 group-hover:text-teal-600 cursor-pointer line-clamp-2 transition leading-snug" onclick="openPostDetail('${post.id}')">
+                                ${escapeHTML(post.title)}
+                            </h3>
+                            <p class="text-xs text-slate-500 line-clamp-3 leading-relaxed">
+                                ${escapeHTML(post.content)}
+                            </p>
+                        </div>
+
+                        <div class="border-t border-slate-100 pt-3 flex justify-end mt-auto">
+                            <button onclick="openPostDetail('${post.id}')" class="text-xs font-bold text-teal-600 flex items-center space-x-1 hover:underline">
+                                <span>อ่านสาระต่อ</span>
+                                <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function renderPosts() {
+            filterPosts();
+        }
+
+        function renderBlogs() {
+            filterBlogs();
+        }
+
+        // Detail viewer modal logic
+        function openPostDetail(postId) {
+            const postObj = posts.find(p => p.id === postId);
+            if (!postObj) {
+                showToast("ไม่พบข้อมูลบทความที่ต้องการ!", "error");
+                return;
+            }
+
+            const catObj = categories.find(c => c.id === postObj.categoryId) || { name: 'ความรู้ทั่วไป', color: 'emerald' };
+            const coverImage = postObj.image || `https://placehold.co/800x600/059669/ffffff?text=${encodeURIComponent(postObj.productName || 'Herb')}`;
+            
+            document.getElementById('detail-image').src = coverImage;
+            document.getElementById('detail-image').onerror = function() {
+                this.src = 'https://placehold.co/800x600/1e293b/ffffff?text=Image+Load+Error';
+            };
+            
+            const categoryTag = document.getElementById('detail-category-tag');
+            categoryTag.innerText = catObj.name;
+
+            document.getElementById('detail-title').innerText = postObj.title;
+            document.getElementById('detail-date').innerText = formatDate(postObj.createdAt);
+            
+            // Adjust elements depending on post type (product review vs blog)
+            const detailProductCard = document.getElementById('detail-product-card');
+            if (postObj.type === 'review' || !postObj.type) {
+                detailProductCard.classList.remove('hidden');
+                document.getElementById('detail-product-name').innerText = postObj.productName;
+                document.getElementById('detail-product-price').innerText = `${postObj.productPrice ? postObj.productPrice.toLocaleString('th-TH') : 0} ฿`;
+                
+                const linkBtn = document.getElementById('detail-product-link');
+                if (postObj.productLink && postObj.productLink.trim() !== '') {
+                    linkBtn.href = postObj.productLink;
+                    linkBtn.classList.remove('hidden');
+                } else {
+                    linkBtn.classList.add('hidden');
+                }
+            } else {
+                detailProductCard.classList.add('hidden');
+            }
+
+            document.getElementById('detail-content').innerText = postObj.content;
+
+            document.getElementById('post-detail-modal').classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+        }
+
+        function closePostDetail() {
+            document.getElementById('post-detail-modal').classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+        }
+
+        function populateCategoryDropdown() {
+            const dropdown = document.getElementById('post-category');
+            dropdown.innerHTML = '';
+            
+            if (categories.length === 0) {
+                dropdown.innerHTML = '<option value="">Chưa có danh mục nào</option>';
+                return;
+            }
+
+            categories.forEach(cat => {
+                const opt = document.createElement('option');
+                opt.value = cat.id;
+                opt.innerText = cat.name;
+                dropdown.appendChild(opt);
+            });
+        }
+
+        // BACK-END: ADMIN MANAGE AND CONTROLS (Vietnamese)
+        function renderAdminPostsTable() {
+            const tbody = document.getElementById('admin-posts-table-body');
+            const emptyLabel = document.getElementById('admin-table-empty');
+            tbody.innerHTML = '';
+
+            if (posts.length === 0) {
+                emptyLabel.classList.remove('hidden');
+                return;
+            }
+            emptyLabel.classList.add('hidden');
+
+            posts.forEach(post => {
+                const catObj = categories.find(c => c.id === post.categoryId) || { name: 'Chưa phân loại', color: 'slate' };
+                const photoUrl = post.image || `https://placehold.co/100x100/059669/ffffff?text=Image`;
+                const displayType = post.type === 'blog' ? 'Kiến thức Blog' : 'Đánh giá SP';
+                
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50 transition border-b border-slate-100 text-[11px] sm:text-xs text-slate-700";
+                
+                tr.innerHTML = `
+                    <td class="py-3 px-4 flex items-center space-x-3 max-w-sm">
+                        <img src="${photoUrl}" class="w-10 h-10 rounded-lg object-cover flex-shrink-0" onerror="this.onerror=null;this.src='https://placehold.co/100x100/1e293b/ffffff?text=No+Img'">
+                        <div class="truncate">
+                            <span class="font-bold text-slate-900 block truncate hover:text-emerald-600 cursor-pointer" onclick="openPostDetail('${post.id}')">${escapeHTML(post.title)}</span>
+                            <span class="text-[10px] text-slate-400 block truncate">${post.type === 'blog' ? 'Bài kiến thức' : 'Sản phẩm: ' + escapeHTML(post.productName || '')}</span>
+                        </div>
+                    </td>
+                    <td class="py-3 px-4">
+                        <span class="px-2.5 py-0.5 rounded-full text-[9px] font-bold ${post.type === 'blog' ? 'bg-teal-50 text-teal-600 border border-teal-100' : 'bg-emerald-50 text-emerald-600 border border-emerald-100'}">
+                            ${escapeHTML(displayType)}
+                        </span>
+                    </td>
+                    <td class="py-3 px-4 text-right font-extrabold text-slate-900">
+                        ${post.type === 'blog' ? '-' : (post.productPrice ? post.productPrice.toLocaleString('th-TH') + ' ฿' : '0 ฿')}
+                    </td>
+                    <td class="py-3 px-4 text-center">
+                        <div class="flex items-center justify-center space-x-1">
+                            <button onclick="editPost('${post.id}')" class="h-8 w-8 rounded-lg bg-indigo-50 text-indigo-600 hover:bg-indigo-600 hover:text-white transition flex items-center justify-center" title="Sửa bài">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </button>
+                            <button onclick="deletePost('${post.id}')" class="h-8 w-8 rounded-lg bg-rose-50 text-rose-600 hover:bg-rose-600 hover:text-white transition flex items-center justify-center" title="Xóa bài">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Save review or blog post to database
+        async function savePost(e) {
+            e.preventDefault();
+            if (!requireAdmin()) return;
+            
+            const id = document.getElementById('post-id').value;
+            const type = document.getElementById('post-type').value;
+            const title = document.getElementById('post-title').value.trim();
+            const categoryId = document.getElementById('post-category').value;
+            const productName = document.getElementById('post-product-name').value.trim();
+            const productPrice = parseFloat(document.getElementById('post-product-price').value) || 0;
+            const productLink = document.getElementById('post-product-link').value.trim();
+            const urlImage = document.getElementById('post-image-url').value.trim();
+            const content = document.getElementById('post-content').value.trim();
+
+            if (!categoryId) {
+                showToast("Vui lòng khởi tạo ít nhất một chuyên mục trước khi đăng bài!", "error");
+                return;
+            }
+
+            // Decide image source based on toggle selection
+            let finalImage = "";
+            if (selectedImgSourceMode === 'file') {
+                finalImage = currentUploadedBase64;
+            } else {
+                finalImage = urlImage;
+            }
+
+            if (!finalImage) {
+                showToast("Vui lòng tải ảnh lên trực tiếp hoặc dán liên kết URL ảnh!", "error");
+                return;
+            }
+
+            let updatedPost;
+            if (id) {
+                // Update existing record
+                const existingIndex = posts.findIndex(p => p.id === id);
+                if (existingIndex !== -1) {
+                    const uploadedImage = await uploadImageIfNeeded(finalImage, id);
+                    updatedPost = {
+                        ...posts[existingIndex],
+                        type,
+                        title,
+                        categoryId,
+                        productName: type === 'review' ? productName : '',
+                        productPrice: type === 'review' ? productPrice : 0,
+                        productLink: type === 'review' ? productLink : '',
+                        image: uploadedImage,
+                        content,
+                        updatedAt: new Date().toISOString()
+                    };
+                    posts[existingIndex] = updatedPost;
+                    await saveDBData('posts', updatedPost);
+                    showToast("Cập nhật bài viết thành công!");
+                }
+            } else {
+                // Create new record
+                const newId = 'post-' + Date.now();
+                const uploadedImage = await uploadImageIfNeeded(finalImage, newId);
+                updatedPost = {
+                    id: newId,
+                    type,
+                    title,
+                    categoryId,
+                    productName: type === 'review' ? productName : '',
+                    productPrice: type === 'review' ? productPrice : 0,
+                    productLink: type === 'review' ? productLink : '',
+                    image: uploadedImage,
+                    content,
+                    createdAt: new Date().toISOString()
+                };
+                posts.unshift(updatedPost);
+                await saveDBData('posts', updatedPost);
+                showToast("Đã xuất bản bài viết thành công!");
+            }
+
+            resetPostForm();
+            renderAdminPostsTable();
+            renderCategories();
+        }
+
+        function editPost(id) {
+            if (!requireAdmin()) return;
+            const postObj = posts.find(p => p.id === id);
+            if (!postObj) return;
+
+            document.getElementById('post-id').value = postObj.id;
+            document.getElementById('post-type').value = postObj.type || 'review';
+            document.getElementById('post-title').value = postObj.title;
+            document.getElementById('post-category').value = postObj.categoryId;
+            document.getElementById('post-product-name').value = postObj.productName || '';
+            document.getElementById('post-product-price').value = postObj.productPrice || 0;
+            document.getElementById('post-product-link').value = postObj.productLink || '';
+            
+            // Check image source type
+            if (postObj.image && postObj.image.startsWith('data:image/')) {
+                setImageSourceMode('file');
+                currentUploadedBase64 = postObj.image;
+                document.getElementById('image-preview').src = currentUploadedBase64;
+                document.getElementById('image-filename').innerText = "ảnh_đã_lưu.jpg";
+                document.getElementById('image-preview-container').classList.remove('hidden');
+            } else {
+                setImageSourceMode('url');
+                document.getElementById('post-image-url').value = postObj.image || '';
+                removeImagePreview();
+            }
+
+            document.getElementById('post-content').value = postObj.content;
+
+            togglePostFormFields();
+
+            document.getElementById('form-post-title').innerHTML = `<i class="fa-solid fa-pen-to-square text-indigo-500"></i><span>Chỉnh sửa bài viết</span>`;
+            document.getElementById('submit-btn-text').innerText = 'Cập nhật thay đổi';
+            document.getElementById('cancel-edit-btn').classList.remove('hidden');
+            
+            document.getElementById('post-form').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function resetPostForm() {
+            document.getElementById('post-form').reset();
+            document.getElementById('post-id').value = '';
+            removeImagePreview();
+            setImageSourceMode('file');
+            togglePostFormFields();
+            document.getElementById('form-post-title').innerHTML = `<i class="fa-solid fa-circle-plus text-emerald-500"></i><span>Tạo bài viết mới</span>`;
+            document.getElementById('submit-btn-text').innerText = 'Đăng bài viết';
+            document.getElementById('cancel-edit-btn').classList.add('hidden');
+        }
+
+        function deletePost(id) {
+            if (!requireAdmin()) return;
+            const p = posts.find(item => item.id === id);
+            if (!p) return;
+
+            askConfirm(
+                'Gỡ bài viết này?',
+                `Bạn thực sự muốn xóa bài viết "${p.title}" ra khỏi cơ sở dữ liệu chứ? Thao tác này không thể thu hồi.`,
+                async () => {
+                    posts = posts.filter(item => item.id !== id);
+                    await deleteDBData('posts', id);
+                    showToast("Đã xóa bài viết thành công!", "warning");
+                    renderAdminPostsTable();
+                    renderCategories();
+                }
+            );
+        }
+
+        // Colour Palette builder
+        function renderColorSelector() {
+            const container = document.getElementById('color-selector');
+            container.innerHTML = '';
+            
+            Object.keys(colorPalette).forEach(color => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.onclick = () => selectCategoryColor(color);
+                
+                const bgClass = colorPalette[color].split(' ')[0];
+                btn.className = `h-7 rounded-xl ${bgClass} transition hover:scale-110 focus:outline-none border-2 border-transparent`;
+                btn.id = `color-picker-${color}`;
+                btn.title = color;
+
+                container.appendChild(btn);
+            });
+            selectCategoryColor('emerald');
+        }
+
+        function selectCategoryColor(color) {
+            document.getElementById('category-color').value = color;
+            
+            Object.keys(colorPalette).forEach(c => {
+                const b = document.getElementById(`color-picker-${c}`);
+                if (b) b.className = b.className.replace(' border-slate-950', '');
+            });
+            
+            const activeBtn = document.getElementById(`color-picker-${color}`);
+            if (activeBtn) activeBtn.className += ' border-slate-950';
+        }
+
+        // Icon selectors builder
+        function renderIconSelector() {
+            const container = document.getElementById('icon-selector');
+            container.innerHTML = '';
+
+            availableIcons.forEach(iconClass => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.onclick = () => selectCategoryIcon(iconClass);
+                btn.className = "flex items-center justify-center h-10 border border-slate-200 hover:border-slate-800 hover:bg-slate-50 rounded-xl text-slate-600 transition";
+                btn.innerHTML = `<i class="${iconClass} text-sm"></i>`;
+                btn.id = `icon-picker-${iconClass.replace(/ /g, '-')}`;
+                container.appendChild(btn);
+            });
+            selectCategoryIcon('fa-solid fa-prescription-bottle-medical');
+        }
+
+        function selectCategoryIcon(iconClass) {
+            document.getElementById('category-icon').value = iconClass;
+            
+            availableIcons.forEach(ic => {
+                const btnId = `icon-picker-${ic.replace(/ /g, '-')}`;
+                const b = document.getElementById(btnId);
+                if (b) b.className = "flex items-center justify-center h-10 border border-slate-200 hover:border-slate-800 hover:bg-slate-50 rounded-xl text-slate-600 transition";
+            });
+
+            const activeBtnId = `icon-picker-${iconClass.replace(/ /g, '-')}`;
+            const activeBtn = document.getElementById(activeBtnId);
+            if (activeBtn) activeBtn.className = "flex items-center justify-center h-10 border-2 border-emerald-500 bg-emerald-50 text-emerald-600 rounded-xl transition font-bold";
+        }
+
+        // Category Folder Grids
+        function renderAdminCategoriesGrid() {
+            const container = document.getElementById('admin-categories-grid');
+            container.innerHTML = '';
+
+            categories.forEach(cat => {
+                const palette = colorPalette[cat.color] || colorPalette.slate;
+                const textCol = palette.split(' ')[1];
+                const count = posts.filter(p => p.categoryId === cat.id && p.type === 'review').length;
+
+                const card = document.createElement('div');
+                card.className = "p-4 bg-slate-50 border border-slate-200 rounded-2xl flex justify-between items-center space-x-3";
+                
+                card.innerHTML = `
+                    <div class="flex items-center space-x-3 truncate">
+                        <div class="h-10 w-10 rounded-xl flex items-center justify-center text-lg bg-white border border-slate-200 flex-shrink-0">
+                            <i class="${cat.icon} ${textCol}"></i>
+                        </div>
+                        <div class="truncate">
+                            <h4 class="font-bold text-xs text-slate-800 truncate">${escapeHTML(cat.name)}</h4>
+                            <span class="text-[10px] text-slate-400 font-bold block">${count} bài đánh giá</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-1 flex-shrink-0">
+                        <button onclick="editCategory('${cat.id}')" class="h-7 w-7 rounded-lg bg-indigo-50 text-indigo-600 hover:bg-indigo-600 hover:text-white flex items-center justify-center transition" title="Sửa">
+                            <i class="fa-solid fa-pen-to-square text-[10px]"></i>
+                        </button>
+                        <button onclick="deleteCategory('${cat.id}')" class="h-7 w-7 rounded-lg bg-rose-50 text-rose-600 hover:bg-rose-600 hover:text-white flex items-center justify-center transition" title="Xóa">
+                            <i class="fa-solid fa-trash-can text-[10px]"></i>
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        async function saveCategory(e) {
+            e.preventDefault();
+            if (!requireAdmin()) return;
+
+            const id = document.getElementById('category-id').value;
+            const name = document.getElementById('category-name-input').value.trim();
+            const icon = document.getElementById('category-icon').value;
+            const color = document.getElementById('category-color').value;
+
+            let updatedCat;
+            if (id) {
+                const idx = categories.findIndex(c => c.id === id);
+                if (idx !== -1) {
+                    updatedCat = {
+                        ...categories[idx],
+                        name,
+                        icon,
+                        color
+                    };
+                    categories[idx] = updatedCat;
+                    await saveDBData('categories', updatedCat);
+                    showToast("Đã cập nhật danh mục thành công!");
+                }
+            } else {
+                updatedCat = {
+                    id: 'cat-' + Date.now(),
+                    name,
+                    icon,
+                    color
+                };
+                categories.push(updatedCat);
+                await saveDBData('categories', updatedCat);
+                showToast("Tạo danh mục mới thành công!");
+            }
+
+            resetCategoryForm();
+            renderAdminCategoriesGrid();
+            populateCategoryDropdown();
+            renderCategories();
+        }
+
+        function editCategory(id) {
+            if (!requireAdmin()) return;
+            const catObj = categories.find(c => c.id === id);
+            if (!catObj) return;
+
+            document.getElementById('category-id').value = catObj.id;
+            document.getElementById('category-name-input').value = catObj.name;
+            selectCategoryIcon(catObj.icon);
+            selectCategoryColor(catObj.color);
+
+            document.getElementById('form-category-title').innerHTML = `<i class="fa-solid fa-pen-to-square text-indigo-500"></i><span>Chỉnh sửa danh mục</span>`;
+            document.getElementById('submit-cat-btn-text').innerText = 'Cập nhật chuyên mục';
+            document.getElementById('cancel-cat-edit-btn').classList.remove('hidden');
+        }
+
+        function resetCategoryForm() {
+            document.getElementById('category-form').reset();
+            document.getElementById('category-id').value = '';
+            selectCategoryIcon('fa-solid fa-prescription-bottle-medical');
+            selectCategoryColor('emerald');
+            
+            document.getElementById('form-category-title').innerHTML = `<i class="fa-solid fa-folder-plus text-emerald-500"></i><span>Thêm danh mục mới</span>`;
+            document.getElementById('submit-cat-btn-text').innerText = 'Lưu chuyên mục';
+            document.getElementById('cancel-cat-edit-btn').classList.add('hidden');
+        }
+
+        function deleteCategory(id) {
+            if (!requireAdmin()) return;
+            const catObj = categories.find(c => c.id === id);
+            if (!catObj) return;
+
+            const associatedPosts = posts.filter(p => p.categoryId === id);
+            let msg = `Bạn chắc chắn muốn xóa chuyên mục "${escapeHTML(catObj.name)}"?`;
+            
+            if (associatedPosts.length > 0) {
+                msg += ` Có ${associatedPosts.length} bài viết thuộc chuyên mục này sẽ tạm thời bị mất liên kết thư mục gốc.`;
+            }
+
+            askConfirm('Xóa chuyên mục?', msg, async () => {
+                categories = categories.filter(c => c.id !== id);
+                await deleteDBData('categories', id);
+                
+                // Dissociate posts with deleted categories
+                for (let p of posts) {
+                    if (p.categoryId === id) {
+                        p.categoryId = '';
+                        await saveDBData('posts', p);
+                    }
+                }
+
+                showToast("Đã xóa danh mục thành công!", "warning");
+                renderAdminCategoriesGrid();
+                populateCategoryDropdown();
+                renderCategories();
+                
+                if (selectedCategoryFilter === id) {
+                    selectedCategoryFilter = 'all';
+                }
+                renderPosts();
+            });
+        }
+
+        // Initialize App on Window Load
+        window.onload = function() {
+            initApp();
+        };
+    </script>
+
+
+<!--
+FIREBASE RULES GỢI Ý
+
+Firestore Rules:
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAdmin() {
+      return request.auth != null && request.auth.token.email == "ducduy271295@gmail.com";
+    }
+    match /posts/{docId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+    match /categories/{docId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+  }
+}
+
+Storage Rules:
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    function isAdmin() {
+      return request.auth != null && request.auth.token.email == "ducduy271295@gmail.com";
+    }
+    match /posts/{fileName} {
+      allow read: if true;
+      allow write: if isAdmin()
+        && request.resource.size < 5 * 1024 * 1024
+        && request.resource.contentType.matches('image/.*');
+    }
+  }
+}
+-->
+</body>
+</html>
