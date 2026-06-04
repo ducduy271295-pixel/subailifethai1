@@ -71,7 +71,7 @@
           <div class="pt-2 flex flex-col sm:flex-row gap-3">
             <div class="relative flex-grow">
               <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400"><i class="fa-solid fa-magnifying-glass"></i></div>
-              <input type="search" id="search-input" name="product-search-keyword" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" onkeyup="filterPosts()" placeholder="ค้นหายาหม่อง, ชาโสม, ผลิตภัณฑ์สมุนไพร..." class="search-input" />
+              <input type="text" id="search-input" name="subai_public_search_q_001" value="" autocomplete="new-password" data-lpignore="true" data-form-type="other" autocorrect="off" autocapitalize="off" spellcheck="false" readonly onfocus="this.removeAttribute('readonly'); this.value='';" onclick="this.removeAttribute('readonly'); this.value='';" oninput="filterPosts()" placeholder="ค้นหายาหม่อง, ชาโสม, ผลิตภัณฑ์สมุนไพร..." class="search-input" />
             </div>
             <div class="sm:w-48">
               <select id="sort-select" onchange="filterPosts()" class="w-full text-xs sm:text-sm font-semibold text-slate-900 bg-white border border-slate-200 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary-500 transition">
@@ -81,6 +81,13 @@
                 <option value="price-low">ราคา: ต่ำไปสูง</option>
               </select>
             </div>
+          </div>
+          <div class="flex flex-col sm:flex-row sm:items-center gap-3 pt-1">
+            <button type="button" onclick="openLeadModal()" class="inline-flex items-center justify-center gap-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-xs sm:text-sm px-5 py-3 rounded-2xl transition shadow-lg shadow-emerald-500/20 w-full sm:w-auto">
+              <i class="fa-solid fa-envelope-circle-check"></i>
+              <span>สมัครรับบทความใหม่</span>
+            </button>
+            <span class="text-[11px] text-slate-300">รับบทความสุขภาพและข้อเสนอใหม่ผ่านอีเมล</span>
           </div>
         </div>
       </section>
@@ -106,27 +113,15 @@
       </section>
 
       <section id="lead-section" class="bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-100 rounded-3xl p-6 sm:p-8 shadow-sm">
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-center">
-          <div class="lg:col-span-1 space-y-2">
+        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
+          <div class="space-y-2">
             <span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700">NEWSLETTER</span>
             <h3 class="text-lg sm:text-xl font-extrabold text-slate-950">รับบทความสุขภาพและข้อเสนอใหม่</h3>
-            <p class="text-xs text-slate-500 leading-relaxed">กรอกอีเมลของคุณเพื่อรับข้อมูลสุขภาพ บทความใหม่ และข้อเสนอผลิตภัณฑ์จากเว็บไซต์นี้</p>
+            <p class="text-xs text-slate-500 leading-relaxed max-w-2xl">กดปุ่มสมัคร แล้วกรอกอีเมลเพื่อรับบทความใหม่และข้อมูลผลิตภัณฑ์ที่น่าสนใจ</p>
           </div>
-          <div class="lg:col-span-2">
-            <form id="lead-form" onsubmit="saveLeadEmail(event)" class="space-y-3">
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <input id="lead-name" type="text" name="lead-name" autocomplete="name" placeholder="ชื่อของคุณ" class="form-input bg-white" />
-                <input id="lead-email" type="email" name="lead-email" autocomplete="email" placeholder="yourname@gmail.com" class="form-input bg-white" required />
-              </div>
-              <label class="flex items-start gap-2 text-[11px] text-slate-500 leading-relaxed">
-                <input id="lead-consent" type="checkbox" class="mt-0.5 rounded border-slate-300" required />
-                <span>ฉันยินยอมรับข่าวสาร บทความสุขภาพ และข้อเสนอจากเว็บไซต์นี้ สามารถยกเลิกได้ในภายหลัง</span>
-              </label>
-              <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-6 py-3 rounded-xl transition shadow-md shadow-emerald-500/10">
-                สมัครรับข้อมูล
-              </button>
-            </form>
-          </div>
+          <button type="button" onclick="openLeadModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm px-6 py-3 rounded-2xl transition shadow-md shadow-emerald-500/10 w-full sm:w-auto">
+            <i class="fa-solid fa-envelope-open-text mr-2"></i> สมัครรับข้อมูล
+          </button>
         </div>
       </section>
     </div>
@@ -140,7 +135,14 @@
           <p class="text-slate-300 text-xs sm:text-sm leading-relaxed max-w-2xl">แหล่งรวมความรู้เรื่องการดูแลร่างกาย สมุนไพร และไลฟ์สไตล์ที่สมดุล</p>
           <div class="pt-2 relative max-w-xl">
             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400"><i class="fa-solid fa-magnifying-glass"></i></div>
-            <input type="search" id="blog-search-input" name="blog-search-keyword" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" onkeyup="filterBlogs()" placeholder="ค้นหาบทความสุขภาพ..." class="search-input" />
+            <input type="text" id="blog-search-input" name="subai_blog_search_q_001" value="" autocomplete="new-password" data-lpignore="true" data-form-type="other" autocorrect="off" autocapitalize="off" spellcheck="false" readonly onfocus="this.removeAttribute('readonly'); this.value='';" onclick="this.removeAttribute('readonly'); this.value='';" oninput="filterBlogs()" placeholder="ค้นหาบทความสุขภาพ..." class="search-input" />
+          </div>
+          <div class="flex flex-col sm:flex-row sm:items-center gap-3 pt-1">
+            <button type="button" onclick="openLeadModal()" class="inline-flex items-center justify-center gap-2 bg-teal-500 hover:bg-teal-400 text-slate-950 font-extrabold text-xs sm:text-sm px-5 py-3 rounded-2xl transition shadow-lg shadow-teal-500/20 w-full sm:w-auto">
+              <i class="fa-solid fa-envelope-circle-check"></i>
+              <span>สมัครรับบทความสุขภาพ</span>
+            </button>
+            <span class="text-[11px] text-slate-300">รับบทความใหม่ส่งตรงถึงอีเมลของคุณ</span>
           </div>
         </div>
       </section>
@@ -247,6 +249,31 @@
 
   <div id="post-detail-modal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-950/40 backdrop-blur-sm flex items-center justify-center p-4"><div class="bg-white rounded-3xl max-w-3xl w-full max-h-[90vh] flex flex-col overflow-hidden shadow-2xl relative"><button onclick="closePostDetail()" class="absolute right-4 top-4 z-10 bg-white/80 hover:bg-white text-slate-700 h-10 w-10 rounded-full flex items-center justify-center shadow-md border border-slate-100 transition"><i class="fa-solid fa-xmark text-lg"></i></button><div class="overflow-y-auto custom-scrollbar flex-grow"><div class="relative h-64 sm:h-80 bg-slate-100"><img id="detail-image" src="" alt="Cover" class="w-full h-full object-cover" /><div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent"></div><div class="absolute bottom-6 left-6 right-6 text-white space-y-2"><span id="detail-category-tag" class="inline-block text-xs font-semibold bg-emerald-600 text-white px-3 py-1 rounded-full">หมวดหมู่</span><h2 id="detail-title" class="text-xl sm:text-2xl font-bold leading-tight"></h2><div class="text-xs text-slate-300"><i class="fa-regular fa-calendar-days"></i> <span id="detail-date"></span></div></div></div><div class="p-6 sm:p-8 space-y-6"><div id="detail-product-card" class="bg-emerald-50/50 border border-emerald-100 rounded-2xl p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"><div class="flex items-center space-x-3"><div class="bg-emerald-100 text-emerald-700 p-3 rounded-xl text-lg flex-shrink-0"><i class="fa-solid fa-prescription-bottle-medical"></i></div><div><div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">ผลิตภัณฑ์ประเมิน</div><div class="font-bold text-slate-950 text-xs sm:text-sm" id="detail-product-name"></div></div></div><div class="flex items-center space-x-4 w-full sm:w-auto justify-between sm:justify-end border-t sm:border-t-0 pt-3 sm:pt-0 border-slate-200"><div class="text-right"><span class="text-xs text-slate-400 block font-medium">ราคาโดยประมาณ</span><span class="text-base sm:text-lg font-extrabold text-amber-600" id="detail-product-price"></span></div><a id="detail-product-link" href="#" target="_blank" rel="nofollow sponsored noopener noreferrer" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm px-5 py-2.5 rounded-xl transition shadow-md flex items-center space-x-2"><i class="fa-solid fa-bag-shopping"></i><span>ซื้อสินค้าเลย</span></a></div></div><article class="prose max-w-none text-slate-600 leading-relaxed text-xs sm:text-sm whitespace-pre-line border-t border-slate-100 pt-4" id="detail-content"></article></div></div></div></div>
 
+
+
+  <div id="lead-modal" class="hidden fixed inset-0 z-[105] bg-slate-950/50 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl space-y-5 relative">
+      <button type="button" onclick="closeLeadModal()" class="absolute right-4 top-4 h-9 w-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <div class="pr-8">
+        <div class="text-emerald-600 text-4xl mb-3"><i class="fa-solid fa-envelope-open-text"></i></div>
+        <h3 class="text-lg font-extrabold text-slate-950">สมัครรับบทความและข้อเสนอใหม่</h3>
+        <p class="text-xs text-slate-500 mt-1 leading-relaxed">กรอกอีเมลของคุณเพื่อรับบทความสุขภาพและข้อมูลผลิตภัณฑ์ที่น่าสนใจ</p>
+      </div>
+      <form id="lead-form" onsubmit="saveLeadEmail(event)" class="space-y-3">
+        <input id="lead-name" type="text" name="lead-name" autocomplete="name" placeholder="ชื่อของคุณ" class="form-input bg-white" />
+        <input id="lead-email" type="email" name="lead-email" autocomplete="email" placeholder="yourname@gmail.com" class="form-input bg-white" required />
+        <label class="flex items-start gap-2 text-[11px] text-slate-500 leading-relaxed">
+          <input id="lead-consent" type="checkbox" class="mt-0.5 rounded border-slate-300" required />
+          <span>ฉันยินยอมรับข่าวสาร บทความสุขภาพ และข้อเสนอจากเว็บไซต์นี้ สามารถยกเลิกได้ในภายหลัง</span>
+        </label>
+        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-6 py-3 rounded-xl transition shadow-md shadow-emerald-500/10">
+          สมัครรับข้อมูล
+        </button>
+      </form>
+    </div>
+  </div>
   <div id="auth-login-modal" class="hidden fixed inset-0 z-[100] bg-slate-950/50 backdrop-blur-sm flex items-center justify-center p-4"><div class="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl space-y-5 text-center"><div class="text-emerald-500 text-5xl mb-2"><i class="fa-solid fa-user-lock"></i></div><div><h3 class="text-sm font-bold text-slate-900">Admin Login</h3><p class="text-[11px] text-slate-500 mt-1 mb-4">Chỉ tài khoản quản trị mới truy cập được.</p><div class="space-y-3 text-left"><div><label class="form-label">Email</label><input type="email" id="auth-email-input" placeholder="ducduy271295@gmail.com" class="form-input" /></div><div><label class="form-label">Mật khẩu</label><input type="password" id="auth-password-input" placeholder="••••••••" class="form-input" onkeypress="if(event.key === 'Enter') loginWithEmail()" /></div></div><button onclick="loginWithEmail()" class="w-full mt-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl transition shadow-md">Đăng nhập Admin</button></div><div class="pt-2 border-t border-slate-100"><button onclick="closeAuthLogin()" class="w-full py-2 px-4 hover:bg-slate-50 text-slate-500 text-xs font-bold rounded-xl transition">กลับสู่หน้าหลัก</button></div></div></div>
   <div id="confirm-modal" class="hidden fixed inset-0 z-[110] bg-slate-950/50 backdrop-blur-sm flex items-center justify-center p-4"><div class="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl space-y-4 text-center"><div class="text-rose-500 text-5xl"><i class="fa-solid fa-circle-exclamation"></i></div><div><h3 class="text-sm font-bold text-slate-900" id="confirm-title">Xác nhận</h3><p class="text-xs text-slate-500 mt-1" id="confirm-message"></p></div><div class="flex space-x-3 pt-2"><button id="confirm-cancel-btn" class="flex-1 py-2 px-4 border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-bold rounded-xl transition">Bỏ qua</button><button id="confirm-success-btn" class="flex-1 py-2 px-4 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-xl transition shadow-md">Xác nhận</button></div></div></div>
   <div class="fixed bottom-5 right-5 z-[150] pointer-events-none space-y-2 max-w-sm w-full" id="toast-container"></div>

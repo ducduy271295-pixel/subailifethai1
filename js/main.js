@@ -86,6 +86,24 @@ window.filterBlogs = filterBlogs;
 window.openPostDetail = openPostDetail;
 window.closePostDetail = closePostDetail;
 
+
+function clearBrowserAutofillSearchFields() {
+  const ids = ['search-input', 'blog-search-input'];
+  ids.forEach((id) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (el.value && el.value.includes('@')) el.value = '';
+    el.setAttribute('autocomplete', 'new-password');
+    el.setAttribute('readonly', 'readonly');
+  });
+}
+
+window.addEventListener('DOMContentLoaded', clearBrowserAutofillSearchFields);
+window.addEventListener('pageshow', clearBrowserAutofillSearchFields);
+setTimeout(clearBrowserAutofillSearchFields, 200);
+setTimeout(clearBrowserAutofillSearchFields, 800);
+setTimeout(clearBrowserAutofillSearchFields, 1800);
+
 initConfirmModal();
 initAdminGlobals();
 initLeadGlobals();

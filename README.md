@@ -70,3 +70,8 @@ service firebase.storage {
   }
 }
 ```
+
+## Cập nhật Lead Form
+- Form đăng ký email khách được mở bằng nút “สมัครรับข้อมูล”.
+- Nút đăng ký hiển thị ở hero trang Review và hero trang Blog để khách dễ thấy hơn.
+- Dữ liệu vẫn lưu vào Firestore collection `leads`.

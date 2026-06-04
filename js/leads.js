@@ -16,9 +16,21 @@ function isValidEmail(email) {
 
 export function initLeadGlobals() {
   window.saveLeadEmail = saveLeadEmail;
+  window.openLeadModal = openLeadModal;
+  window.closeLeadModal = closeLeadModal;
   window.renderAdminLeadsTable = renderAdminLeadsTable;
   window.deleteLead = deleteLead;
   window.exportLeadsCSV = exportLeadsCSV;
+}
+
+export function openLeadModal() {
+  const modal = document.getElementById('lead-modal');
+  if (modal) modal.classList.remove('hidden');
+}
+
+export function closeLeadModal() {
+  const modal = document.getElementById('lead-modal');
+  if (modal) modal.classList.add('hidden');
 }
 
 export async function saveLeadEmail(event) {
@@ -52,6 +64,7 @@ export async function saveLeadEmail(event) {
     if (nameInput) nameInput.value = '';
     if (emailInput) emailInput.value = '';
     if (consentInput) consentInput.checked = false;
+    closeLeadModal();
     showToast('สมัครรับข้อมูลสำเร็จ!');
   } catch (err) {
     console.error(err);
