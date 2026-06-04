@@ -429,9 +429,53 @@
     <!-- Toast message container -->
     <div class="fixed bottom-5 right-5 z-[150] pointer-events-none space-y-2 max-w-sm w-full" id="toast-container"></div>
 
-    <footer class="bg-white border-t border-slate-200 py-8 mt-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-xs text-slate-400 space-y-2">
-            <div>© 2026 subailifethai.com. เว็บไซต์รีวิวและรวบรวมสาระสุขภาพสมุนไพรธรรมชาติชั้นนำ</div>
+    <!-- CHÂN TRANG (FOOTER) MỚI CẬP NHẬT -->
+    <footer class="bg-white border-t border-slate-200 py-10 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-sm text-slate-500">
+                
+                <!-- Cột 1: Thông选 chung -->
+                <div class="space-y-3 text-center md:text-left">
+                    <div class="flex items-center justify-center md:justify-start space-x-2 text-emerald-600">
+                        <i class="fa-solid fa-mortar-pestle text-lg"></i>
+                        <span class="font-black text-lg">subailifethai.com</span>
+                    </div>
+                    <p class="text-xs leading-relaxed">
+                        Một trang web hàng đầu chuyên đánh giá và tổng hợp thông tin về sức khỏe bằng thảo dược tự nhiên. Chúng tôi cung cấp những kiến thức chuẩn xác và các sản phẩm chất lượng nhất để đồng hành cùng sức khỏe của bạn.
+                    </p>
+                </div>
+
+                <!-- Cột 2: Liên kết nhanh -->
+                <div class="text-center">
+                    <h4 class="font-bold text-slate-800 mb-3 uppercase text-xs tracking-wider">Liên kết nhanh</h4>
+                    <ul class="space-y-2 text-xs">
+                        <li><a href="#" class="hover:text-emerald-600 transition">Về chúng tôi</a></li>
+                        <li><a href="#" class="hover:text-emerald-600 transition">Chính sách bảo mật</a></li>
+                        <li><a href="#" class="hover:text-emerald-600 transition">Điều khoản sử dụng</a></li>
+                        <li><a href="#" class="hover:text-emerald-600 transition">Liên hệ quảng cáo</a></li>
+                    </ul>
+                </div>
+
+                <!-- Cột 3: Liên hệ & Mạng xã hội -->
+                <div class="text-center md:text-right space-y-3">
+                    <h4 class="font-bold text-slate-800 mb-3 uppercase text-xs tracking-wider">Kết nối với chúng tôi</h4>
+                    <p class="text-xs">
+                        <i class="fa-solid fa-envelope mr-1"></i> ducduy271295@gmail.com
+                    </p>
+                    <div class="flex items-center justify-center md:justify-end space-x-4 pt-2">
+                        <a href="#" class="text-slate-400 hover:text-blue-600 transition text-lg"><i class="fa-brands fa-facebook"></i></a>
+                        <a href="#" class="text-slate-400 hover:text-sky-500 transition text-lg"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="#" class="text-slate-400 hover:text-rose-600 transition text-lg"><i class="fa-brands fa-youtube"></i></a>
+                        <a href="#" class="text-slate-400 hover:text-emerald-600 transition text-lg"><i class="fa-solid fa-phone"></i></a>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Dòng Bản quyền (Copyright) -->
+            <div class="mt-10 pt-6 border-t border-slate-100 text-center text-[11px] text-slate-400">
+                © 2026 subailifethai.com. Tất cả quyền được bảo lưu. Nội dung trên website chỉ mang tính chất tham khảo, không thay thế cho các chẩn đoán y khoa.
+            </div>
         </div>
     </footer>
 
@@ -503,7 +547,6 @@
                 return;
             }
 
-            // Đổi text nút thành Đang xử lý để dễ nhận biết
             const btn = document.activeElement;
             const originalText = btn.innerText;
             btn.innerText = "Đang xử lý...";
