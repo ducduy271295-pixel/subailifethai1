@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>subailifethai.com - สมุนไพรและสุขภาพไทย</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -18,9 +19,11 @@
             }
         }
     </script>
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&family=Prompt:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -35,9 +38,11 @@
 </head>
 <body class="font-sans antialiased text-slate-800 flex flex-col min-h-screen">
 
+    <!-- Navigation Header -->
     <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
+                <!-- Branding -->
                 <div class="flex items-center space-x-3 cursor-pointer" onclick="changeTab('home')">
                     <div class="bg-gradient-to-r from-emerald-600 to-teal-500 p-2.5 rounded-2xl text-white shadow-md shadow-primary-500/20">
                         <i class="fa-solid fa-mortar-pestle text-xl"></i>
@@ -48,7 +53,9 @@
                     </div>
                 </div>
 
+                <!-- Navigation Tabs & User Profile -->
                 <div class="flex items-center space-x-3 sm:space-x-4">
+                    <!-- Tabs -->
                     <nav class="flex space-x-1 sm:space-x-2 bg-slate-100 p-1 rounded-xl">
                         <button id="nav-home" onclick="changeTab('home')" class="flex items-center space-x-1.5 px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition duration-200 bg-white text-primary-700 shadow-sm">
                             <i class="fa-solid fa-prescription-bottle-medical"></i>
@@ -64,15 +71,19 @@
                         </button>
                     </nav>
 
+                    <!-- User Login / Profile Section -->
                     <div id="user-profile-section" class="flex items-center">
-                        </div>
+                        <!-- Sẽ được điền tự động bằng Javascript -->
+                    </div>
                 </div>
             </div>
         </div>
     </header>
 
+    <!-- Main Content Area -->
     <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
         
+        <!-- ================= HOME VIEW ================= -->
         <div id="view-home" class="space-y-8">
             <div class="bg-gradient-to-br from-emerald-950 via-slate-900 to-teal-950 rounded-3xl p-6 sm:p-10 text-white relative overflow-hidden shadow-xl">
                 <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(16,185,129,0.15),transparent_45%)]"></div>
@@ -131,6 +142,7 @@
             </div>
         </div>
 
+        <!-- ================= BLOG VIEW ================= -->
         <div id="view-blog" class="hidden space-y-8">
             <div class="bg-gradient-to-br from-teal-900 via-slate-900 to-emerald-950 rounded-3xl p-6 sm:p-10 text-white relative overflow-hidden shadow-xl">
                 <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(20,184,166,0.15),transparent_45%)]"></div>
@@ -162,6 +174,7 @@
             </div>
         </div>
 
+        <!-- POST DETAIL MODAL -->
         <div id="post-detail-modal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-950/40 backdrop-blur-sm flex items-center justify-center p-4">
             <div class="bg-white rounded-3xl max-w-3xl w-full max-h-[90vh] flex flex-col overflow-hidden shadow-2xl relative">
                 <button onclick="closePostDetail()" class="absolute right-4 top-4 z-10 bg-white/80 hover:bg-white text-slate-700 hover:text-slate-900 h-10 w-10 rounded-full flex items-center justify-center shadow-md border border-slate-100 transition"><i class="fa-solid fa-xmark text-lg"></i></button>
@@ -202,6 +215,7 @@
             </div>
         </div>
 
+        <!-- ================= ADMIN DASHBOARD PANEL ================= -->
         <div id="view-admin" class="hidden space-y-8">
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div>
@@ -221,6 +235,7 @@
                 </div>
             </div>
 
+            <!-- SUB-TAB 1: Manage Posts -->
             <div id="admin-section-posts" class="grid grid-cols-1 xl:grid-cols-3 gap-8">
                 <div class="xl:col-span-1 bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-5 h-fit">
                     <h3 id="form-post-title" class="text-xs sm:text-sm font-bold text-slate-900 border-b border-slate-100 pb-3 flex items-center space-x-2">
@@ -316,6 +331,7 @@
                 </div>
             </div>
 
+            <!-- SUB-TAB 2: Manage Categories -->
             <div id="admin-section-categories" class="hidden grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div class="md:col-span-1 bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-5 h-fit">
                     <h3 id="form-category-title" class="text-xs sm:text-sm font-bold text-slate-900 border-b border-slate-100 pb-3 flex items-center space-x-2">
@@ -357,6 +373,7 @@
         </div>
     </main>
 
+    <!-- GENERAL AUTH LOGIN MODAL (EMAIL & PASSWORD) -->
     <div id="auth-login-modal" class="hidden fixed inset-0 z-[100] bg-slate-950/50 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl space-y-5 text-center">
             <div class="text-emerald-500 text-5xl mb-2">
@@ -364,14 +381,29 @@
             </div>
             <div>
                 <h3 class="text-sm font-bold text-slate-900">Đăng ký / Đăng nhập</h3>
-                <p class="text-xs text-slate-500 mt-1 mb-4">Kết nối bằng Google (Gmail) để tham gia bình luận và đánh giá sản phẩm trên hệ thống.</p>
+                <p class="text-xs text-slate-500 mt-1 mb-4">Nhập email và mật khẩu của bạn để truy cập hệ thống.</p>
                 
-                <button onclick="signInWithGoogle()" class="w-full flex items-center justify-center space-x-3 bg-white border border-slate-200 text-slate-700 font-bold text-sm px-4 py-3 rounded-xl hover:bg-slate-50 transition shadow-sm">
-                    <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-5 h-5" alt="Google">
-                    <span>Đăng nhập bằng Google</span>
-                </button>
+                <div class="space-y-3 text-left">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Email</label>
+                        <input type="email" id="auth-email-input" placeholder="nguyenvana@gmail.com" class="w-full text-xs px-3 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 transition outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Mật khẩu</label>
+                        <input type="password" id="auth-password-input" placeholder="••••••••" class="w-full text-xs px-3 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 transition outline-none" onkeypress="if(event.key === 'Enter') loginWithEmail()">
+                    </div>
+                </div>
+
+                <div class="flex space-x-2 mt-4">
+                    <button onclick="registerWithEmail()" class="flex-1 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition">
+                        Đăng ký mới
+                    </button>
+                    <button onclick="loginWithEmail()" class="flex-1 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl transition shadow-md">
+                        Đăng nhập
+                    </button>
+                </div>
             </div>
-            <div class="pt-2">
+            <div class="pt-2 border-t border-slate-100">
                 <button onclick="closeAuthLogin()" class="w-full py-2 px-4 border border-transparent hover:bg-slate-50 text-slate-500 text-xs font-bold rounded-xl transition">
                     Trở về trang chủ
                 </button>
@@ -379,6 +411,7 @@
         </div>
     </div>
 
+    <!-- Custom Dialog Confirmation Modal -->
     <div id="confirm-modal" class="hidden fixed inset-0 z-[110] bg-slate-950/50 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl space-y-4 text-center">
             <div class="text-rose-500 text-5xl"><i class="fa-solid fa-circle-exclamation"></i></div>
@@ -393,6 +426,7 @@
         </div>
     </div>
 
+    <!-- Toast message container -->
     <div class="fixed bottom-5 right-5 z-[150] pointer-events-none space-y-2 max-w-sm w-full" id="toast-container"></div>
 
     <footer class="bg-white border-t border-slate-200 py-8 mt-12">
@@ -401,10 +435,11 @@
         </div>
     </footer>
 
+    <!-- FIREBASE CONNECTION & AUTHENTICATION (EMAIL/PASSWORD) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-analytics.js";
-        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyB2WEw253DlimzByZUDiv1i-87WqM6InfQ",
@@ -419,20 +454,21 @@
         const app = initializeApp(firebaseConfig);
         const analytics = getAnalytics(app);
         const auth = getAuth(app);
-        const provider = new GoogleAuthProvider();
 
         const ADMIN_EMAIL = "ducduy271295@gmail.com";
 
-        // Cập nhật giao diện Hồ sơ (Profile) ở góc trên
+        // Cập nhật giao diện Hồ sơ
         window.updateUserUI = function(user) {
             const profileSection = document.getElementById('user-profile-section');
             if (user) {
-                // Đã đăng nhập: Hiện Avatar + Tên + Nút Đăng Xuất
+                const displayName = user.displayName || user.email.split('@')[0];
+                const avatar = user.photoURL || 'https://www.gravatar.com/avatar/?d=mp';
+                
                 profileSection.innerHTML = `
                     <div class="flex items-center space-x-2 bg-slate-100 pl-1 pr-3 py-1 rounded-xl border border-slate-200">
-                        <img src="${user.photoURL || 'https://www.gravatar.com/avatar/?d=mp'}" alt="Avatar" class="w-7 h-7 rounded-full border border-slate-300">
+                        <img src="${avatar}" alt="Avatar" class="w-7 h-7 rounded-full border border-slate-300">
                         <div class="hidden md:block text-left">
-                            <div class="text-[10px] font-bold text-slate-800 truncate max-w-[120px]">${user.displayName}</div>
+                            <div class="text-[10px] font-bold text-slate-800 truncate max-w-[120px]">${displayName}</div>
                             <div class="text-[8px] text-slate-500 font-semibold">${user.email === ADMIN_EMAIL ? 'Quản trị viên' : 'Thành viên'}</div>
                         </div>
                         <button onclick="userLogout()" class="text-slate-400 hover:text-rose-600 transition ml-2 px-1" title="Đăng xuất">
@@ -441,37 +477,80 @@
                     </div>
                 `;
             } else {
-                // Chưa đăng nhập: Hiện nút Đăng Nhập
                 profileSection.innerHTML = `
                     <button onclick="openAuthLogin()" class="flex items-center space-x-2 bg-emerald-100 hover:bg-emerald-200 text-emerald-800 px-3 py-2 rounded-xl text-xs sm:text-sm font-bold transition border border-emerald-200">
-                        <i class="fa-brands fa-google text-[10px] sm:text-xs"></i>
+                        <i class="fa-solid fa-user text-[10px] sm:text-xs"></i>
                         <span class="hidden sm:inline">Đăng nhập</span>
                     </button>
                 `;
             }
         };
 
-        // Lắng nghe trạng thái tài khoản
+        // Lắng nghe trạng thái
         onAuthStateChanged(auth, (user) => {
             window.currentUser = user;
             window.isAdminAuthenticated = (user && user.email === ADMIN_EMAIL);
             window.updateUserUI(user);
         });
 
-        // Hàm Đăng Nhập Google chung (Cho cả Member và Admin)
-        window.signInWithGoogle = function() {
-            signInWithPopup(auth, provider)
-                .then((result) => {
+        // Hàm Đăng Nhập Email
+        window.loginWithEmail = function() {
+            const email = document.getElementById('auth-email-input').value.trim();
+            const password = document.getElementById('auth-password-input').value;
+            
+            if(!email || !password) {
+                window.showToast("Vui lòng nhập đầy đủ Email và Mật khẩu!", "error");
+                return;
+            }
+
+            signInWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
                     window.closeAuthLogin();
-                    window.showToast("Đăng nhập thành công, chào " + result.user.displayName + "!", "success");
+                    window.showToast("Đăng nhập thành công!", "success");
                     
-                    // Tự động chuyển vào tab Admin nếu đúng tài khoản duyệt
-                    if(result.user.email === ADMIN_EMAIL) {
+                    if(user.email === ADMIN_EMAIL) {
                         window.changeTab('admin');
                     }
-                }).catch((error) => {
-                    console.error(error);
-                    window.showToast("Lỗi đăng nhập: " + error.message, "error");
+                })
+                .catch((error) => {
+                    window.showToast("Lỗi đăng nhập: Sai email hoặc mật khẩu!", "error");
+                });
+        };
+
+        // Hàm Đăng Ký Email
+        window.registerWithEmail = function() {
+            const email = document.getElementById('auth-email-input').value.trim();
+            const password = document.getElementById('auth-password-input').value;
+
+            if(!email || !password) {
+                window.showToast("Vui lòng nhập đầy đủ Email và Mật khẩu!", "error");
+                return;
+            }
+            if(password.length < 6) {
+                window.showToast("Mật khẩu phải có ít nhất 6 ký tự!", "warning");
+                return;
+            }
+
+            createUserWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    // Tự động gán tên hiển thị là phần trước chữ @ của email
+                    updateProfile(user, {
+                        displayName: email.split('@')[0]
+                    }).then(() => {
+                        window.updateUserUI(user);
+                    });
+                    
+                    window.closeAuthLogin();
+                    window.showToast("Đăng ký tài khoản thành công!", "success");
+                })
+                .catch((error) => {
+                    if(error.code === 'auth/email-already-in-use') {
+                        window.showToast("Email này đã được đăng ký!", "error");
+                    } else {
+                        window.showToast("Lỗi đăng ký: " + error.message, "error");
+                    }
                 });
         };
 
@@ -482,7 +561,6 @@
                 window.isAdminAuthenticated = false;
                 window.showToast("Đã đăng xuất thành công!", "success");
                 
-                // Nếu đang ở tab Admin thì văng ra trang chủ
                 if (!document.getElementById('view-admin').classList.contains('hidden')) {
                     window.changeTab('home');
                 }
@@ -490,6 +568,7 @@
         };
     </script>
 
+    <!-- CORE JAVASCRIPT LOGIC -->
     <script>
         let posts = [];
         let categories = [];
@@ -607,12 +686,15 @@
             }
         }
 
-        window.openAuthLogin = function() { document.getElementById('auth-login-modal').classList.remove('hidden'); }
+        window.openAuthLogin = function() { 
+            document.getElementById('auth-email-input').value = '';
+            document.getElementById('auth-password-input').value = '';
+            document.getElementById('auth-login-modal').classList.remove('hidden'); 
+        }
         window.closeAuthLogin = function() { document.getElementById('auth-login-modal').classList.add('hidden'); }
 
         // TAB SWITCHING
         window.changeTab = function(tab, subTab = 'posts') {
-            // KIỂM TRA BẢO MẬT ADMIN
             if (tab === 'admin') {
                 if (!window.currentUser) {
                     window.openAuthLogin();
