@@ -4,6 +4,7 @@ import { state } from './state.js';
 import { initConfirmModal, showToast } from './utils.js';
 import { refreshPublicUI, filterPosts, filterBlogs, openPostDetail, closePostDetail } from './render.js';
 import { initAdminGlobals, renderAdminUI, toggleAdminSubTab } from './admin.js';
+import { initLeadGlobals } from './leads.js';
 
 async function seedDefaultsIfNeeded() {
   if (!state.categories.length) {
@@ -87,5 +88,6 @@ window.closePostDetail = closePostDetail;
 
 initConfirmModal();
 initAdminGlobals();
+initLeadGlobals();
 initAuth();
 initApp();

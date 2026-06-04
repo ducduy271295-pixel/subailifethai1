@@ -13,6 +13,11 @@
 - Storage
 - Authorized domains: thêm domain Vercel/domain thật
 
+## Chức năng mới
+- Form thu thập email khách tự nguyện đăng ký ở trang chủ.
+- Dữ liệu khách lưu vào collection `leads`.
+- Admin có tab `Khách Hàng` để xem, xóa và export CSV.
+
 ## Firestore Rules
 ```js
 rules_version = '2';
@@ -36,6 +41,11 @@ service cloud.firestore {
     match /settings/{docId} {
       allow read: if true;
       allow create, update, delete: if isAdmin();
+    }
+
+    match /leads/{docId} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
     }
   }
 }

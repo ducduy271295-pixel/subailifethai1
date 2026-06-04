@@ -2,6 +2,7 @@ export const state = {
   posts: [],
   categories: [],
   globalSettings: {},
+  leads: [],
   selectedCategoryFilter: 'all',
   selectedImgSourceMode: 'file',
   currentPreviewFile: null,

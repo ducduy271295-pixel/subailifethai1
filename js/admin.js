@@ -3,6 +3,7 @@ import { saveDBData, deleteDBData } from './firestore.js';
 import { uploadPostImage } from './storage.js';
 import { escapeHTML, safeUrl, askConfirm, showToast } from './utils.js';
 import { refreshPublicUI, populateCategoryDropdown } from './render.js';
+import { loadLeadsForAdmin, renderAdminLeadsTable } from './leads.js';
 
 function requireAdmin() {
   if (!window.isAdminAuthenticated) {
@@ -33,10 +34,12 @@ export function toggleAdminSubTab(subTab) {
   document.getElementById('admin-section-posts').classList.toggle('hidden', subTab !== 'posts');
   document.getElementById('admin-section-categories').classList.toggle('hidden', subTab !== 'categories');
   document.getElementById('admin-section-settings').classList.toggle('hidden', subTab !== 'settings');
-  ['posts', 'categories', 'settings'].forEach((name) => {
+  document.getElementById('admin-section-leads').classList.toggle('hidden', subTab !== 'leads');
+  ['posts', 'categories', 'settings', 'leads'].forEach((name) => {
     document.getElementById(`admin-subtab-${name}`).classList.toggle('active', name === subTab);
   });
   if (subTab === 'settings') loadSettingsToForm();
+  if (subTab === 'leads') loadLeadsForAdmin();
 }
 
 export function setImageSourceMode(mode) {
@@ -272,4 +275,5 @@ export function renderAdminUI() {
   renderAdminPostsTable();
   renderAdminCategoriesGrid();
   populateCategoryDropdown();
+  renderAdminLeadsTable();
 }
