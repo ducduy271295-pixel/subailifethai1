@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="vi" class="h-full bg-slate-50">
 <head>
@@ -55,7 +56,6 @@
 
                 <!-- Navigation Tabs & User Profile -->
                 <div class="flex items-center space-x-3 sm:space-x-4">
-                    <!-- Tabs -->
                     <nav class="flex space-x-1 sm:space-x-2 bg-slate-100 p-1 rounded-xl">
                         <button id="nav-home" onclick="changeTab('home')" class="flex items-center space-x-1.5 px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition duration-200 bg-white text-primary-700 shadow-sm">
                             <i class="fa-solid fa-prescription-bottle-medical"></i>
@@ -72,9 +72,7 @@
                     </nav>
 
                     <!-- User Login / Profile Section -->
-                    <div id="user-profile-section" class="flex items-center">
-                        <!-- Sẽ được điền tự động bằng Javascript -->
-                    </div>
+                    <div id="user-profile-section" class="flex items-center"></div>
                 </div>
             </div>
         </div>
@@ -232,7 +230,6 @@
                     <button id="admin-subtab-categories" onclick="toggleAdminSubTab('categories')" class="flex-shrink-0 px-4 py-2 text-xs font-bold rounded-lg text-slate-600 hover:text-slate-950">
                         <i class="fa-solid fa-folder-tree mr-1.5 text-teal-600"></i> Danh Mục
                     </button>
-                    <!-- THÊM TAB CÀI ĐẶT -->
                     <button id="admin-subtab-settings" onclick="toggleAdminSubTab('settings')" class="flex-shrink-0 px-4 py-2 text-xs font-bold rounded-lg text-slate-600 hover:text-slate-950">
                         <i class="fa-solid fa-gear mr-1.5 text-slate-600"></i> Cài Đặt Web
                     </button>
@@ -241,7 +238,6 @@
 
             <!-- SUB-TAB 1: Manage Posts -->
             <div id="admin-section-posts" class="grid grid-cols-1 xl:grid-cols-3 gap-8">
-                <!-- Nội dung Form đăng bài và Table (Giữ nguyên như cũ) -->
                 <div class="xl:col-span-1 bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-5 h-fit">
                     <h3 id="form-post-title" class="text-xs sm:text-sm font-bold text-slate-900 border-b border-slate-100 pb-3 flex items-center space-x-2">
                         <i class="fa-solid fa-circle-plus text-emerald-500"></i><span>Tạo bài viết mới</span>
@@ -338,7 +334,6 @@
 
             <!-- SUB-TAB 2: Manage Categories -->
             <div id="admin-section-categories" class="hidden grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Nội dung Quản lý danh mục (Giữ nguyên) -->
                 <div class="md:col-span-1 bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-5 h-fit">
                     <h3 id="form-category-title" class="text-xs sm:text-sm font-bold text-slate-900 border-b border-slate-100 pb-3 flex items-center space-x-2">
                         <i class="fa-solid fa-folder-plus text-emerald-500"></i><span>Thêm danh mục mới</span>
@@ -377,42 +372,39 @@
                 </div>
             </div>
 
-            <!-- SUB-TAB 3: SETTINGS (CÀI ĐẶT WEB) -->
+            <!-- SUB-TAB 3: SETTINGS -->
             <div id="admin-section-settings" class="hidden bg-white border border-slate-200 rounded-3xl p-6 md:p-10 shadow-sm max-w-4xl mx-auto">
                 <h3 class="text-sm sm:text-base font-bold text-slate-900 border-b border-slate-100 pb-4 mb-6 flex items-center space-x-2">
                     <i class="fa-solid fa-gears text-slate-600"></i>
                     <span>Cài Đặt Chân Trang (Footer) & Liên Kết</span>
                 </h3>
-                
                 <form id="settings-form" onsubmit="saveGlobalSettings(event)" class="space-y-6">
                     <div class="space-y-1">
                         <label class="block text-xs font-bold text-slate-700">Đoạn văn bản giới thiệu (Tiếng Thái)</label>
-                        <textarea id="set-about" rows="3" class="w-full text-xs px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-500 transition outline-none" placeholder="Nhập đoạn văn giới thiệu về website..."></textarea>
+                        <textarea id="set-about" rows="3" class="w-full text-xs px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-500 transition outline-none"></textarea>
                     </div>
-
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="space-y-1">
                             <label class="block text-xs font-bold text-slate-700">Email hiển thị liên hệ</label>
-                            <input type="email" id="set-email" class="w-full text-xs px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-500 transition outline-none" placeholder="Ví dụ: hotro@gmail.com">
+                            <input type="email" id="set-email" class="w-full text-xs px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-500 transition outline-none">
                         </div>
                         <div class="space-y-1">
                             <label class="block text-xs font-bold text-slate-700">Số điện thoại liên hệ</label>
-                            <input type="text" id="set-phone" class="w-full text-xs px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-500 transition outline-none" placeholder="Ví dụ: +84 123 456 789">
+                            <input type="text" id="set-phone" class="w-full text-xs px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-500 transition outline-none">
                         </div>
                         <div class="space-y-1">
                             <label class="block text-xs font-bold text-slate-700">Đường dẫn Facebook</label>
-                            <input type="url" id="set-fb" class="w-full text-xs px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 transition outline-none" placeholder="https://facebook.com/...">
+                            <input type="url" id="set-fb" class="w-full text-xs px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 transition outline-none">
                         </div>
                         <div class="space-y-1">
                             <label class="block text-xs font-bold text-slate-700">Đường dẫn Youtube</label>
-                            <input type="url" id="set-yt" class="w-full text-xs px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-rose-500 transition outline-none" placeholder="https://youtube.com/...">
+                            <input type="url" id="set-yt" class="w-full text-xs px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-rose-500 transition outline-none">
                         </div>
                         <div class="space-y-1">
                             <label class="block text-xs font-bold text-slate-700">Đường dẫn Twitter (X)</label>
-                            <input type="url" id="set-tw" class="w-full text-xs px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sky-500 transition outline-none" placeholder="https://twitter.com/...">
+                            <input type="url" id="set-tw" class="w-full text-xs px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sky-500 transition outline-none">
                         </div>
                     </div>
-
                     <div class="pt-4 border-t border-slate-100 text-right">
                         <button type="submit" class="px-8 py-3 bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold rounded-xl transition shadow-md">
                             <i class="fa-solid fa-floppy-disk mr-2"></i> Lưu Cài Đặt
@@ -423,16 +415,13 @@
         </div>
     </main>
 
-    <!-- GENERAL AUTH LOGIN MODAL (TIẾNG THÁI) -->
+    <!-- GENERAL AUTH LOGIN MODAL -->
     <div id="auth-login-modal" class="hidden fixed inset-0 z-[100] bg-slate-950/50 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl space-y-5 text-center">
-            <div class="text-emerald-500 text-5xl mb-2">
-                <i class="fa-solid fa-users-viewfinder"></i>
-            </div>
+            <div class="text-emerald-500 text-5xl mb-2"><i class="fa-solid fa-users-viewfinder"></i></div>
             <div>
                 <h3 class="text-sm font-bold text-slate-900">สมัครสมาชิก / เข้าสู่ระบบ</h3>
                 <p class="text-[11px] text-slate-500 mt-1 mb-4">ป้อนอีเมล @gmail.com และรหัสผ่านของคุณเพื่อเข้าสู่ระบบ</p>
-                
                 <div class="space-y-3 text-left">
                     <div>
                         <label class="block text-xs font-bold text-slate-700 mb-1">อีเมล (Email)</label>
@@ -443,31 +432,24 @@
                         <input type="password" id="auth-password-input" placeholder="••••••••" class="w-full text-xs px-3 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 transition outline-none" onkeypress="if(event.key === 'Enter') loginWithEmail()">
                     </div>
                 </div>
-
                 <div class="flex space-x-2 mt-4">
-                    <button onclick="registerWithEmail()" class="flex-1 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition">
-                        สมัครใหม่
-                    </button>
-                    <button onclick="loginWithEmail()" class="flex-1 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl transition shadow-md">
-                        เข้าสู่ระบบ
-                    </button>
+                    <button onclick="registerWithEmail()" class="flex-1 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition">สมัครใหม่</button>
+                    <button onclick="loginWithEmail()" class="flex-1 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl transition shadow-md">เข้าสู่ระบบ</button>
                 </div>
             </div>
             <div class="pt-2 border-t border-slate-100">
-                <button onclick="closeAuthLogin()" class="w-full py-2 px-4 border border-transparent hover:bg-slate-50 text-slate-500 text-xs font-bold rounded-xl transition">
-                    กลับสู่หน้าหลัก
-                </button>
+                <button onclick="closeAuthLogin()" class="w-full py-2 px-4 border border-transparent hover:bg-slate-50 text-slate-500 text-xs font-bold rounded-xl transition">กลับสู่หน้าหลัก</button>
             </div>
         </div>
     </div>
 
-    <!-- Custom Dialog Confirmation Modal -->
+    <!-- Confirm Modal & Toasts -->
     <div id="confirm-modal" class="hidden fixed inset-0 z-[110] bg-slate-950/50 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl space-y-4 text-center">
             <div class="text-rose-500 text-5xl"><i class="fa-solid fa-circle-exclamation"></i></div>
             <div>
-                <h3 class="text-sm font-bold text-slate-900" id="confirm-title">Xác nhận thao tác</h3>
-                <p class="text-xs text-slate-500 mt-1 leading-relaxed" id="confirm-message">Bạn có muốn tiếp tục hành động này không?</p>
+                <h3 class="text-sm font-bold text-slate-900" id="confirm-title">Xác nhận</h3>
+                <p class="text-xs text-slate-500 mt-1" id="confirm-message">Bạn có muốn tiếp tục hành động này không?</p>
             </div>
             <div class="flex space-x-3 pt-2">
                 <button id="confirm-cancel-btn" class="flex-1 py-2 px-4 border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-bold rounded-xl transition">Bỏ qua</button>
@@ -475,43 +457,30 @@
             </div>
         </div>
     </div>
-
-    <!-- Toast message container -->
     <div class="fixed bottom-5 right-5 z-[150] pointer-events-none space-y-2 max-w-sm w-full" id="toast-container"></div>
 
-    <!-- CHÂN TRANG (FOOTER) TIẾNG THÁI (ĐƯỢC CẬP NHẬT ĐỘNG TỪ BẢNG ADMIN) -->
+    <!-- CHÂN TRANG -->
     <footer class="bg-white border-t border-slate-200 py-10 mt-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-sm text-slate-500">
-                
-                <!-- Cột 1: Thông tin chung -->
                 <div class="space-y-3 text-center md:text-left">
                     <div class="flex items-center justify-center md:justify-start space-x-2 text-emerald-600">
                         <i class="fa-solid fa-mortar-pestle text-lg"></i>
                         <span class="font-black text-lg">subailifethai.com</span>
                     </div>
-                    <p id="footer-about-text" class="text-xs leading-relaxed">
-                        เว็บไซต์ชั้นนำที่เชี่ยวชาญด้านการรีวิวและรวบรวมข้อมูลสุขภาพด้วยสมุนไพรธรรมชาติ เรามอบความรู้ที่ถูกต้องและผลิตภัณฑ์คุณภาพเยี่ยมที่สุดเพื่อดูแลสุขภาพของคุณ
-                    </p>
+                    <p id="footer-about-text" class="text-xs leading-relaxed"></p>
                 </div>
-
-                <!-- Cột 2: Liên kết nhanh -->
                 <div class="text-center">
                     <h4 class="font-bold text-slate-800 mb-3 uppercase text-xs tracking-wider">ลิงก์ด่วน</h4>
                     <ul class="space-y-2 text-xs">
                         <li><a href="#" class="hover:text-emerald-600 transition">เกี่ยวกับเรา</a></li>
                         <li><a href="#" class="hover:text-emerald-600 transition">นโยบายความเป็นส่วนตัว</a></li>
                         <li><a href="#" class="hover:text-emerald-600 transition">ข้อกำหนดการใช้งาน</a></li>
-                        <li><a href="#" class="hover:text-emerald-600 transition">ติดต่อลงโฆษณา</a></li>
                     </ul>
                 </div>
-
-                <!-- Cột 3: Liên hệ & Mạng xã hội -->
                 <div class="text-center md:text-right space-y-3">
                     <h4 class="font-bold text-slate-800 mb-3 uppercase text-xs tracking-wider">ติดตามเรา</h4>
-                    <p id="footer-email-text" class="text-xs">
-                        <i class="fa-solid fa-envelope mr-1"></i> ducduy271295@gmail.com
-                    </p>
+                    <p id="footer-email-text" class="text-xs"></p>
                     <div class="flex items-center justify-center md:justify-end space-x-4 pt-2">
                         <a id="footer-fb-link" href="#" target="_blank" class="text-slate-400 hover:text-blue-600 transition text-lg"><i class="fa-brands fa-facebook"></i></a>
                         <a id="footer-tw-link" href="#" target="_blank" class="text-slate-400 hover:text-sky-500 transition text-lg"><i class="fa-brands fa-twitter"></i></a>
@@ -519,21 +488,18 @@
                         <a id="footer-phone-link" href="#" class="text-slate-400 hover:text-emerald-600 transition text-lg"><i class="fa-solid fa-phone"></i></a>
                     </div>
                 </div>
-
             </div>
-
-            <!-- Dòng Bản quyền -->
             <div class="mt-10 pt-6 border-t border-slate-100 text-center text-[11px] text-slate-400">
                 © 2026 subailifethai.com สงวนลิขสิทธิ์ทุกประการ เนื้อหาบนเว็บไซต์เป็นเพียงข้อมูลอ้างอิงเท่านั้น ไม่สามารถใช้แทนการวินิจฉัยทางการแพทย์ได้
             </div>
         </div>
     </footer>
 
-    <!-- FIREBASE CONNECTION & AUTHENTICATION -->
+    <!-- FIREBASE CLOUD FIRESTORE SCRIPT -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-analytics.js";
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+        import { getFirestore, collection, getDocs, setDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyB2WEw253DlimzByZUDiv1i-87WqM6InfQ",
@@ -546,27 +512,42 @@
         };
         
         const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
         const auth = getAuth(app);
+        const db = getFirestore(app);
 
         const ADMIN_EMAIL = "ducduy271295@gmail.com";
 
+        // FIREBASE DATABASE WRAPPERS (Thay thế IndexedDB cũ)
+        window.getDBData = async function(storeName) {
+            const querySnapshot = await getDocs(collection(db, storeName));
+            let data = [];
+            querySnapshot.forEach((document) => {
+                data.push(document.data());
+            });
+            return data;
+        };
+
+        window.saveDBData = async function(storeName, data) {
+            await setDoc(doc(db, storeName, data.id), data);
+        };
+
+        window.deleteDBData = async function(storeName, id) {
+            await deleteDoc(doc(db, storeName, id));
+        };
+
+        // AUTHENTICATION UI
         window.updateUserUI = function(user) {
             const profileSection = document.getElementById('user-profile-section');
             if (user) {
                 const displayName = user.displayName || user.email.split('@')[0];
-                const avatar = user.photoURL || 'https://www.gravatar.com/avatar/?d=mp';
-                
                 profileSection.innerHTML = `
                     <div class="flex items-center space-x-2 bg-slate-100 pl-1 pr-3 py-1 rounded-xl border border-slate-200">
-                        <img src="${avatar}" alt="Avatar" class="w-7 h-7 rounded-full border border-slate-300">
+                        <img src="https://www.gravatar.com/avatar/?d=mp" alt="Avatar" class="w-7 h-7 rounded-full border border-slate-300">
                         <div class="hidden md:block text-left">
                             <div class="text-[10px] font-bold text-slate-800 truncate max-w-[120px]">${displayName}</div>
                             <div class="text-[8px] text-slate-500 font-semibold">${user.email === ADMIN_EMAIL ? 'Admin' : 'Member'}</div>
                         </div>
-                        <button onclick="userLogout()" class="text-slate-400 hover:text-rose-600 transition ml-2 px-1" title="Đăng xuất">
-                            <i class="fa-solid fa-right-from-bracket"></i>
-                        </button>
+                        <button onclick="userLogout()" class="text-slate-400 hover:text-rose-600 transition ml-2 px-1" title="Đăng xuất"><i class="fa-solid fa-right-from-bracket"></i></button>
                     </div>
                 `;
             } else {
@@ -585,282 +566,108 @@
             window.updateUserUI(user);
         });
 
-        // HÀM LOGIN (ĐÃ KHÓA @GMAIL.COM)
         window.loginWithEmail = function() {
             const email = document.getElementById('auth-email-input').value.trim();
             const password = document.getElementById('auth-password-input').value;
-            
-            if(!email || !password) {
-                window.showToast("กรุณากรอกอีเมลและรหัสผ่าน (Vui lòng nhập đủ thông tin)!", "warning");
-                return;
-            }
-            if(!email.toLowerCase().endsWith("@gmail.com")) {
-                window.showToast("รองรับเฉพาะอีเมล @gmail.com เท่านั้น (Chỉ hỗ trợ @gmail.com)!", "error");
-                return;
-            }
+            if(!email || !password) return window.showToast("กรุณากรอกข้อมูล (Vui lòng nhập đủ thông tin)!", "warning");
+            if(!email.toLowerCase().endsWith("@gmail.com")) return window.showToast("เฉพาะ @gmail.com (Chỉ @gmail.com)!", "error");
 
-            const btn = document.activeElement;
-            const originalText = btn.innerText;
-            btn.innerText = "กำลังประมวลผล...";
-
-            signInWithEmailAndPassword(auth, email, password)
-                .then((userCredential) => {
-                    const user = userCredential.user;
-                    window.closeAuthLogin();
-                    window.showToast("เข้าสู่ระบบสำเร็จ (Đăng nhập thành công)!", "success");
-                    btn.innerText = originalText;
-                    
-                    if(user.email === ADMIN_EMAIL) {
-                        window.changeTab('admin');
-                    }
-                })
-                .catch((error) => {
-                    btn.innerText = originalText;
-                    console.error("Firebase Login Error:", error);
-                    window.showToast("อีเมลหรือรหัสผ่านไม่ถูกต้อง (Sai email hoặc mật khẩu)!", "error");
-                });
+            const btn = document.activeElement; const originalText = btn.innerText; btn.innerText = "กำลัง...";
+            signInWithEmailAndPassword(auth, email, password).then((u) => {
+                window.closeAuthLogin(); window.showToast("สำเร็จ (Đăng nhập thành công)!", "success"); btn.innerText = originalText;
+                if(u.user.email === ADMIN_EMAIL) window.changeTab('admin');
+            }).catch((e) => { btn.innerText = originalText; window.showToast("ล้มเหลว (Sai thông tin)!", "error"); });
         };
 
-        // HÀM REGISTER (ĐÃ KHÓA @GMAIL.COM)
         window.registerWithEmail = function() {
             const email = document.getElementById('auth-email-input').value.trim();
             const password = document.getElementById('auth-password-input').value;
+            if(!email || !password) return window.showToast("กรุณากรอกข้อมูล!", "warning");
+            if(!email.toLowerCase().endsWith("@gmail.com")) return window.showToast("เฉพาะ @gmail.com!", "error");
+            if(password.length < 6) return window.showToast("รหัสผ่าน > 6 ตัวอักษร!", "warning");
 
-            if(!email || !password) {
-                window.showToast("กรุณากรอกอีเมลและรหัสผ่าน (Vui lòng nhập đủ thông tin)!", "warning");
-                return;
-            }
-            if(!email.toLowerCase().endsWith("@gmail.com")) {
-                window.showToast("รองรับเฉพาะอีเมล @gmail.com เท่านั้น (Chỉ hỗ trợ @gmail.com)!", "error");
-                return;
-            }
-            if(password.length < 6) {
-                window.showToast("รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร (Mật khẩu > 6 ký tự)!", "warning");
-                return;
-            }
-
-            const btn = document.activeElement;
-            const originalText = btn.innerText;
-            btn.innerText = "กำลังสร้าง...";
-
-            createUserWithEmailAndPassword(auth, email, password)
-                .then((userCredential) => {
-                    const user = userCredential.user;
-                    updateProfile(user, { displayName: email.split('@')[0] }).then(() => {
-                        window.updateUserUI(user);
-                    });
-                    
-                    window.closeAuthLogin();
-                    window.showToast("สมัครสมาชิกสำเร็จ (Đăng ký thành công)!", "success");
-                    btn.innerText = originalText;
-                })
-                .catch((error) => {
-                    btn.innerText = originalText;
-                    if(error.code === 'auth/email-already-in-use') {
-                        window.showToast("อีเมลนี้ถูกใช้งานแล้ว (Email đã được đăng ký)!", "error");
-                    } else {
-                        window.showToast("ข้อผิดพลาด (Lỗi): " + error.message, "error");
-                    }
-                });
+            const btn = document.activeElement; const originalText = btn.innerText; btn.innerText = "กำลังสร้าง...";
+            createUserWithEmailAndPassword(auth, email, password).then((u) => {
+                updateProfile(u.user, { displayName: email.split('@')[0] }).then(() => window.updateUserUI(u.user));
+                window.closeAuthLogin(); window.showToast("สำเร็จ!", "success"); btn.innerText = originalText;
+            }).catch((e) => { btn.innerText = originalText; window.showToast("ล้มเหลว (Lỗi): " + e.message, "error"); });
         };
 
         window.userLogout = function() {
             signOut(auth).then(() => {
-                window.currentUser = null;
-                window.isAdminAuthenticated = false;
-                window.showToast("ออกจากระบบสำเร็จ (Đăng xuất thành công)!", "success");
-                
-                if (!document.getElementById('view-admin').classList.contains('hidden')) {
-                    window.changeTab('home');
-                }
+                window.currentUser = null; window.isAdminAuthenticated = false; window.showToast("ออกจากระบบแล้ว!", "success");
+                if (!document.getElementById('view-admin').classList.contains('hidden')) window.changeTab('home');
             });
         };
+
+        // KÍCH HOẠT APP SAU KHI FIREBASE TẢI XONG
+        window.initApp();
     </script>
 
-    <!-- CORE JAVASCRIPT LOGIC & SETTINGS -->
+    <!-- CORE JAVASCRIPT LOGIC -->
     <script>
-        let posts = [];
-        let categories = [];
-        let globalSettings = {};
-        let selectedCategoryFilter = 'all';
-        let currentConfirmCallback = null;
-        let selectedImgSourceMode = 'file'; 
-        let currentUploadedBase64 = "";
+        let posts = []; let categories = []; let globalSettings = {}; let selectedCategoryFilter = 'all'; let currentConfirmCallback = null; let selectedImgSourceMode = 'file'; let currentUploadedBase64 = "";
+        window.isAdminAuthenticated = false; window.currentUser = null;
+        const colorPalette = { emerald: 'bg-emerald-500 text-emerald-600', sky: 'bg-sky-500 text-sky-600', rose: 'bg-rose-500 text-rose-600', amber: 'bg-amber-500 text-amber-600', teal: 'bg-teal-500 text-teal-600', slate: 'bg-slate-500 text-slate-600' };
 
-        window.isAdminAuthenticated = false;
-        window.currentUser = null;
-
-        const availableIcons = ['fa-solid fa-prescription-bottle-medical', 'fa-solid fa-leaf', 'fa-solid fa-dumbbell', 'fa-solid fa-bed', 'fa-solid fa-heart-pulse', 'fa-solid fa-stethoscope', 'fa-solid fa-apple-whole', 'fa-solid fa-droplet', 'fa-solid fa-brain', 'fa-solid fa-capsules', 'fa-solid fa-kit-medical', 'fa-solid fa-spa'];
-        const colorPalette = { emerald: 'bg-emerald-500 text-emerald-600 hover:bg-emerald-50 border-emerald-200', sky: 'bg-sky-500 text-sky-600 hover:bg-sky-50 border-sky-200', rose: 'bg-rose-500 text-rose-600 hover:bg-rose-50 border-rose-200', amber: 'bg-amber-500 text-amber-600 hover:bg-amber-50 border-amber-200', indigo: 'bg-indigo-500 text-indigo-600 hover:bg-indigo-50 border-indigo-200', violet: 'bg-violet-500 text-violet-600 hover:bg-violet-50 border-violet-200', teal: 'bg-teal-500 text-teal-600 hover:bg-teal-50 border-teal-200', fuchsia: 'bg-fuchsia-500 text-fuchsia-600 hover:bg-fuchsia-50 border-fuchsia-200', orange: 'bg-orange-500 text-orange-600 hover:bg-orange-50 border-orange-200', slate: 'bg-slate-500 text-slate-600 hover:bg-slate-50 border-slate-200' };
-
-        const DB_NAME = 'SubaiLifeThaiDB';
-        const DB_VERSION = 2; // Cập nhật version để thêm bảng settings
-        let db;
-
-        function initDB() {
-            return new Promise((resolve, reject) => {
-                const request = indexedDB.open(DB_NAME, DB_VERSION);
-                request.onupgradeneeded = function(e) {
-                    const database = e.target.result;
-                    if (!database.objectStoreNames.contains('categories')) database.createObjectStore('categories', { keyPath: 'id' });
-                    if (!database.objectStoreNames.contains('posts')) database.createObjectStore('posts', { keyPath: 'id' });
-                    if (!database.objectStoreNames.contains('settings')) database.createObjectStore('settings', { keyPath: 'id' });
-                };
-                request.onsuccess = function(e) { db = e.target.result; resolve(); };
-                request.onerror = function(e) { reject(e); };
-            });
-        }
-
-        function getDBData(storeName) {
-            return new Promise((resolve, reject) => {
-                const transaction = db.transaction(storeName, 'readonly');
-                const store = transaction.objectStore(storeName);
-                const request = store.getAll();
-                request.onsuccess = function() { resolve(request.result); };
-                request.onerror = function(e) { reject(e); };
-            });
-        }
-
-        function saveDBData(storeName, data) {
-            return new Promise((resolve, reject) => {
-                const transaction = db.transaction(storeName, 'readwrite');
-                const store = transaction.objectStore(storeName);
-                const request = store.put(data);
-                request.onsuccess = function() { resolve(); };
-                request.onerror = function(e) { reject(e); };
-            });
-        }
-
-        function deleteDBData(storeName, id) {
-            return new Promise((resolve, reject) => {
-                const transaction = db.transaction(storeName, 'readwrite');
-                const store = transaction.objectStore(storeName);
-                const request = store.delete(id);
-                request.onsuccess = function() { resolve(); };
-                request.onerror = function(e) { reject(e); };
-            });
-        }
-
-        async function initApp() {
+        window.initApp = async function() {
             try {
-                await initDB();
-                categories = await getDBData('categories');
-                posts = await getDBData('posts');
-                let savedSettings = await getDBData('settings');
+                categories = await window.getDBData('categories');
+                posts = await window.getDBData('posts');
+                let savedSettings = await window.getDBData('settings');
 
-                // Nạp Cài đặt mặc định nếu chưa có
                 if(savedSettings.length === 0) {
-                    globalSettings = {
-                        id: 'site-config',
-                        about: 'เว็บไซต์ชั้นนำที่เชี่ยวชาญด้านการรีวิวและรวบรวมข้อมูลสุขภาพด้วยสมุนไพรธรรมชาติ เรามอบความรู้ที่ถูกต้องและผลิตภัณฑ์คุณภาพเยี่ยมที่สุดเพื่อดูแลสุขภาพของคุณ',
-                        email: 'ducduy271295@gmail.com',
-                        phone: '', fb: '', tw: '', yt: ''
-                    };
-                    await saveDBData('settings', globalSettings);
-                } else {
-                    globalSettings = savedSettings[0];
-                }
+                    globalSettings = { id: 'site-config', about: 'เว็บไซต์ชั้นนำที่เชี่ยวชาญด้านการรีวิว...', email: 'ducduy271295@gmail.com', phone: '', fb: '', tw: '', yt: '' };
+                    await window.saveDBData('settings', globalSettings);
+                } else { globalSettings = savedSettings[0]; }
 
                 if (categories.length === 0) {
-                    const seedCategories = [{ id: 'cat-1', name: 'ยาหม่อง & น้ำมันนวด', icon: 'fa-solid fa-prescription-bottle-medical', color: 'emerald' }, { id: 'cat-2', name: 'สมุนไพรแห้ง & ชาชง', icon: 'fa-solid fa-leaf', color: 'amber' }];
-                    for (const cat of seedCategories) await saveDBData('categories', cat);
-                    categories = seedCategories;
+                    categories = [{ id: 'cat-1', name: 'ยาหม่อง & น้ำมันนวด', icon: 'fa-solid fa-prescription-bottle-medical', color: 'emerald' }];
+                    for (const cat of categories) await window.saveDBData('categories', cat);
                 }
 
-                renderIconSelector();
-                renderColorSelector();
-                renderCategories();
-                renderPosts();
-                renderBlogs();
-                populateCategoryDropdown();
-                togglePostFormFields();
-                applyGlobalSettings(); // Cập nhật Footer
-                
-                if(window.updateUserUI) window.updateUserUI(window.currentUser);
-            } catch (err) {
-                window.showToast("Lỗi khởi tạo cơ sở dữ liệu IndexedDB!", "error");
-            }
-        }
+                renderCategories(); renderPosts(); renderBlogs(); populateCategoryDropdown(); applyGlobalSettings();
+            } catch (err) { console.error(err); window.showToast("Lỗi kết nối Firebase Server!", "error"); }
+        };
 
-        // HÀM ÁP DỤNG CÀI ĐẶT RA FOOTER
         function applyGlobalSettings() {
             document.getElementById('footer-about-text').innerText = globalSettings.about;
             document.getElementById('footer-email-text').innerHTML = `<i class="fa-solid fa-envelope mr-1"></i> ${globalSettings.email}`;
-            
             document.getElementById('footer-fb-link').href = globalSettings.fb || '#';
             document.getElementById('footer-tw-link').href = globalSettings.tw || '#';
             document.getElementById('footer-yt-link').href = globalSettings.yt || '#';
             document.getElementById('footer-phone-link').href = globalSettings.phone ? `tel:${globalSettings.phone}` : '#';
         }
 
-        // HÀM LƯU CÀI ĐẶT TỪ ADMIN
         async function saveGlobalSettings(e) {
             e.preventDefault();
             globalSettings = {
                 id: 'site-config',
-                about: document.getElementById('set-about').value,
-                email: document.getElementById('set-email').value,
-                phone: document.getElementById('set-phone').value,
-                fb: document.getElementById('set-fb').value,
-                tw: document.getElementById('set-tw').value,
-                yt: document.getElementById('set-yt').value
+                about: document.getElementById('set-about').value, email: document.getElementById('set-email').value,
+                phone: document.getElementById('set-phone').value, fb: document.getElementById('set-fb').value,
+                tw: document.getElementById('set-tw').value, yt: document.getElementById('set-yt').value
             };
-            await saveDBData('settings', globalSettings);
-            applyGlobalSettings();
-            window.showToast("Đã cập nhật cấu hình Website!", "success");
+            await window.saveDBData('settings', globalSettings); applyGlobalSettings(); window.showToast("Đã lưu cấu hình lên Cloud!", "success");
         }
 
-        // NẠP DỮ LIỆU VÀO FORM ADMIN SETTINGS
         function loadSettingsToForm() {
-            document.getElementById('set-about').value = globalSettings.about || '';
-            document.getElementById('set-email').value = globalSettings.email || '';
-            document.getElementById('set-phone').value = globalSettings.phone || '';
-            document.getElementById('set-fb').value = globalSettings.fb || '';
-            document.getElementById('set-tw').value = globalSettings.tw || '';
-            document.getElementById('set-yt').value = globalSettings.yt || '';
+            document.getElementById('set-about').value = globalSettings.about || ''; document.getElementById('set-email').value = globalSettings.email || '';
+            document.getElementById('set-phone').value = globalSettings.phone || ''; document.getElementById('set-fb').value = globalSettings.fb || '';
+            document.getElementById('set-tw').value = globalSettings.tw || ''; document.getElementById('set-yt').value = globalSettings.yt || '';
         }
 
-        window.openAuthLogin = function() { 
-            document.getElementById('auth-email-input').value = '';
-            document.getElementById('auth-password-input').value = '';
-            document.getElementById('auth-login-modal').classList.remove('hidden'); 
-        }
+        window.openAuthLogin = function() { document.getElementById('auth-login-modal').classList.remove('hidden'); }
         window.closeAuthLogin = function() { document.getElementById('auth-login-modal').classList.add('hidden'); }
 
         window.changeTab = function(tab, subTab = 'posts') {
             if (tab === 'admin') {
-                if (!window.currentUser) {
-                    window.openAuthLogin();
-                    return;
-                }
-                if (!window.isAdminAuthenticated) {
-                    window.showToast("บัญชีของคุณไม่มีสิทธิ์เข้าถึง (Tài khoản không có quyền Admin)!", "error");
-                    return;
-                }
+                if (!window.currentUser) return window.openAuthLogin();
+                if (!window.isAdminAuthenticated) return window.showToast("Tài khoản không có quyền Admin!", "error");
             }
-
-            document.getElementById('view-home').classList.add('hidden');
-            document.getElementById('view-blog').classList.add('hidden');
-            document.getElementById('view-admin').classList.add('hidden');
-            
-            document.getElementById('nav-home').className = "flex items-center space-x-1.5 px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition duration-200 text-slate-600 hover:text-slate-950";
-            document.getElementById('nav-blog').className = "flex items-center space-x-1.5 px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition duration-200 text-slate-600 hover:text-slate-950";
-            document.getElementById('nav-admin').className = "flex items-center space-x-1.5 px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition duration-200 text-rose-600 hover:text-rose-800 bg-rose-50/50 hover:bg-rose-50 border border-rose-100";
-
-            if (tab === 'home') {
-                document.getElementById('view-home').classList.remove('hidden');
-                document.getElementById('nav-home').className = "flex items-center space-x-1.5 px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition duration-200 bg-white text-emerald-700 shadow-sm border border-slate-200";
-                renderCategories(); renderPosts();
-            } else if (tab === 'blog') {
-                document.getElementById('view-blog').classList.remove('hidden');
-                document.getElementById('nav-blog').className = "flex items-center space-x-1.5 px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition duration-200 bg-white text-emerald-700 shadow-sm border border-slate-200";
-                renderBlogs();
-            } else if (tab === 'admin') {
-                document.getElementById('view-admin').classList.remove('hidden');
-                document.getElementById('nav-admin').className = "flex items-center space-x-1.5 px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition duration-200 bg-rose-600 text-white shadow-sm shadow-rose-600/10";
-                toggleAdminSubTab(subTab);
-                renderAdminPostsTable(); renderAdminCategoriesGrid();
-            }
+            document.getElementById('view-home').classList.add('hidden'); document.getElementById('view-blog').classList.add('hidden'); document.getElementById('view-admin').classList.add('hidden');
+            if (tab === 'home') { document.getElementById('view-home').classList.remove('hidden'); renderCategories(); renderPosts(); } 
+            else if (tab === 'blog') { document.getElementById('view-blog').classList.remove('hidden'); renderBlogs(); } 
+            else if (tab === 'admin') { document.getElementById('view-admin').classList.remove('hidden'); toggleAdminSubTab(subTab); renderAdminPostsTable(); renderAdminCategoriesGrid(); }
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
@@ -868,143 +675,71 @@
             document.getElementById('admin-section-posts').classList.toggle('hidden', subTab !== 'posts');
             document.getElementById('admin-section-categories').classList.toggle('hidden', subTab !== 'categories');
             document.getElementById('admin-section-settings').classList.toggle('hidden', subTab !== 'settings');
-            
-            document.getElementById('admin-subtab-posts').className = subTab === 'posts' ? "flex-shrink-0 px-4 py-2 text-xs font-bold rounded-lg bg-white shadow-sm text-slate-800" : "flex-shrink-0 px-4 py-2 text-xs font-bold rounded-lg text-slate-600 hover:text-slate-950";
-            document.getElementById('admin-subtab-categories').className = subTab === 'categories' ? "flex-shrink-0 px-4 py-2 text-xs font-bold rounded-lg bg-white shadow-sm text-slate-800" : "flex-shrink-0 px-4 py-2 text-xs font-bold rounded-lg text-slate-600 hover:text-slate-950";
-            document.getElementById('admin-subtab-settings').className = subTab === 'settings' ? "flex-shrink-0 px-4 py-2 text-xs font-bold rounded-lg bg-white shadow-sm text-slate-800" : "flex-shrink-0 px-4 py-2 text-xs font-bold rounded-lg text-slate-600 hover:text-slate-950";
-            
             if(subTab === 'settings') loadSettingsToForm();
         }
 
-        // --- CÁC HÀM XỬ LÝ KHÁC ĐƯỢC GIỮ NGUYÊN BÊN DƯỚI NÀY ---
         function setImageSourceMode(mode) {
             selectedImgSourceMode = mode;
             document.getElementById('img-file-box').classList.toggle('hidden', mode !== 'file');
             document.getElementById('img-url-box').classList.toggle('hidden', mode === 'file');
-            document.getElementById('btn-img-file').className = mode === 'file' ? "flex-1 py-1.5 text-[10px] font-bold rounded-md bg-white shadow-sm text-slate-800" : "flex-1 py-1.5 text-[10px] font-bold rounded-md text-slate-600 hover:text-slate-800";
-            document.getElementById('btn-img-url').className = mode === 'url' ? "flex-1 py-1.5 text-[10px] font-bold rounded-md bg-white shadow-sm text-slate-800" : "flex-1 py-1.5 text-[10px] font-bold rounded-md text-slate-600 hover:text-slate-800";
         }
 
         function previewImageFile(event) {
-            const file = event.target.files[0];
-            if (!file) return;
+            const file = event.target.files[0]; if (!file) return;
             const reader = new FileReader();
             reader.onload = function(e) {
                 currentUploadedBase64 = e.target.result;
                 document.getElementById('image-preview').src = currentUploadedBase64;
-                document.getElementById('image-filename').innerText = file.name;
                 document.getElementById('image-preview-container').classList.remove('hidden');
             };
             reader.readAsDataURL(file);
         }
 
-        function removeImagePreview() {
-            currentUploadedBase64 = "";
-            document.getElementById('post-image-file').value = "";
-            document.getElementById('image-preview-container').classList.add('hidden');
-        }
+        function removeImagePreview() { currentUploadedBase64 = ""; document.getElementById('post-image-file').value = ""; document.getElementById('image-preview-container').classList.add('hidden'); }
 
         function togglePostFormFields() {
-            const type = document.getElementById('post-type').value;
-            const isRev = type === 'review';
+            const isRev = document.getElementById('post-type').value === 'review';
             document.getElementById('product-name-container').classList.toggle('hidden', !isRev);
             document.getElementById('product-details-container').classList.toggle('hidden', !isRev);
-            document.getElementById('post-product-name').required = isRev;
-            document.getElementById('post-product-price').required = isRev;
         }
 
         window.showToast = function(message, type = 'success') {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            let iCol = type === 'error' ? 'text-rose-500' : type === 'warning' ? 'text-amber-500' : 'text-emerald-500';
-            let icon = type === 'error' ? 'fa-circle-xmark' : type === 'warning' ? 'fa-triangle-exclamation' : 'fa-circle-check';
-            let bCol = type === 'error' ? 'border-rose-100' : type === 'warning' ? 'border-amber-100' : 'border-slate-100';
-            
-            toast.className = `flex items-center space-x-3 p-4 rounded-xl shadow-lg border text-xs font-bold transition-all duration-300 transform translate-y-2 opacity-0 pointer-events-auto bg-white ${bCol}`;
-            toast.innerHTML = `<div class="${iCol} text-lg"><i class="fa-solid ${icon}"></i></div><div class="text-slate-700">${message}</div>`;
-            container.appendChild(toast);
-            setTimeout(() => toast.classList.add('toast-active'), 50);
-            setTimeout(() => { toast.classList.remove('toast-active'); setTimeout(() => toast.remove(), 300); }, 3000);
+            const container = document.getElementById('toast-container'); const toast = document.createElement('div');
+            let bCol = type === 'error' ? 'border-rose-100 text-rose-600' : 'border-emerald-100 text-emerald-600';
+            toast.className = `p-4 rounded-xl shadow-lg border text-xs font-bold transition-all duration-300 transform translate-y-2 opacity-0 bg-white ${bCol}`;
+            toast.innerText = message; container.appendChild(toast);
+            setTimeout(() => toast.classList.add('toast-active'), 50); setTimeout(() => { toast.classList.remove('toast-active'); setTimeout(() => toast.remove(), 300); }, 3000);
         }
 
         function askConfirm(title, msg, onConfirm) {
-            document.getElementById('confirm-title').innerText = title;
-            document.getElementById('confirm-message').innerText = msg;
-            document.getElementById('confirm-modal').classList.remove('hidden');
-            currentConfirmCallback = onConfirm;
+            document.getElementById('confirm-title').innerText = title; document.getElementById('confirm-message').innerText = msg;
+            document.getElementById('confirm-modal').classList.remove('hidden'); currentConfirmCallback = onConfirm;
         }
         document.getElementById('confirm-cancel-btn').onclick = () => { document.getElementById('confirm-modal').classList.add('hidden'); currentConfirmCallback = null; };
         document.getElementById('confirm-success-btn').onclick = () => { document.getElementById('confirm-modal').classList.add('hidden'); if (currentConfirmCallback) currentConfirmCallback(); };
 
-        function formatDate(dateStr) {
-            const d = new Date(dateStr);
-            const m = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
-            return `${d.getDate()} ${m[d.getMonth()]} ${d.getFullYear() + 543}`;
-        }
-
         function renderCategories() {
-            const container = document.getElementById('categories-list-container');
-            container.innerHTML = '';
-            const allBtn = document.createElement('button');
-            allBtn.onclick = () => selectCategory('all');
-            let isAll = selectedCategoryFilter === 'all';
-            allBtn.className = `flex-shrink-0 flex items-center space-x-2 px-4 py-2 rounded-2xl text-xs font-bold border ${isAll ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-slate-50 text-slate-600 hover:bg-slate-100'}`;
-            allBtn.innerHTML = `<span><i class="fa-solid fa-border-all"></i></span><span>ทั้งหมด</span>`;
-            container.appendChild(allBtn);
-
-            categories.forEach(cat => {
-                let isAct = selectedCategoryFilter === cat.id;
-                let cCol = (colorPalette[cat.color] || colorPalette.slate).split(' ')[1];
-                const btn = document.createElement('button');
-                btn.onclick = () => selectCategory(cat.id);
-                btn.className = `flex-shrink-0 flex items-center space-x-2 px-4 py-2 rounded-2xl text-xs font-bold border ${isAct ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-600 hover:bg-slate-50'}`;
-                btn.innerHTML = `<span class="${isAct ? 'text-emerald-400' : cCol}"><i class="${cat.icon}"></i></span><span>${cat.name}</span>`;
-                container.appendChild(btn);
-            });
+            const container = document.getElementById('categories-list-container'); container.innerHTML = `<button onclick="selectCategory('all')" class="px-4 py-2 rounded-2xl text-xs font-bold border bg-white">ทั้งหมด</button>`;
+            categories.forEach(cat => { container.innerHTML += `<button onclick="selectCategory('${cat.id}')" class="px-4 py-2 rounded-2xl text-xs font-bold border bg-white whitespace-nowrap"><i class="${cat.icon}"></i> ${cat.name}</button>`; });
         }
-
-        function selectCategory(catId) { selectedCategoryFilter = catId; renderCategories(); filterPosts(); }
+        function selectCategory(catId) { selectedCategoryFilter = catId; filterPosts(); }
         function clearFilters() { document.getElementById('search-input').value = ''; selectCategory('all'); }
 
         function filterPosts() {
             const query = document.getElementById('search-input').value.toLowerCase();
-            const sortVal = document.getElementById('sort-select').value;
-            let filtered = posts.filter(p => (p.type === 'review' || !p.type) && (selectedCategoryFilter === 'all' || p.categoryId === selectedCategoryFilter) && (p.title.toLowerCase().includes(query) || (p.productName||'').toLowerCase().includes(query)));
-            if (sortVal === 'newest') filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-            else if (sortVal === 'price-high') filtered.sort((a, b) => b.productPrice - a.productPrice);
-            else if (sortVal === 'price-low') filtered.sort((a, b) => a.productPrice - b.productPrice);
-            document.getElementById('posts-count-label').innerText = `กำลังแสดงทั้งหมด ${filtered.length} รายการ`;
+            let filtered = posts.filter(p => (p.type === 'review' || !p.type) && (selectedCategoryFilter === 'all' || p.categoryId === selectedCategoryFilter) && (p.title.toLowerCase().includes(query)));
             renderPostsGrid(filtered);
         }
 
         function renderPostsGrid(postsArray) {
-            const grid = document.getElementById('blog-posts-container');
-            const empty = document.getElementById('empty-posts-state');
-            grid.innerHTML = '';
-            if (!postsArray.length) { grid.classList.add('hidden'); empty.classList.remove('hidden'); return; }
-            grid.classList.remove('hidden'); empty.classList.add('hidden');
-
+            const grid = document.getElementById('blog-posts-container'); grid.innerHTML = '';
+            if (!postsArray.length) { grid.classList.add('hidden'); document.getElementById('empty-posts-state').classList.remove('hidden'); return; }
+            grid.classList.remove('hidden'); document.getElementById('empty-posts-state').classList.add('hidden');
             postsArray.forEach(p => {
-                const cat = categories.find(c => c.id === p.categoryId) || { name: 'ไม่มีหมวดหมู่', icon: 'fa-circle', color: 'slate' };
-                const img = p.image || `https://placehold.co/800x600/059669/ffffff?text=Review`;
-                const cCol = (colorPalette[cat.color] || colorPalette.slate).split(' ')[1];
                 grid.innerHTML += `
-                    <div class="group bg-white rounded-3xl overflow-hidden border border-slate-200 hover:border-emerald-500 flex flex-col hover:shadow-lg">
-                        <div class="relative h-48 bg-slate-100 cursor-pointer" onclick="openPostDetail('${p.id}')">
-                            <img src="${img}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                            <span class="absolute top-4 left-4 px-3 py-1 rounded-full text-[10px] font-bold bg-white"><i class="${cat.icon} ${cCol}"></i> ${cat.name}</span>
-                        </div>
-                        <div class="p-5 flex-grow flex flex-col justify-between space-y-4">
-                            <div>
-                                <span class="text-[10px] text-slate-400 font-bold block"><i class="fa-regular fa-clock"></i> ${formatDate(p.createdAt)}</span>
-                                <h3 class="font-bold text-sm mt-1 cursor-pointer line-clamp-2" onclick="openPostDetail('${p.id}')">${p.title}</h3>
-                            </div>
-                            <div class="border-t pt-4 flex justify-between items-center">
-                                <div><span class="text-[10px] text-slate-400 block">ราคา</span><span class="text-sm font-extrabold text-amber-600">${p.productPrice||0} ฿</span></div>
-                                <button onclick="openPostDetail('${p.id}')" class="px-3 py-1.5 text-[10px] font-bold text-emerald-600 bg-emerald-50 rounded-lg group-hover:bg-emerald-600 group-hover:text-white transition">ดูรายละเอียด</button>
-                            </div>
-                        </div>
+                    <div class="bg-white rounded-3xl overflow-hidden border border-slate-200 cursor-pointer" onclick="openPostDetail('${p.id}')">
+                        <img src="${p.image||'https://placehold.co/800x600'}" class="w-full h-48 object-cover">
+                        <div class="p-5"><h3 class="font-bold text-sm line-clamp-2">${p.title}</h3><div class="mt-4 text-amber-600 font-bold">${p.productPrice||0} ฿</div></div>
                     </div>`;
             });
         }
@@ -1012,248 +747,66 @@
         function filterBlogs() {
             const query = document.getElementById('blog-search-input').value.toLowerCase();
             let filtered = posts.filter(p => p.type === 'blog' && p.title.toLowerCase().includes(query));
-            document.getElementById('blogs-count-label').innerText = `กำลังแสดง ${filtered.length} บทความ`;
-            renderBlogsGrid(filtered);
-        }
-
-        function renderBlogsGrid(blogsArray) {
-            const grid = document.getElementById('blog-knowledge-container');
-            grid.innerHTML = '';
-            blogsArray.forEach(p => {
-                const cat = categories.find(c => c.id === p.categoryId) || { name: 'สาระทั่วไป', icon: 'fa-circle', color: 'teal' };
-                const img = p.image || `https://placehold.co/800x600/0d9488/ffffff?text=Blog`;
-                const cCol = (colorPalette[cat.color] || colorPalette.teal).split(' ')[1];
-                grid.innerHTML += `
-                    <div class="group bg-white rounded-3xl overflow-hidden border border-slate-200 hover:border-teal-500 flex flex-col hover:shadow-lg">
-                        <div class="relative h-48 bg-slate-100 cursor-pointer" onclick="openPostDetail('${p.id}')">
-                            <img src="${img}" class="w-full h-full object-cover group-hover:scale-105 transition">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                            <span class="absolute top-4 left-4 px-3 py-1 rounded-full text-[10px] font-bold bg-white"><i class="${cat.icon} ${cCol}"></i> ${cat.name}</span>
-                        </div>
-                        <div class="p-5 flex flex-col justify-between space-y-4">
-                            <div>
-                                <span class="text-[10px] text-slate-400 font-bold block"><i class="fa-regular fa-clock"></i> ${formatDate(p.createdAt)}</span>
-                                <h3 class="font-bold text-sm mt-1 cursor-pointer line-clamp-2" onclick="openPostDetail('${p.id}')">${p.title}</h3>
-                            </div>
-                            <div class="border-t pt-3 text-right"><button onclick="openPostDetail('${p.id}')" class="text-xs font-bold text-teal-600">อ่านสาระต่อ</button></div>
-                        </div>
-                    </div>`;
+            const grid = document.getElementById('blog-knowledge-container'); grid.innerHTML = '';
+            filtered.forEach(p => {
+                grid.innerHTML += `<div class="bg-white rounded-3xl overflow-hidden border border-slate-200 cursor-pointer" onclick="openPostDetail('${p.id}')"><img src="${p.image||'https://placehold.co/800x600'}" class="w-full h-48 object-cover"><div class="p-5"><h3 class="font-bold text-sm line-clamp-2">${p.title}</h3></div></div>`;
             });
         }
-
-        function renderPosts() { filterPosts(); }
-        function renderBlogs() { filterBlogs(); }
+        function renderPosts() { filterPosts(); } function renderBlogs() { filterBlogs(); }
 
         function openPostDetail(id) {
-            const p = posts.find(x => x.id === id);
-            if(!p) return;
-            const cat = categories.find(c => c.id === p.categoryId) || { name: 'ทั่วไป' };
-            document.getElementById('detail-image').src = p.image || 'https://placehold.co/800x600/1e293b/ffffff';
-            document.getElementById('detail-category-tag').innerText = cat.name;
-            document.getElementById('detail-title').innerText = p.title;
-            document.getElementById('detail-date').innerText = formatDate(p.createdAt);
-            
+            const p = posts.find(x => x.id === id); if(!p) return;
+            document.getElementById('detail-image').src = p.image || ''; document.getElementById('detail-title').innerText = p.title;
             const pCard = document.getElementById('detail-product-card');
-            if (p.type === 'review' || !p.type) {
-                pCard.classList.remove('hidden');
-                document.getElementById('detail-product-name').innerText = p.productName;
-                document.getElementById('detail-product-price').innerText = `${p.productPrice||0} ฿`;
-                const lBtn = document.getElementById('detail-product-link');
-                p.productLink ? (lBtn.href = p.productLink, lBtn.classList.remove('hidden')) : lBtn.classList.add('hidden');
-            } else { pCard.classList.add('hidden'); }
-            
-            document.getElementById('detail-content').innerText = p.content;
-            document.getElementById('post-detail-modal').classList.remove('hidden');
-            document.body.classList.add('overflow-hidden');
+            if (p.type === 'review' || !p.type) { pCard.classList.remove('hidden'); document.getElementById('detail-product-name').innerText = p.productName; document.getElementById('detail-product-price').innerText = `${p.productPrice||0} ฿`; } else { pCard.classList.add('hidden'); }
+            document.getElementById('detail-content').innerText = p.content; document.getElementById('post-detail-modal').classList.remove('hidden');
         }
-        function closePostDetail() { document.getElementById('post-detail-modal').classList.add('hidden'); document.body.classList.remove('overflow-hidden'); }
+        function closePostDetail() { document.getElementById('post-detail-modal').classList.add('hidden'); }
 
         function populateCategoryDropdown() {
-            const d = document.getElementById('post-category');
-            d.innerHTML = '';
-            categories.forEach(c => { d.innerHTML += `<option value="${c.id}">${c.name}</option>`; });
+            const d = document.getElementById('post-category'); d.innerHTML = ''; categories.forEach(c => { d.innerHTML += `<option value="${c.id}">${c.name}</option>`; });
         }
 
         function renderAdminPostsTable() {
-            const tb = document.getElementById('admin-posts-table-body');
-            tb.innerHTML = '';
+            const tb = document.getElementById('admin-posts-table-body'); tb.innerHTML = '';
             posts.forEach(p => {
-                tb.innerHTML += `
-                    <tr class="hover:bg-slate-50 border-b text-xs text-slate-700">
-                        <td class="py-3 px-4 flex items-center space-x-3">
-                            <img src="${p.image||'https://placehold.co/100x100'}" class="w-10 h-10 rounded-lg object-cover">
-                            <div class="truncate"><span class="font-bold block truncate">${p.title}</span><span class="text-[10px] text-slate-400">${p.type==='blog'?'Blog':'Review'}</span></div>
-                        </td>
-                        <td class="py-3 px-4"><span class="px-2.5 py-0.5 rounded-full text-[9px] font-bold bg-slate-100">${p.type==='blog'?'Kiến thức':'Đánh giá SP'}</span></td>
-                        <td class="py-3 px-4 text-right font-extrabold">${p.type==='blog'?'-':(p.productPrice||0)+' ฿'}</td>
-                        <td class="py-3 px-4 text-center">
-                            <button onclick="editPost('${p.id}')" class="h-8 w-8 rounded bg-indigo-50 text-indigo-600"><i class="fa-solid fa-pen-to-square"></i></button>
-                            <button onclick="deletePost('${p.id}')" class="h-8 w-8 rounded bg-rose-50 text-rose-600"><i class="fa-solid fa-trash-can"></i></button>
-                        </td>
-                    </tr>`;
+                tb.innerHTML += `<tr class="border-b text-xs text-slate-700"><td class="py-3 px-4 truncate max-w-[150px]">${p.title}</td><td class="py-3 px-4 text-center"><button onclick="editPost('${p.id}')" class="mr-2 text-indigo-600">Sửa</button><button onclick="deletePost('${p.id}')" class="text-rose-600">Xóa</button></td></tr>`;
             });
         }
 
         async function savePost(e) {
-            e.preventDefault();
-            const id = document.getElementById('post-id').value;
-            const type = document.getElementById('post-type').value;
+            e.preventDefault(); const id = document.getElementById('post-id').value; const type = document.getElementById('post-type').value;
             const img = selectedImgSourceMode === 'file' ? currentUploadedBase64 : document.getElementById('post-image-url').value;
-            if (!img) return window.showToast("Vui lòng tải ảnh lên!", "error");
-
-            const postData = {
-                id: id || ('post-' + Date.now()), type,
-                title: document.getElementById('post-title').value,
-                categoryId: document.getElementById('post-category').value,
-                productName: type === 'review' ? document.getElementById('post-product-name').value : '',
-                productPrice: type === 'review' ? parseFloat(document.getElementById('post-product-price').value) : 0,
-                productLink: type === 'review' ? document.getElementById('post-product-link').value : '',
-                image: img, content: document.getElementById('post-content').value,
-                createdAt: id ? posts.find(x=>x.id===id).createdAt : new Date().toISOString()
-            };
-
-            if (id) {
-                const idx = posts.findIndex(x=>x.id===id);
-                posts[idx] = postData;
-            } else { posts.unshift(postData); }
-
-            await saveDBData('posts', postData);
-            window.showToast("Lưu bài viết thành công!");
-            resetPostForm(); renderAdminPostsTable(); renderCategories();
+            const postData = { id: id || ('post-' + Date.now()), type, title: document.getElementById('post-title').value, categoryId: document.getElementById('post-category').value, productName: document.getElementById('post-product-name').value, productPrice: parseFloat(document.getElementById('post-product-price').value)||0, productLink: document.getElementById('post-product-link').value, image: img, content: document.getElementById('post-content').value };
+            if (id) { posts[posts.findIndex(x=>x.id===id)] = postData; } else { posts.unshift(postData); }
+            await window.saveDBData('posts', postData); window.showToast("Lưu bài lên Cloud thành công!"); resetPostForm(); renderAdminPostsTable();
         }
 
         function editPost(id) {
-            const p = posts.find(x => x.id === id);
-            if (!p) return;
-            document.getElementById('post-id').value = p.id;
-            document.getElementById('post-type').value = p.type || 'review';
-            document.getElementById('post-title').value = p.title;
-            document.getElementById('post-category').value = p.categoryId;
-            document.getElementById('post-product-name').value = p.productName || '';
-            document.getElementById('post-product-price').value = p.productPrice || 0;
-            document.getElementById('post-product-link').value = p.productLink || '';
-            document.getElementById('post-content').value = p.content;
-
-            if (p.image && p.image.startsWith('data:image')) {
-                setImageSourceMode('file'); currentUploadedBase64 = p.image;
-                document.getElementById('image-preview').src = p.image;
-                document.getElementById('image-preview-container').classList.remove('hidden');
-            } else { setImageSourceMode('url'); document.getElementById('post-image-url').value = p.image || ''; removeImagePreview(); }
-
-            togglePostFormFields();
-            document.getElementById('submit-btn-text').innerText = 'Cập nhật thay đổi';
-            document.getElementById('cancel-edit-btn').classList.remove('hidden');
-            document.getElementById('post-form').scrollIntoView({ behavior: 'smooth' });
+            const p = posts.find(x => x.id === id); if (!p) return;
+            document.getElementById('post-id').value = p.id; document.getElementById('post-type').value = p.type || 'review';
+            document.getElementById('post-title').value = p.title; document.getElementById('post-content').value = p.content;
+            togglePostFormFields(); document.getElementById('post-form').scrollIntoView();
         }
 
-        function resetPostForm() {
-            document.getElementById('post-form').reset(); document.getElementById('post-id').value = '';
-            removeImagePreview(); setImageSourceMode('file'); togglePostFormFields();
-            document.getElementById('submit-btn-text').innerText = 'Đăng bài viết';
-            document.getElementById('cancel-edit-btn').classList.add('hidden');
-        }
+        function resetPostForm() { document.getElementById('post-form').reset(); document.getElementById('post-id').value = ''; removeImagePreview(); }
 
-        function deletePost(id) {
-            askConfirm('Gỡ bài viết này?', 'Hành động này không thể hoàn tác.', async () => {
-                posts = posts.filter(x => x.id !== id);
-                await deleteDBData('posts', id);
-                window.showToast("Đã xóa bài viết!", "warning");
-                renderAdminPostsTable(); renderCategories();
-            });
-        }
-
-        function renderColorSelector() {
-            const container = document.getElementById('color-selector');
-            Object.keys(colorPalette).forEach(col => {
-                const bg = colorPalette[col].split(' ')[0];
-                container.innerHTML += `<button type="button" onclick="selectCategoryColor('${col}')" id="col-${col}" class="h-7 rounded-xl ${bg} border-2 border-transparent transition hover:scale-110"></button>`;
-            });
-            selectCategoryColor('emerald');
-        }
-        function selectCategoryColor(col) {
-            document.getElementById('category-color').value = col;
-            Object.keys(colorPalette).forEach(c => { const b = document.getElementById(`col-${c}`); if(b) b.classList.remove('border-slate-950'); });
-            document.getElementById(`col-${col}`).classList.add('border-slate-950');
-        }
-
-        function renderIconSelector() {
-            const container = document.getElementById('icon-selector');
-            availableIcons.forEach(ic => {
-                container.innerHTML += `<button type="button" onclick="selectCategoryIcon('${ic}')" id="ic-${ic.replace(/ /g, '-')}" class="flex items-center justify-center h-10 border border-slate-200 rounded-xl text-slate-600"><i class="${ic} text-sm"></i></button>`;
-            });
-            selectCategoryIcon('fa-solid fa-prescription-bottle-medical');
-        }
-        function selectCategoryIcon(ic) {
-            document.getElementById('category-icon').value = ic;
-            availableIcons.forEach(i => { const b = document.getElementById(`ic-${i.replace(/ /g, '-')}`); if(b) b.className = "flex items-center justify-center h-10 border border-slate-200 rounded-xl text-slate-600"; });
-            document.getElementById(`ic-${ic.replace(/ /g, '-')}`).className = "flex items-center justify-center h-10 border-2 border-emerald-500 bg-emerald-50 text-emerald-600 rounded-xl font-bold";
-        }
+        function deletePost(id) { askConfirm('Xóa bài này?', 'Sẽ bị xóa vĩnh viễn trên Cloud.', async () => { posts = posts.filter(x => x.id !== id); await window.deleteDBData('posts', id); window.showToast("Đã xóa khỏi Cloud!"); renderAdminPostsTable(); }); }
 
         function renderAdminCategoriesGrid() {
-            const container = document.getElementById('admin-categories-grid');
-            container.innerHTML = '';
-            categories.forEach(cat => {
-                const cCol = (colorPalette[cat.color] || colorPalette.slate).split(' ')[1];
-                container.innerHTML += `
-                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-2xl flex justify-between items-center space-x-3">
-                        <div class="flex items-center space-x-3 truncate">
-                            <div class="h-10 w-10 rounded-xl flex items-center justify-center text-lg bg-white border border-slate-200"><i class="${cat.icon} ${cCol}"></i></div>
-                            <div class="truncate"><h4 class="font-bold text-xs">${cat.name}</h4></div>
-                        </div>
-                        <div class="flex items-center space-x-1 flex-shrink-0">
-                            <button onclick="editCategory('${cat.id}')" class="h-7 w-7 rounded-lg bg-indigo-50 text-indigo-600"><i class="fa-solid fa-pen-to-square"></i></button>
-                            <button onclick="deleteCategory('${cat.id}')" class="h-7 w-7 rounded-lg bg-rose-50 text-rose-600"><i class="fa-solid fa-trash-can"></i></button>
-                        </div>
-                    </div>`;
-            });
+            const container = document.getElementById('admin-categories-grid'); container.innerHTML = '';
+            categories.forEach(cat => { container.innerHTML += `<div class="p-4 bg-slate-50 border rounded-2xl flex justify-between"><h4 class="font-bold text-xs">${cat.name}</h4><div><button onclick="editCategory('${cat.id}')" class="mr-2 text-indigo-600">Sửa</button><button onclick="deleteCategory('${cat.id}')" class="text-rose-600">Xóa</button></div></div>`; });
         }
 
         async function saveCategory(e) {
-            e.preventDefault();
-            const id = document.getElementById('category-id').value;
-            const catData = {
-                id: id || ('cat-' + Date.now()),
-                name: document.getElementById('category-name-input').value,
-                icon: document.getElementById('category-icon').value,
-                color: document.getElementById('category-color').value
-            };
-            if (id) {
-                const idx = categories.findIndex(c => c.id === id);
-                categories[idx] = catData;
-            } else { categories.push(catData); }
-            
-            await saveDBData('categories', catData);
-            window.showToast("Đã lưu danh mục thành công!");
-            resetCategoryForm(); renderAdminCategoriesGrid(); populateCategoryDropdown(); renderCategories();
+            e.preventDefault(); const id = document.getElementById('category-id').value;
+            const catData = { id: id || ('cat-' + Date.now()), name: document.getElementById('category-name-input').value, icon: 'fa-solid fa-circle', color: 'emerald' };
+            if (id) { categories[categories.findIndex(c => c.id === id)] = catData; } else { categories.push(catData); }
+            await window.saveDBData('categories', catData); window.showToast("Lưu danh mục lên Cloud thành công!"); resetCategoryForm(); renderAdminCategoriesGrid(); populateCategoryDropdown();
         }
-
-        function editCategory(id) {
-            const c = categories.find(x => x.id === id);
-            if (!c) return;
-            document.getElementById('category-id').value = c.id;
-            document.getElementById('category-name-input').value = c.name;
-            selectCategoryIcon(c.icon); selectCategoryColor(c.color);
-            document.getElementById('submit-cat-btn-text').innerText = 'Cập nhật';
-            document.getElementById('cancel-cat-edit-btn').classList.remove('hidden');
-        }
-
-        function resetCategoryForm() {
-            document.getElementById('category-form').reset(); document.getElementById('category-id').value = '';
-            selectCategoryIcon('fa-solid fa-prescription-bottle-medical'); selectCategoryColor('emerald');
-            document.getElementById('submit-cat-btn-text').innerText = 'Lưu chuyên mục';
-            document.getElementById('cancel-cat-edit-btn').classList.add('hidden');
-        }
-
-        function deleteCategory(id) {
-            askConfirm('Xóa chuyên mục?', 'Xóa chuyên mục sẽ gỡ bài viết đang nằm trong mục này ra ngoài.', async () => {
-                categories = categories.filter(c => c.id !== id);
-                await deleteDBData('categories', id);
-                window.showToast("Đã xóa danh mục!", "warning");
-                renderAdminCategoriesGrid(); populateCategoryDropdown(); renderCategories();
-            });
-        }
-
-        window.onload = initApp;
+        function editCategory(id) { const c = categories.find(x => x.id === id); document.getElementById('category-id').value = c.id; document.getElementById('category-name-input').value = c.name; }
+        function resetCategoryForm() { document.getElementById('category-form').reset(); document.getElementById('category-id').value = ''; }
+        function deleteCategory(id) { askConfirm('Xóa?', 'Xóa vĩnh viễn trên Cloud.', async () => { categories = categories.filter(c => c.id !== id); await window.deleteDBData('categories', id); renderAdminCategoriesGrid(); populateCategoryDropdown(); }); }
     </script>
 </body>
 </html>
