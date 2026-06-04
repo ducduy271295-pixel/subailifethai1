@@ -499,22 +499,36 @@
             const password = document.getElementById('auth-password-input').value;
             
             if(!email || !password) {
-                window.showToast("Vui lòng nhập đầy đủ Email và Mật khẩu!", "error");
+                window.showToast("Vui lòng nhập đầy đủ Email và Mật khẩu!", "warning");
                 return;
             }
+
+            // Đổi text nút thành Đang xử lý để dễ nhận biết
+            const btn = document.activeElement;
+            const originalText = btn.innerText;
+            btn.innerText = "Đang xử lý...";
 
             signInWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
                     const user = userCredential.user;
                     window.closeAuthLogin();
                     window.showToast("Đăng nhập thành công!", "success");
+                    btn.innerText = originalText;
                     
                     if(user.email === ADMIN_EMAIL) {
                         window.changeTab('admin');
                     }
                 })
                 .catch((error) => {
-                    window.showToast("Lỗi đăng nhập: Sai email hoặc mật khẩu!", "error");
+                    btn.innerText = originalText;
+                    console.error("Firebase Login Error:", error);
+                    if (error.code === 'auth/invalid-credential') {
+                        window.showToast("Sai email hoặc mật khẩu!", "error");
+                    } else if (error.code === 'auth/unauthorized-domain') {
+                        window.showToast("Tên miền Vercel chưa được cấp phép trong Firebase!", "error");
+                    } else {
+                        window.showToast("Lỗi: " + error.message, "error");
+                    }
                 });
         };
 
@@ -524,7 +538,7 @@
             const password = document.getElementById('auth-password-input').value;
 
             if(!email || !password) {
-                window.showToast("Vui lòng nhập đầy đủ Email và Mật khẩu!", "error");
+                window.showToast("Vui lòng nhập đầy đủ Email và Mật khẩu!", "warning");
                 return;
             }
             if(password.length < 6) {
@@ -532,10 +546,13 @@
                 return;
             }
 
+            const btn = document.activeElement;
+            const originalText = btn.innerText;
+            btn.innerText = "Đang tạo...";
+
             createUserWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
                     const user = userCredential.user;
-                    // Tự động gán tên hiển thị là phần trước chữ @ của email
                     updateProfile(user, {
                         displayName: email.split('@')[0]
                     }).then(() => {
@@ -544,10 +561,15 @@
                     
                     window.closeAuthLogin();
                     window.showToast("Đăng ký tài khoản thành công!", "success");
+                    btn.innerText = originalText;
                 })
                 .catch((error) => {
+                    btn.innerText = originalText;
+                    console.error("Firebase Register Error:", error);
                     if(error.code === 'auth/email-already-in-use') {
-                        window.showToast("Email này đã được đăng ký!", "error");
+                        window.showToast("Email này đã được đăng ký, vui lòng Đăng nhập!", "error");
+                    } else if(error.code === 'auth/operation-not-allowed') {
+                        window.showToast("Chưa bật Email/Password trong Firebase Console!", "error");
                     } else {
                         window.showToast("Lỗi đăng ký: " + error.message, "error");
                     }
