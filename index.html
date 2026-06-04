@@ -221,9 +221,9 @@
                 <div>
                     <h1 class="text-xl sm:text-2xl font-black text-slate-950 flex items-center space-x-3">
                         <i class="fa-solid fa-gears text-emerald-600"></i>
-                        <span>Quản Trị Hệ Thống subailifethai.com</span>
+                        <span>Quản Trị Hệ Thống</span>
                     </h1>
-                    <p class="text-xs text-slate-500 mt-1">Quản lý bài viết sức khỏe và danh mục.</p>
+                    <p class="text-xs text-slate-500 mt-1">Quản lý bài viết, danh mục và cập nhật thông tin Website.</p>
                 </div>
                 <div class="flex space-x-2 bg-slate-100 p-1 rounded-xl w-full sm:w-auto overflow-x-auto">
                     <button id="admin-subtab-posts" onclick="toggleAdminSubTab('posts')" class="flex-shrink-0 px-4 py-2 text-xs font-bold rounded-lg bg-white shadow-sm text-slate-800">
@@ -232,11 +232,16 @@
                     <button id="admin-subtab-categories" onclick="toggleAdminSubTab('categories')" class="flex-shrink-0 px-4 py-2 text-xs font-bold rounded-lg text-slate-600 hover:text-slate-950">
                         <i class="fa-solid fa-folder-tree mr-1.5 text-teal-600"></i> Danh Mục
                     </button>
+                    <!-- THÊM TAB CÀI ĐẶT -->
+                    <button id="admin-subtab-settings" onclick="toggleAdminSubTab('settings')" class="flex-shrink-0 px-4 py-2 text-xs font-bold rounded-lg text-slate-600 hover:text-slate-950">
+                        <i class="fa-solid fa-gear mr-1.5 text-slate-600"></i> Cài Đặt Web
+                    </button>
                 </div>
             </div>
 
             <!-- SUB-TAB 1: Manage Posts -->
             <div id="admin-section-posts" class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+                <!-- Nội dung Form đăng bài và Table (Giữ nguyên như cũ) -->
                 <div class="xl:col-span-1 bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-5 h-fit">
                     <h3 id="form-post-title" class="text-xs sm:text-sm font-bold text-slate-900 border-b border-slate-100 pb-3 flex items-center space-x-2">
                         <i class="fa-solid fa-circle-plus text-emerald-500"></i><span>Tạo bài viết mới</span>
@@ -333,6 +338,7 @@
 
             <!-- SUB-TAB 2: Manage Categories -->
             <div id="admin-section-categories" class="hidden grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Nội dung Quản lý danh mục (Giữ nguyên) -->
                 <div class="md:col-span-1 bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-5 h-fit">
                     <h3 id="form-category-title" class="text-xs sm:text-sm font-bold text-slate-900 border-b border-slate-100 pb-3 flex items-center space-x-2">
                         <i class="fa-solid fa-folder-plus text-emerald-500"></i><span>Thêm danh mục mới</span>
@@ -370,42 +376,86 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" id="admin-categories-grid"></div>
                 </div>
             </div>
+
+            <!-- SUB-TAB 3: SETTINGS (CÀI ĐẶT WEB) -->
+            <div id="admin-section-settings" class="hidden bg-white border border-slate-200 rounded-3xl p-6 md:p-10 shadow-sm max-w-4xl mx-auto">
+                <h3 class="text-sm sm:text-base font-bold text-slate-900 border-b border-slate-100 pb-4 mb-6 flex items-center space-x-2">
+                    <i class="fa-solid fa-gears text-slate-600"></i>
+                    <span>Cài Đặt Chân Trang (Footer) & Liên Kết</span>
+                </h3>
+                
+                <form id="settings-form" onsubmit="saveGlobalSettings(event)" class="space-y-6">
+                    <div class="space-y-1">
+                        <label class="block text-xs font-bold text-slate-700">Đoạn văn bản giới thiệu (Tiếng Thái)</label>
+                        <textarea id="set-about" rows="3" class="w-full text-xs px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-500 transition outline-none" placeholder="Nhập đoạn văn giới thiệu về website..."></textarea>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-1">
+                            <label class="block text-xs font-bold text-slate-700">Email hiển thị liên hệ</label>
+                            <input type="email" id="set-email" class="w-full text-xs px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-500 transition outline-none" placeholder="Ví dụ: hotro@gmail.com">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="block text-xs font-bold text-slate-700">Số điện thoại liên hệ</label>
+                            <input type="text" id="set-phone" class="w-full text-xs px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-500 transition outline-none" placeholder="Ví dụ: +84 123 456 789">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="block text-xs font-bold text-slate-700">Đường dẫn Facebook</label>
+                            <input type="url" id="set-fb" class="w-full text-xs px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 transition outline-none" placeholder="https://facebook.com/...">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="block text-xs font-bold text-slate-700">Đường dẫn Youtube</label>
+                            <input type="url" id="set-yt" class="w-full text-xs px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-rose-500 transition outline-none" placeholder="https://youtube.com/...">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="block text-xs font-bold text-slate-700">Đường dẫn Twitter (X)</label>
+                            <input type="url" id="set-tw" class="w-full text-xs px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sky-500 transition outline-none" placeholder="https://twitter.com/...">
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-slate-100 text-right">
+                        <button type="submit" class="px-8 py-3 bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold rounded-xl transition shadow-md">
+                            <i class="fa-solid fa-floppy-disk mr-2"></i> Lưu Cài Đặt
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </main>
 
-    <!-- GENERAL AUTH LOGIN MODAL (EMAIL & PASSWORD) -->
+    <!-- GENERAL AUTH LOGIN MODAL (TIẾNG THÁI) -->
     <div id="auth-login-modal" class="hidden fixed inset-0 z-[100] bg-slate-950/50 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl space-y-5 text-center">
             <div class="text-emerald-500 text-5xl mb-2">
                 <i class="fa-solid fa-users-viewfinder"></i>
             </div>
             <div>
-                <h3 class="text-sm font-bold text-slate-900">Đăng ký / Đăng nhập</h3>
-                <p class="text-xs text-slate-500 mt-1 mb-4">Nhập email và mật khẩu của bạn để truy cập hệ thống.</p>
+                <h3 class="text-sm font-bold text-slate-900">สมัครสมาชิก / เข้าสู่ระบบ</h3>
+                <p class="text-[11px] text-slate-500 mt-1 mb-4">ป้อนอีเมล @gmail.com และรหัสผ่านของคุณเพื่อเข้าสู่ระบบ</p>
                 
                 <div class="space-y-3 text-left">
                     <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">Email</label>
-                        <input type="email" id="auth-email-input" placeholder="nguyenvana@gmail.com" class="w-full text-xs px-3 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 transition outline-none">
+                        <label class="block text-xs font-bold text-slate-700 mb-1">อีเมล (Email)</label>
+                        <input type="email" id="auth-email-input" placeholder="yourname@gmail.com" class="w-full text-xs px-3 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 transition outline-none">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">Mật khẩu</label>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">รหัสผ่าน (Password)</label>
                         <input type="password" id="auth-password-input" placeholder="••••••••" class="w-full text-xs px-3 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 transition outline-none" onkeypress="if(event.key === 'Enter') loginWithEmail()">
                     </div>
                 </div>
 
                 <div class="flex space-x-2 mt-4">
                     <button onclick="registerWithEmail()" class="flex-1 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition">
-                        Đăng ký mới
+                        สมัครใหม่
                     </button>
                     <button onclick="loginWithEmail()" class="flex-1 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl transition shadow-md">
-                        Đăng nhập
+                        เข้าสู่ระบบ
                     </button>
                 </div>
             </div>
             <div class="pt-2 border-t border-slate-100">
                 <button onclick="closeAuthLogin()" class="w-full py-2 px-4 border border-transparent hover:bg-slate-50 text-slate-500 text-xs font-bold rounded-xl transition">
-                    Trở về trang chủ
+                    กลับสู่หน้าหลัก
                 </button>
             </div>
         </div>
@@ -429,57 +479,57 @@
     <!-- Toast message container -->
     <div class="fixed bottom-5 right-5 z-[150] pointer-events-none space-y-2 max-w-sm w-full" id="toast-container"></div>
 
-    <!-- CHÂN TRANG (FOOTER) MỚI CẬP NHẬT -->
+    <!-- CHÂN TRANG (FOOTER) TIẾNG THÁI (ĐƯỢC CẬP NHẬT ĐỘNG TỪ BẢNG ADMIN) -->
     <footer class="bg-white border-t border-slate-200 py-10 mt-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-sm text-slate-500">
                 
-                <!-- Cột 1: Thông选 chung -->
+                <!-- Cột 1: Thông tin chung -->
                 <div class="space-y-3 text-center md:text-left">
                     <div class="flex items-center justify-center md:justify-start space-x-2 text-emerald-600">
                         <i class="fa-solid fa-mortar-pestle text-lg"></i>
                         <span class="font-black text-lg">subailifethai.com</span>
                     </div>
-                    <p class="text-xs leading-relaxed">
-                        Một trang web hàng đầu chuyên đánh giá và tổng hợp thông tin về sức khỏe bằng thảo dược tự nhiên. Chúng tôi cung cấp những kiến thức chuẩn xác và các sản phẩm chất lượng nhất để đồng hành cùng sức khỏe của bạn.
+                    <p id="footer-about-text" class="text-xs leading-relaxed">
+                        เว็บไซต์ชั้นนำที่เชี่ยวชาญด้านการรีวิวและรวบรวมข้อมูลสุขภาพด้วยสมุนไพรธรรมชาติ เรามอบความรู้ที่ถูกต้องและผลิตภัณฑ์คุณภาพเยี่ยมที่สุดเพื่อดูแลสุขภาพของคุณ
                     </p>
                 </div>
 
                 <!-- Cột 2: Liên kết nhanh -->
                 <div class="text-center">
-                    <h4 class="font-bold text-slate-800 mb-3 uppercase text-xs tracking-wider">Liên kết nhanh</h4>
+                    <h4 class="font-bold text-slate-800 mb-3 uppercase text-xs tracking-wider">ลิงก์ด่วน</h4>
                     <ul class="space-y-2 text-xs">
-                        <li><a href="#" class="hover:text-emerald-600 transition">Về chúng tôi</a></li>
-                        <li><a href="#" class="hover:text-emerald-600 transition">Chính sách bảo mật</a></li>
-                        <li><a href="#" class="hover:text-emerald-600 transition">Điều khoản sử dụng</a></li>
-                        <li><a href="#" class="hover:text-emerald-600 transition">Liên hệ quảng cáo</a></li>
+                        <li><a href="#" class="hover:text-emerald-600 transition">เกี่ยวกับเรา</a></li>
+                        <li><a href="#" class="hover:text-emerald-600 transition">นโยบายความเป็นส่วนตัว</a></li>
+                        <li><a href="#" class="hover:text-emerald-600 transition">ข้อกำหนดการใช้งาน</a></li>
+                        <li><a href="#" class="hover:text-emerald-600 transition">ติดต่อลงโฆษณา</a></li>
                     </ul>
                 </div>
 
                 <!-- Cột 3: Liên hệ & Mạng xã hội -->
                 <div class="text-center md:text-right space-y-3">
-                    <h4 class="font-bold text-slate-800 mb-3 uppercase text-xs tracking-wider">Kết nối với chúng tôi</h4>
-                    <p class="text-xs">
+                    <h4 class="font-bold text-slate-800 mb-3 uppercase text-xs tracking-wider">ติดตามเรา</h4>
+                    <p id="footer-email-text" class="text-xs">
                         <i class="fa-solid fa-envelope mr-1"></i> ducduy271295@gmail.com
                     </p>
                     <div class="flex items-center justify-center md:justify-end space-x-4 pt-2">
-                        <a href="#" class="text-slate-400 hover:text-blue-600 transition text-lg"><i class="fa-brands fa-facebook"></i></a>
-                        <a href="#" class="text-slate-400 hover:text-sky-500 transition text-lg"><i class="fa-brands fa-twitter"></i></a>
-                        <a href="#" class="text-slate-400 hover:text-rose-600 transition text-lg"><i class="fa-brands fa-youtube"></i></a>
-                        <a href="#" class="text-slate-400 hover:text-emerald-600 transition text-lg"><i class="fa-solid fa-phone"></i></a>
+                        <a id="footer-fb-link" href="#" target="_blank" class="text-slate-400 hover:text-blue-600 transition text-lg"><i class="fa-brands fa-facebook"></i></a>
+                        <a id="footer-tw-link" href="#" target="_blank" class="text-slate-400 hover:text-sky-500 transition text-lg"><i class="fa-brands fa-twitter"></i></a>
+                        <a id="footer-yt-link" href="#" target="_blank" class="text-slate-400 hover:text-rose-600 transition text-lg"><i class="fa-brands fa-youtube"></i></a>
+                        <a id="footer-phone-link" href="#" class="text-slate-400 hover:text-emerald-600 transition text-lg"><i class="fa-solid fa-phone"></i></a>
                     </div>
                 </div>
 
             </div>
 
-            <!-- Dòng Bản quyền (Copyright) -->
+            <!-- Dòng Bản quyền -->
             <div class="mt-10 pt-6 border-t border-slate-100 text-center text-[11px] text-slate-400">
-                © 2026 subailifethai.com. Tất cả quyền được bảo lưu. Nội dung trên website chỉ mang tính chất tham khảo, không thay thế cho các chẩn đoán y khoa.
+                © 2026 subailifethai.com สงวนลิขสิทธิ์ทุกประการ เนื้อหาบนเว็บไซต์เป็นเพียงข้อมูลอ้างอิงเท่านั้น ไม่สามารถใช้แทนการวินิจฉัยทางการแพทย์ได้
             </div>
         </div>
     </footer>
 
-    <!-- FIREBASE CONNECTION & AUTHENTICATION (EMAIL/PASSWORD) -->
+    <!-- FIREBASE CONNECTION & AUTHENTICATION -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-analytics.js";
@@ -501,7 +551,6 @@
 
         const ADMIN_EMAIL = "ducduy271295@gmail.com";
 
-        // Cập nhật giao diện Hồ sơ
         window.updateUserUI = function(user) {
             const profileSection = document.getElementById('user-profile-section');
             if (user) {
@@ -513,7 +562,7 @@
                         <img src="${avatar}" alt="Avatar" class="w-7 h-7 rounded-full border border-slate-300">
                         <div class="hidden md:block text-left">
                             <div class="text-[10px] font-bold text-slate-800 truncate max-w-[120px]">${displayName}</div>
-                            <div class="text-[8px] text-slate-500 font-semibold">${user.email === ADMIN_EMAIL ? 'Quản trị viên' : 'Thành viên'}</div>
+                            <div class="text-[8px] text-slate-500 font-semibold">${user.email === ADMIN_EMAIL ? 'Admin' : 'Member'}</div>
                         </div>
                         <button onclick="userLogout()" class="text-slate-400 hover:text-rose-600 transition ml-2 px-1" title="Đăng xuất">
                             <i class="fa-solid fa-right-from-bracket"></i>
@@ -524,38 +573,41 @@
                 profileSection.innerHTML = `
                     <button onclick="openAuthLogin()" class="flex items-center space-x-2 bg-emerald-100 hover:bg-emerald-200 text-emerald-800 px-3 py-2 rounded-xl text-xs sm:text-sm font-bold transition border border-emerald-200">
                         <i class="fa-solid fa-user text-[10px] sm:text-xs"></i>
-                        <span class="hidden sm:inline">Đăng nhập</span>
+                        <span class="hidden sm:inline">เข้าสู่ระบบ</span>
                     </button>
                 `;
             }
         };
 
-        // Lắng nghe trạng thái
         onAuthStateChanged(auth, (user) => {
             window.currentUser = user;
             window.isAdminAuthenticated = (user && user.email === ADMIN_EMAIL);
             window.updateUserUI(user);
         });
 
-        // Hàm Đăng Nhập Email
+        // HÀM LOGIN (ĐÃ KHÓA @GMAIL.COM)
         window.loginWithEmail = function() {
             const email = document.getElementById('auth-email-input').value.trim();
             const password = document.getElementById('auth-password-input').value;
             
             if(!email || !password) {
-                window.showToast("Vui lòng nhập đầy đủ Email và Mật khẩu!", "warning");
+                window.showToast("กรุณากรอกอีเมลและรหัสผ่าน (Vui lòng nhập đủ thông tin)!", "warning");
+                return;
+            }
+            if(!email.toLowerCase().endsWith("@gmail.com")) {
+                window.showToast("รองรับเฉพาะอีเมล @gmail.com เท่านั้น (Chỉ hỗ trợ @gmail.com)!", "error");
                 return;
             }
 
             const btn = document.activeElement;
             const originalText = btn.innerText;
-            btn.innerText = "Đang xử lý...";
+            btn.innerText = "กำลังประมวลผล...";
 
             signInWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
                     const user = userCredential.user;
                     window.closeAuthLogin();
-                    window.showToast("Đăng nhập thành công!", "success");
+                    window.showToast("เข้าสู่ระบบสำเร็จ (Đăng nhập thành công)!", "success");
                     btn.innerText = originalText;
                     
                     if(user.email === ADMIN_EMAIL) {
@@ -565,66 +617,58 @@
                 .catch((error) => {
                     btn.innerText = originalText;
                     console.error("Firebase Login Error:", error);
-                    if (error.code === 'auth/invalid-credential') {
-                        window.showToast("Sai email hoặc mật khẩu!", "error");
-                    } else if (error.code === 'auth/unauthorized-domain') {
-                        window.showToast("Tên miền Vercel chưa được cấp phép trong Firebase!", "error");
-                    } else {
-                        window.showToast("Lỗi: " + error.message, "error");
-                    }
+                    window.showToast("อีเมลหรือรหัสผ่านไม่ถูกต้อง (Sai email hoặc mật khẩu)!", "error");
                 });
         };
 
-        // Hàm Đăng Ký Email
+        // HÀM REGISTER (ĐÃ KHÓA @GMAIL.COM)
         window.registerWithEmail = function() {
             const email = document.getElementById('auth-email-input').value.trim();
             const password = document.getElementById('auth-password-input').value;
 
             if(!email || !password) {
-                window.showToast("Vui lòng nhập đầy đủ Email và Mật khẩu!", "warning");
+                window.showToast("กรุณากรอกอีเมลและรหัสผ่าน (Vui lòng nhập đủ thông tin)!", "warning");
+                return;
+            }
+            if(!email.toLowerCase().endsWith("@gmail.com")) {
+                window.showToast("รองรับเฉพาะอีเมล @gmail.com เท่านั้น (Chỉ hỗ trợ @gmail.com)!", "error");
                 return;
             }
             if(password.length < 6) {
-                window.showToast("Mật khẩu phải có ít nhất 6 ký tự!", "warning");
+                window.showToast("รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร (Mật khẩu > 6 ký tự)!", "warning");
                 return;
             }
 
             const btn = document.activeElement;
             const originalText = btn.innerText;
-            btn.innerText = "Đang tạo...";
+            btn.innerText = "กำลังสร้าง...";
 
             createUserWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
                     const user = userCredential.user;
-                    updateProfile(user, {
-                        displayName: email.split('@')[0]
-                    }).then(() => {
+                    updateProfile(user, { displayName: email.split('@')[0] }).then(() => {
                         window.updateUserUI(user);
                     });
                     
                     window.closeAuthLogin();
-                    window.showToast("Đăng ký tài khoản thành công!", "success");
+                    window.showToast("สมัครสมาชิกสำเร็จ (Đăng ký thành công)!", "success");
                     btn.innerText = originalText;
                 })
                 .catch((error) => {
                     btn.innerText = originalText;
-                    console.error("Firebase Register Error:", error);
                     if(error.code === 'auth/email-already-in-use') {
-                        window.showToast("Email này đã được đăng ký, vui lòng Đăng nhập!", "error");
-                    } else if(error.code === 'auth/operation-not-allowed') {
-                        window.showToast("Chưa bật Email/Password trong Firebase Console!", "error");
+                        window.showToast("อีเมลนี้ถูกใช้งานแล้ว (Email đã được đăng ký)!", "error");
                     } else {
-                        window.showToast("Lỗi đăng ký: " + error.message, "error");
+                        window.showToast("ข้อผิดพลาด (Lỗi): " + error.message, "error");
                     }
                 });
         };
 
-        // Hàm Đăng xuất
         window.userLogout = function() {
             signOut(auth).then(() => {
                 window.currentUser = null;
                 window.isAdminAuthenticated = false;
-                window.showToast("Đã đăng xuất thành công!", "success");
+                window.showToast("ออกจากระบบสำเร็จ (Đăng xuất thành công)!", "success");
                 
                 if (!document.getElementById('view-admin').classList.contains('hidden')) {
                     window.changeTab('home');
@@ -633,10 +677,11 @@
         };
     </script>
 
-    <!-- CORE JAVASCRIPT LOGIC -->
+    <!-- CORE JAVASCRIPT LOGIC & SETTINGS -->
     <script>
         let posts = [];
         let categories = [];
+        let globalSettings = {};
         let selectedCategoryFilter = 'all';
         let currentConfirmCallback = null;
         let selectedImgSourceMode = 'file'; 
@@ -645,28 +690,11 @@
         window.isAdminAuthenticated = false;
         window.currentUser = null;
 
-        const availableIcons = [
-            'fa-solid fa-prescription-bottle-medical', 'fa-solid fa-leaf', 'fa-solid fa-dumbbell', 
-            'fa-solid fa-bed', 'fa-solid fa-heart-pulse', 'fa-solid fa-stethoscope', 
-            'fa-solid fa-apple-whole', 'fa-solid fa-droplet', 'fa-solid fa-brain',
-            'fa-solid fa-capsules', 'fa-solid fa-kit-medical', 'fa-solid fa-spa'
-        ];
-
-        const colorPalette = {
-            emerald: 'bg-emerald-500 text-emerald-600 hover:bg-emerald-50 border-emerald-200',
-            sky: 'bg-sky-500 text-sky-600 hover:bg-sky-50 border-sky-200',
-            rose: 'bg-rose-500 text-rose-600 hover:bg-rose-50 border-rose-200',
-            amber: 'bg-amber-500 text-amber-600 hover:bg-amber-50 border-amber-200',
-            indigo: 'bg-indigo-500 text-indigo-600 hover:bg-indigo-50 border-indigo-200',
-            violet: 'bg-violet-500 text-violet-600 hover:bg-violet-50 border-violet-200',
-            teal: 'bg-teal-500 text-teal-600 hover:bg-teal-50 border-teal-200',
-            fuchsia: 'bg-fuchsia-500 text-fuchsia-600 hover:bg-fuchsia-50 border-fuchsia-200',
-            orange: 'bg-orange-500 text-orange-600 hover:bg-orange-50 border-orange-200',
-            slate: 'bg-slate-500 text-slate-600 hover:bg-slate-50 border-slate-200'
-        };
+        const availableIcons = ['fa-solid fa-prescription-bottle-medical', 'fa-solid fa-leaf', 'fa-solid fa-dumbbell', 'fa-solid fa-bed', 'fa-solid fa-heart-pulse', 'fa-solid fa-stethoscope', 'fa-solid fa-apple-whole', 'fa-solid fa-droplet', 'fa-solid fa-brain', 'fa-solid fa-capsules', 'fa-solid fa-kit-medical', 'fa-solid fa-spa'];
+        const colorPalette = { emerald: 'bg-emerald-500 text-emerald-600 hover:bg-emerald-50 border-emerald-200', sky: 'bg-sky-500 text-sky-600 hover:bg-sky-50 border-sky-200', rose: 'bg-rose-500 text-rose-600 hover:bg-rose-50 border-rose-200', amber: 'bg-amber-500 text-amber-600 hover:bg-amber-50 border-amber-200', indigo: 'bg-indigo-500 text-indigo-600 hover:bg-indigo-50 border-indigo-200', violet: 'bg-violet-500 text-violet-600 hover:bg-violet-50 border-violet-200', teal: 'bg-teal-500 text-teal-600 hover:bg-teal-50 border-teal-200', fuchsia: 'bg-fuchsia-500 text-fuchsia-600 hover:bg-fuchsia-50 border-fuchsia-200', orange: 'bg-orange-500 text-orange-600 hover:bg-orange-50 border-orange-200', slate: 'bg-slate-500 text-slate-600 hover:bg-slate-50 border-slate-200' };
 
         const DB_NAME = 'SubaiLifeThaiDB';
-        const DB_VERSION = 1;
+        const DB_VERSION = 2; // Cập nhật version để thêm bảng settings
         let db;
 
         function initDB() {
@@ -676,6 +704,7 @@
                     const database = e.target.result;
                     if (!database.objectStoreNames.contains('categories')) database.createObjectStore('categories', { keyPath: 'id' });
                     if (!database.objectStoreNames.contains('posts')) database.createObjectStore('posts', { keyPath: 'id' });
+                    if (!database.objectStoreNames.contains('settings')) database.createObjectStore('settings', { keyPath: 'id' });
                 };
                 request.onsuccess = function(e) { db = e.target.result; resolve(); };
                 request.onerror = function(e) { reject(e); };
@@ -717,25 +746,25 @@
                 await initDB();
                 categories = await getDBData('categories');
                 posts = await getDBData('posts');
+                let savedSettings = await getDBData('settings');
 
-                if (categories.length === 0) {
-                    const seedCategories = [
-                        { id: 'cat-1', name: 'ยาหม่อง & น้ำมันนวด', icon: 'fa-solid fa-prescription-bottle-medical', color: 'emerald' },
-                        { id: 'cat-2', name: 'สมุนไพรแห้ง & ชาชง', icon: 'fa-solid fa-leaf', color: 'amber' }
-                    ];
-                    for (const cat of seedCategories) await saveDBData('categories', cat);
-                    categories = seedCategories;
+                // Nạp Cài đặt mặc định nếu chưa có
+                if(savedSettings.length === 0) {
+                    globalSettings = {
+                        id: 'site-config',
+                        about: 'เว็บไซต์ชั้นนำที่เชี่ยวชาญด้านการรีวิวและรวบรวมข้อมูลสุขภาพด้วยสมุนไพรธรรมชาติ เรามอบความรู้ที่ถูกต้องและผลิตภัณฑ์คุณภาพเยี่ยมที่สุดเพื่อดูแลสุขภาพของคุณ',
+                        email: 'ducduy271295@gmail.com',
+                        phone: '', fb: '', tw: '', yt: ''
+                    };
+                    await saveDBData('settings', globalSettings);
+                } else {
+                    globalSettings = savedSettings[0];
                 }
 
-                if (posts.length === 0) {
-                    const seedPosts = [
-                        {
-                            id: 'post-1', type: 'review', title: 'รีวิวยาหม่องเสือสูตรเย็น', content: 'ยาหม่องผสมสมุนไพรเสลดพังพอนตรากิเลนและวังพรม...', 
-                            categoryId: 'cat-1', productName: 'ยาหม่องวังพรม 50g', productPrice: 120, productLink: '#', image: '', createdAt: new Date().toISOString()
-                        }
-                    ];
-                    for (const post of seedPosts) await saveDBData('posts', post);
-                    posts = seedPosts;
+                if (categories.length === 0) {
+                    const seedCategories = [{ id: 'cat-1', name: 'ยาหม่อง & น้ำมันนวด', icon: 'fa-solid fa-prescription-bottle-medical', color: 'emerald' }, { id: 'cat-2', name: 'สมุนไพรแห้ง & ชาชง', icon: 'fa-solid fa-leaf', color: 'amber' }];
+                    for (const cat of seedCategories) await saveDBData('categories', cat);
+                    categories = seedCategories;
                 }
 
                 renderIconSelector();
@@ -745,10 +774,50 @@
                 renderBlogs();
                 populateCategoryDropdown();
                 togglePostFormFields();
+                applyGlobalSettings(); // Cập nhật Footer
+                
                 if(window.updateUserUI) window.updateUserUI(window.currentUser);
             } catch (err) {
                 window.showToast("Lỗi khởi tạo cơ sở dữ liệu IndexedDB!", "error");
             }
+        }
+
+        // HÀM ÁP DỤNG CÀI ĐẶT RA FOOTER
+        function applyGlobalSettings() {
+            document.getElementById('footer-about-text').innerText = globalSettings.about;
+            document.getElementById('footer-email-text').innerHTML = `<i class="fa-solid fa-envelope mr-1"></i> ${globalSettings.email}`;
+            
+            document.getElementById('footer-fb-link').href = globalSettings.fb || '#';
+            document.getElementById('footer-tw-link').href = globalSettings.tw || '#';
+            document.getElementById('footer-yt-link').href = globalSettings.yt || '#';
+            document.getElementById('footer-phone-link').href = globalSettings.phone ? `tel:${globalSettings.phone}` : '#';
+        }
+
+        // HÀM LƯU CÀI ĐẶT TỪ ADMIN
+        async function saveGlobalSettings(e) {
+            e.preventDefault();
+            globalSettings = {
+                id: 'site-config',
+                about: document.getElementById('set-about').value,
+                email: document.getElementById('set-email').value,
+                phone: document.getElementById('set-phone').value,
+                fb: document.getElementById('set-fb').value,
+                tw: document.getElementById('set-tw').value,
+                yt: document.getElementById('set-yt').value
+            };
+            await saveDBData('settings', globalSettings);
+            applyGlobalSettings();
+            window.showToast("Đã cập nhật cấu hình Website!", "success");
+        }
+
+        // NẠP DỮ LIỆU VÀO FORM ADMIN SETTINGS
+        function loadSettingsToForm() {
+            document.getElementById('set-about').value = globalSettings.about || '';
+            document.getElementById('set-email').value = globalSettings.email || '';
+            document.getElementById('set-phone').value = globalSettings.phone || '';
+            document.getElementById('set-fb').value = globalSettings.fb || '';
+            document.getElementById('set-tw').value = globalSettings.tw || '';
+            document.getElementById('set-yt').value = globalSettings.yt || '';
         }
 
         window.openAuthLogin = function() { 
@@ -758,16 +827,14 @@
         }
         window.closeAuthLogin = function() { document.getElementById('auth-login-modal').classList.add('hidden'); }
 
-        // TAB SWITCHING
         window.changeTab = function(tab, subTab = 'posts') {
             if (tab === 'admin') {
                 if (!window.currentUser) {
                     window.openAuthLogin();
-                    window.showToast("Vui lòng đăng nhập để tiếp tục!", "warning");
                     return;
                 }
                 if (!window.isAdminAuthenticated) {
-                    window.showToast("Tài khoản của bạn không có quyền Admin!", "error");
+                    window.showToast("บัญชีของคุณไม่มีสิทธิ์เข้าถึง (Tài khoản không có quyền Admin)!", "error");
                     return;
                 }
             }
@@ -783,8 +850,7 @@
             if (tab === 'home') {
                 document.getElementById('view-home').classList.remove('hidden');
                 document.getElementById('nav-home').className = "flex items-center space-x-1.5 px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition duration-200 bg-white text-emerald-700 shadow-sm border border-slate-200";
-                renderCategories();
-                renderPosts();
+                renderCategories(); renderPosts();
             } else if (tab === 'blog') {
                 document.getElementById('view-blog').classList.remove('hidden');
                 document.getElementById('nav-blog').className = "flex items-center space-x-1.5 px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition duration-200 bg-white text-emerald-700 shadow-sm border border-slate-200";
@@ -793,13 +859,24 @@
                 document.getElementById('view-admin').classList.remove('hidden');
                 document.getElementById('nav-admin').className = "flex items-center space-x-1.5 px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition duration-200 bg-rose-600 text-white shadow-sm shadow-rose-600/10";
                 toggleAdminSubTab(subTab);
-                renderAdminPostsTable();
-                renderAdminCategoriesGrid();
+                renderAdminPostsTable(); renderAdminCategoriesGrid();
             }
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Form Helpers
+        function toggleAdminSubTab(subTab) {
+            document.getElementById('admin-section-posts').classList.toggle('hidden', subTab !== 'posts');
+            document.getElementById('admin-section-categories').classList.toggle('hidden', subTab !== 'categories');
+            document.getElementById('admin-section-settings').classList.toggle('hidden', subTab !== 'settings');
+            
+            document.getElementById('admin-subtab-posts').className = subTab === 'posts' ? "flex-shrink-0 px-4 py-2 text-xs font-bold rounded-lg bg-white shadow-sm text-slate-800" : "flex-shrink-0 px-4 py-2 text-xs font-bold rounded-lg text-slate-600 hover:text-slate-950";
+            document.getElementById('admin-subtab-categories').className = subTab === 'categories' ? "flex-shrink-0 px-4 py-2 text-xs font-bold rounded-lg bg-white shadow-sm text-slate-800" : "flex-shrink-0 px-4 py-2 text-xs font-bold rounded-lg text-slate-600 hover:text-slate-950";
+            document.getElementById('admin-subtab-settings').className = subTab === 'settings' ? "flex-shrink-0 px-4 py-2 text-xs font-bold rounded-lg bg-white shadow-sm text-slate-800" : "flex-shrink-0 px-4 py-2 text-xs font-bold rounded-lg text-slate-600 hover:text-slate-950";
+            
+            if(subTab === 'settings') loadSettingsToForm();
+        }
+
+        // --- CÁC HÀM XỬ LÝ KHÁC ĐƯỢC GIỮ NGUYÊN BÊN DƯỚI NÀY ---
         function setImageSourceMode(mode) {
             selectedImgSourceMode = mode;
             document.getElementById('img-file-box').classList.toggle('hidden', mode !== 'file');
@@ -863,13 +940,6 @@
             const d = new Date(dateStr);
             const m = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
             return `${d.getDate()} ${m[d.getMonth()]} ${d.getFullYear() + 543}`;
-        }
-
-        function toggleAdminSubTab(subTab) {
-            document.getElementById('admin-section-posts').classList.toggle('hidden', subTab !== 'posts');
-            document.getElementById('admin-section-categories').classList.toggle('hidden', subTab !== 'categories');
-            document.getElementById('admin-subtab-posts').className = subTab === 'posts' ? "flex-shrink-0 px-4 py-2 text-xs font-bold rounded-lg bg-white shadow-sm text-slate-800" : "flex-shrink-0 px-4 py-2 text-xs font-bold rounded-lg text-slate-600 hover:text-slate-950";
-            document.getElementById('admin-subtab-categories').className = subTab === 'categories' ? "flex-shrink-0 px-4 py-2 text-xs font-bold rounded-lg bg-white shadow-sm text-slate-800" : "flex-shrink-0 px-4 py-2 text-xs font-bold rounded-lg text-slate-600 hover:text-slate-950";
         }
 
         function renderCategories() {
