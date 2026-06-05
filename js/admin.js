@@ -349,19 +349,35 @@ export function renderAdminClicksTable() {
 
 export function exportClicksCSV() {
   if (!requireAdmin()) return;
-  if (!state.clicks?.length) return showToast('Chưa có dữ liệu click để xuất CSV!', 'warning');
+  if (!state.clicks?.length) {
+    return showToast('Chưa có dữ liệu click để xuất CSV!', 'warning');
+  }
+
   const header = ['product', 'source', 'utm_source', 'referrer', 'destination', 'createdAt'];
-  const rows = state.clicks.map((click) => header.map((key) => `"${String(key === 'createdAt' ? clickDateValue(click) : (click[key] || '')).replaceAll('"', '""')}"`).join(','));
-  const csv = [header.join(','), ...rows].join('
-');
+
+  const rows = state.clicks.map((click) =>
+    header.map((key) => {
+      const value = key === 'createdAt'
+        ? clickDateValue(click)
+        : (click[key] || '');
+
+      return `"${String(value).replace(/"/g, '""')}"`;
+    }).join(',')
+  );
+
+  const csv = [header.join(','), ...rows].join('\n');
+
   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
+
   a.href = url;
   a.download = `subailifethai-clicks-${new Date().toISOString().slice(0, 10)}.csv`;
+
   document.body.appendChild(a);
   a.click();
-  a.remove();
+  document.body.removeChild(a);
+
   URL.revokeObjectURL(url);
 }
 
