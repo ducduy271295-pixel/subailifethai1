@@ -1,0 +1,38 @@
+{
+  "cleanUrls": true,
+  "trailingSlash": true,
+  "rewrites": [
+    {
+      "source": "/privacy-policy",
+      "destination": "/privacy-policy/index.html"
+    },
+    {
+      "source": "/privacy-policy/",
+      "destination": "/privacy-policy/index.html"
+    },
+    {
+      "source": "/terms",
+      "destination": "/terms/index.html"
+    },
+    {
+      "source": "/terms/",
+      "destination": "/terms/index.html"
+    },
+    {
+      "source": "/affiliate-disclosure",
+      "destination": "/affiliate-disclosure/index.html"
+    },
+    {
+      "source": "/affiliate-disclosure/",
+      "destination": "/affiliate-disclosure/index.html"
+    },
+    {
+      "source": "/contact",
+      "destination": "/contact/index.html"
+    },
+    {
+      "source": "/contact/",
+      "destination": "/contact/index.html"
+    }
+  ]
+}
