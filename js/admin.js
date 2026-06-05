@@ -1,5 +1,5 @@
 import { state } from './state.js';
-import { saveDBData, deleteDBData } from './firestore.js';
+import { getDBData, saveDBData, deleteDBData } from './firestore.js';
 import { uploadPostImage } from './storage.js';
 import { escapeHTML, safeUrl, askConfirm, showToast } from './utils.js';
 import { refreshPublicUI, populateCategoryDropdown } from './render.js';
@@ -28,6 +28,9 @@ export function initAdminGlobals() {
   window.resetCategoryForm = resetCategoryForm;
   window.deleteCategory = deleteCategory;
   window.saveGlobalSettings = saveGlobalSettings;
+  window.loadClicksForAdmin = loadClicksForAdmin;
+  window.renderAdminClicksTable = renderAdminClicksTable;
+  window.exportClicksCSV = exportClicksCSV;
 }
 
 export function toggleAdminSubTab(subTab) {
@@ -35,11 +38,13 @@ export function toggleAdminSubTab(subTab) {
   document.getElementById('admin-section-categories').classList.toggle('hidden', subTab !== 'categories');
   document.getElementById('admin-section-settings').classList.toggle('hidden', subTab !== 'settings');
   document.getElementById('admin-section-leads').classList.toggle('hidden', subTab !== 'leads');
-  ['posts', 'categories', 'settings', 'leads'].forEach((name) => {
+  document.getElementById('admin-section-clicks').classList.toggle('hidden', subTab !== 'clicks');
+  ['posts', 'categories', 'settings', 'leads', 'clicks'].forEach((name) => {
     document.getElementById(`admin-subtab-${name}`).classList.toggle('active', name === subTab);
   });
   if (subTab === 'settings') loadSettingsToForm();
   if (subTab === 'leads') loadLeadsForAdmin();
+  if (subTab === 'clicks') loadClicksForAdmin();
 }
 
 export function setImageSourceMode(mode) {
@@ -121,6 +126,11 @@ export async function savePost(event) {
 
     if (!postData.title || !postData.content) return showToast('Vui lòng nhập tiêu đề và nội dung!', 'warning');
     if (!postData.image) return showToast('Vui lòng thêm ảnh bài viết!', 'warning');
+    if (type === 'review') {
+      if (!postData.productName) return showToast('Vui lòng nhập tên sản phẩm!', 'warning');
+      if (!postData.productLink) return showToast('Vui lòng nhập Link mua hàng / Landing để hiện nút chuyển đổi!', 'warning');
+      if (safeUrl(postData.productLink) === '#') return showToast('Link mua hàng chưa đúng định dạng. Link phải bắt đầu bằng https://', 'warning');
+    }
 
     const index = state.posts.findIndex((item) => item.id === id);
     if (index >= 0) state.posts[index] = postData;
@@ -271,9 +281,94 @@ export async function saveGlobalSettings(event) {
   refreshPublicUI();
 }
 
+
+function clickDateValue(item) {
+  return item.createdAt || item.createdAtISO || item.time || '';
+}
+
+function isToday(dateStr) {
+  if (!dateStr) return false;
+  const d = new Date(dateStr);
+  const now = new Date();
+  return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth() && d.getDate() === now.getDate();
+}
+
+export async function loadClicksForAdmin() {
+  if (!requireAdmin()) return;
+  try {
+    state.clicks = await getDBData('clicks');
+    state.clicks.sort((a, b) => new Date(clickDateValue(b) || 0) - new Date(clickDateValue(a) || 0));
+    renderAdminClicksTable();
+  } catch (err) {
+    console.error(err);
+    showToast('Không tải được thống kê click. Kiểm tra Firestore Rules.', 'error');
+  }
+}
+
+export function renderAdminClicksTable() {
+  const body = document.getElementById('admin-clicks-table-body');
+  const empty = document.getElementById('admin-clicks-empty');
+  if (!body || !empty) return;
+  const clicks = state.clicks || [];
+  body.innerHTML = '';
+  empty.classList.toggle('hidden', clicks.length > 0);
+
+  const productCounts = clicks.reduce((acc, click) => {
+    const key = click.product || click.offer || 'unknown';
+    acc[key] = (acc[key] || 0) + 1;
+    return acc;
+  }, {});
+  const topProduct = Object.entries(productCounts).sort((a, b) => b[1] - a[1])[0];
+
+  const totalEl = document.getElementById('click-total-count');
+  const todayEl = document.getElementById('click-today-count');
+  const topEl = document.getElementById('click-top-product');
+  if (totalEl) totalEl.innerText = String(clicks.length);
+  if (todayEl) todayEl.innerText = String(clicks.filter((item) => isToday(clickDateValue(item))).length);
+  if (topEl) topEl.innerText = topProduct ? `${topProduct[0]} (${topProduct[1]})` : '-';
+
+  const summary = document.getElementById('click-product-summary');
+  if (summary) {
+    summary.innerHTML = '';
+    Object.entries(productCounts).sort((a, b) => b[1] - a[1]).slice(0, 8).forEach(([product, count]) => {
+      summary.insertAdjacentHTML('beforeend', `<div class="rounded-2xl border border-slate-100 bg-slate-50 p-4 flex items-center justify-between"><div><div class="text-[10px] text-slate-400 font-bold uppercase">Product</div><div class="text-xs font-extrabold text-slate-900">${escapeHTML(product)}</div></div><div class="text-lg font-black text-emerald-600">${count}</div></div>`);
+    });
+  }
+
+  clicks.slice(0, 100).forEach((click) => {
+    body.insertAdjacentHTML('beforeend', `
+      <tr class="hover:bg-slate-50 border-b text-xs text-slate-700">
+        <td class="py-3 px-4 font-bold">${escapeHTML(click.product || click.offer || '-')}</td>
+        <td class="py-3 px-4">${escapeHTML(click.source || click.utm_source || 'direct')}</td>
+        <td class="py-3 px-4 max-w-[260px] truncate" title="${escapeHTML(click.referrer || '')}">${escapeHTML(click.referrer || '-')}</td>
+        <td class="py-3 px-4 whitespace-nowrap">${escapeHTML(clickDateValue(click) ? new Date(clickDateValue(click)).toLocaleString('vi-VN') : '-')}</td>
+      </tr>
+    `);
+  });
+}
+
+export function exportClicksCSV() {
+  if (!requireAdmin()) return;
+  if (!state.clicks?.length) return showToast('Chưa có dữ liệu click để xuất CSV!', 'warning');
+  const header = ['product', 'source', 'utm_source', 'referrer', 'destination', 'createdAt'];
+  const rows = state.clicks.map((click) => header.map((key) => `"${String(key === 'createdAt' ? clickDateValue(click) : (click[key] || '')).replaceAll('"', '""')}"`).join(','));
+  const csv = [header.join(','), ...rows].join('
+');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `subailifethai-clicks-${new Date().toISOString().slice(0, 10)}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
 export function renderAdminUI() {
   renderAdminPostsTable();
   renderAdminCategoriesGrid();
   populateCategoryDropdown();
   renderAdminLeadsTable();
+  renderAdminClicksTable();
 }

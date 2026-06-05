@@ -47,6 +47,11 @@ service cloud.firestore {
       allow create: if true;
       allow read, update, delete: if isAdmin();
     }
+
+    match /clicks/{docId} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
   }
 }
 ```
@@ -75,3 +80,9 @@ service firebase.storage {
 - Form đăng ký email khách được mở bằng nút “สมัครรับข้อมูล”.
 - Nút đăng ký hiển thị ở hero trang Review và hero trang Blog để khách dễ thấy hơn.
 - Dữ liệu vẫn lưu vào Firestore collection `leads`.
+
+
+## Tracking Click
+- Link redirect mẫu: `/go/carthisin/`
+- Click sẽ lưu vào Firestore collection `clicks`.
+- Admin → Thống Kê Click để xem tổng click, click hôm nay, top sản phẩm và export CSV.

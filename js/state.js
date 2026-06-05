@@ -3,6 +3,7 @@ export const state = {
   categories: [],
   globalSettings: {},
   leads: [],
+  clicks: [],
   selectedCategoryFilter: 'all',
   selectedImgSourceMode: 'file',
   currentPreviewFile: null,

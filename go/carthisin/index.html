@@ -5,19 +5,54 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>กำลังพาไปยังหน้าสินค้า CARTHISIN...</title>
   <meta name="robots" content="noindex,nofollow" />
-  <meta http-equiv="refresh" content="0;url=https://go.clickbuy.asia/click?a=85226&o=1144" />
-  <script>
-    window.location.replace('https://go.clickbuy.asia/click?a=85226&o=1144');
-  </script>
   <style>
-    body{font-family:Arial,sans-serif;background:#f8fafc;color:#0f172a;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;text-align:center;padding:24px}.box{background:white;border:1px solid #e2e8f0;border-radius:20px;padding:28px;box-shadow:0 10px 30px rgba(15,23,42,.08);max-width:460px}.btn{display:inline-block;margin-top:16px;background:#059669;color:white;text-decoration:none;padding:12px 18px;border-radius:12px;font-weight:700}
+    body{font-family:Arial,sans-serif;background:#f8fafc;color:#0f172a;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;text-align:center;padding:24px}.box{background:white;border:1px solid #e2e8f0;border-radius:20px;padding:28px;box-shadow:0 10px 30px rgba(15,23,42,.08);max-width:460px}.btn{display:inline-block;margin-top:16px;background:#059669;color:white;text-decoration:none;padding:12px 18px;border-radius:12px;font-weight:700}.muted{color:#64748b;font-size:13px;line-height:1.6}
   </style>
 </head>
 <body>
   <div class="box">
     <h1>กำลังพาไปยังหน้าสินค้า CARTHISIN...</h1>
-    <p>หากระบบไม่พาไปอัตโนมัติ กรุณากดปุ่มด้านล่าง</p>
-    <a class="btn" href="https://go.clickbuy.asia/click?a=85226&o=1144" rel="nofollow sponsored noopener noreferrer">ไปยังหน้าสินค้า</a>
+    <p class="muted">ระบบกำลังบันทึกสถิติการคลิกและพาคุณไปยังหน้าสินค้า</p>
+    <a id="fallback-link" class="btn" href="https://go.clickbuy.asia/click?a=85226&o=1144" rel="nofollow sponsored noopener noreferrer">ไปยังหน้าสินค้า</a>
   </div>
+
+  <script type="module">
+    import { saveDBData } from '../../js/firestore.js';
+
+    const destination = 'https://go.clickbuy.asia/click?a=85226&o=1144';
+    const params = new URLSearchParams(window.location.search);
+
+    function getSource() {
+      return params.get('utm_source') || params.get('source') || params.get('src') || (document.referrer ? 'referral' : 'direct');
+    }
+
+    async function trackAndRedirect() {
+      const clickId = `click-carthisin-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+      const clickData = {
+        id: clickId,
+        product: 'carthisin',
+        offer: 'CARTHISIN',
+        source: getSource(),
+        utm_source: params.get('utm_source') || '',
+        utm_medium: params.get('utm_medium') || '',
+        utm_campaign: params.get('utm_campaign') || '',
+        referrer: document.referrer || '',
+        landingPage: window.location.href,
+        destination,
+        createdAt: new Date().toISOString()
+      };
+
+      try {
+        await saveDBData('clicks', clickData);
+      } catch (error) {
+        console.warn('Click tracking failed:', error);
+      } finally {
+        window.location.replace(destination);
+      }
+    }
+
+    setTimeout(() => window.location.replace(destination), 1800);
+    trackAndRedirect();
+  </script>
 </body>
 </html>

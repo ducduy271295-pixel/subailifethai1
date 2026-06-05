@@ -168,6 +168,7 @@
           <button id="admin-subtab-categories" onclick="toggleAdminSubTab('categories')" class="admin-subtab">Danh Mục</button>
           <button id="admin-subtab-settings" onclick="toggleAdminSubTab('settings')" class="admin-subtab">Cài Đặt Web</button>
           <button id="admin-subtab-leads" onclick="toggleAdminSubTab('leads')" class="admin-subtab">Khách Hàng</button>
+          <button id="admin-subtab-clicks" onclick="toggleAdminSubTab('clicks')" class="admin-subtab">Thống Kê Click</button>
         </div>
       </div>
 
@@ -191,7 +192,7 @@
             </div>
             <div class="grid grid-cols-2 gap-3" id="product-details-container">
               <div><label class="form-label">Giá (Baht ฿) *</label><input type="number" id="post-product-price" min="0" class="form-input" /></div>
-              <div><label class="form-label">Link mua hàng</label><input type="url" id="post-product-link" class="form-input" /></div>
+              <div><label class="form-label">Link mua hàng / Landing <span class="text-rose-500">*</span></label><input type="url" id="post-product-link" class="form-input" placeholder="https://..." /></div>
             </div>
             <div>
               <label class="form-label">Hình ảnh bài viết</label>
@@ -219,6 +220,37 @@
       </section>
 
       <section id="admin-section-settings" class="hidden bg-white border border-slate-200 rounded-3xl p-6 md:p-10 shadow-sm max-w-4xl mx-auto"><h3 class="text-sm sm:text-base font-bold text-slate-900 border-b border-slate-100 pb-4 mb-6 flex items-center space-x-2"><i class="fa-solid fa-gears text-slate-600"></i><span>Cài Đặt Footer & Liên Kết</span></h3><form id="settings-form" onsubmit="saveGlobalSettings(event)" class="space-y-6"><div><label class="form-label">Đoạn giới thiệu</label><textarea id="set-about" rows="3" class="form-input resize-y"></textarea></div><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><div><label class="form-label">Email liên hệ</label><input type="email" id="set-email" class="form-input" /></div><div><label class="form-label">Số điện thoại</label><input type="text" id="set-phone" class="form-input" /></div><div><label class="form-label">Facebook</label><input type="url" id="set-fb" class="form-input" /></div><div><label class="form-label">Youtube</label><input type="url" id="set-yt" class="form-input" /></div><div><label class="form-label">Twitter/X</label><input type="url" id="set-tw" class="form-input" /></div></div><div class="pt-4 border-t border-slate-100 text-right"><button type="submit" class="px-8 py-3 bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold rounded-xl transition shadow-md"><i class="fa-solid fa-floppy-disk mr-2"></i> Lưu Cài Đặt</button></div></form></section>
+
+
+      <section id="admin-section-clicks" class="hidden bg-white border border-slate-200 rounded-3xl p-6 md:p-8 shadow-sm">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-slate-100 pb-4 mb-5">
+          <div>
+            <h3 class="text-sm sm:text-base font-bold text-slate-900 flex items-center gap-2"><i class="fa-solid fa-chart-line text-emerald-600"></i><span>Thống kê lượt click affiliate</span></h3>
+            <p class="text-xs text-slate-500 mt-1">Theo dõi lượt click qua các link /go/product/ để biết sản phẩm nào được quan tâm.</p>
+          </div>
+          <button onclick="exportClicksCSV()" class="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold rounded-xl transition"><i class="fa-solid fa-file-csv mr-1"></i> Export CSV</button>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+          <div class="rounded-2xl border border-emerald-100 bg-emerald-50 p-4"><div class="text-[10px] font-bold text-emerald-700 uppercase">Tổng click</div><div id="click-total-count" class="text-2xl font-black text-slate-950 mt-1">0</div></div>
+          <div class="rounded-2xl border border-sky-100 bg-sky-50 p-4"><div class="text-[10px] font-bold text-sky-700 uppercase">Click hôm nay</div><div id="click-today-count" class="text-2xl font-black text-slate-950 mt-1">0</div></div>
+          <div class="rounded-2xl border border-amber-100 bg-amber-50 p-4"><div class="text-[10px] font-bold text-amber-700 uppercase">Sản phẩm top</div><div id="click-top-product" class="text-sm font-black text-slate-950 mt-2 truncate">-</div></div>
+        </div>
+        <div id="click-product-summary" class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6"></div>
+        <div class="overflow-x-auto custom-scrollbar">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="bg-slate-50 border-b border-slate-150 text-slate-500 text-[10px] font-bold uppercase tracking-wider">
+                <th class="py-3 px-4 rounded-l-lg">Sản phẩm</th>
+                <th class="py-3 px-4">Nguồn</th>
+                <th class="py-3 px-4">Trang trước</th>
+                <th class="py-3 px-4 rounded-r-lg">Thời gian</th>
+              </tr>
+            </thead>
+            <tbody id="admin-clicks-table-body" class="divide-y divide-slate-100"></tbody>
+          </table>
+        </div>
+        <div id="admin-clicks-empty" class="hidden text-center py-12 text-slate-400 text-xs">Chưa có lượt click nào.</div>
+      </section>
 
       <section id="admin-section-leads" class="hidden bg-white border border-slate-200 rounded-3xl p-6 md:p-8 shadow-sm">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-slate-100 pb-4 mb-5">
