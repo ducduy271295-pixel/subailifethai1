@@ -4,7 +4,8 @@ export const state = {
   globalSettings: {},
   leads: [],
   clicks: [],
-  selectedCategoryFilter: 'all',
+selectedCategoryFilter: 'all',
+selectedBlogCategoryFilter: 'all',
   selectedImgSourceMode: 'file',
   currentPreviewFile: null,
   currentPreviewUrl: ''
