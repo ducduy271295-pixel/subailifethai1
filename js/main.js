@@ -2,7 +2,7 @@ import { initAuth, isAdminUser } from './auth.js';
 import { getDBData, saveDBData } from './firestore.js';
 import { state } from './state.js';
 import { initConfirmModal, showToast } from './utils.js';
-import { refreshPublicUI, filterPosts, filterBlogs, openPostDetail, closePostDetail } from './render.js';
+import { refreshPublicUI, filterPosts, filterBlogs, renderBlogCategories, openPostDetail, closePostDetail } from './render.js';
 import { initAdminGlobals, renderAdminUI, toggleAdminSubTab } from './admin.js';
 import { initLeadGlobals } from './leads.js';
 
@@ -64,7 +64,10 @@ window.changeTab = (tab, subTab = 'posts') => {
   });
 
   if (tab === 'home') refreshPublicUI();
-  if (tab === 'blog') filterBlogs();
+ if (tab === 'blog') {
+  renderBlogCategories();
+  filterBlogs();
+}
   if (tab === 'admin') {
     toggleAdminSubTab(subTab);
     renderAdminUI();
@@ -76,16 +79,21 @@ window.selectCategory = (catId) => {
   state.selectedCategoryFilter = catId;
   refreshPublicUI();
 };
+window.selectBlogCategory = (catId) => {
+  state.selectedBlogCategoryFilter = catId;
+  renderBlogCategories();
+  filterBlogs();
+};
 window.clearFilters = () => {
   document.getElementById('search-input').value = '';
   state.selectedCategoryFilter = 'all';
   refreshPublicUI();
 };
+
 window.filterPosts = filterPosts;
 window.filterBlogs = filterBlogs;
 window.openPostDetail = openPostDetail;
 window.closePostDetail = closePostDetail;
-
 
 function clearBrowserAutofillSearchFields() {
   const ids = ['search-input', 'blog-search-input'];

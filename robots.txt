@@ -1,3 +1,4 @@
 User-agent: *
 Allow: /
-Sitemap: https://subailifethai.com/sitemap.xml
+
+Sitemap: https://subailifethai1.vercel.app/sitemap.xml
