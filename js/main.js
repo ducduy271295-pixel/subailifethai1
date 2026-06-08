@@ -2,7 +2,7 @@ import { initAuth, isAdminUser } from './auth.js';
 import { getDBData, saveDBData } from './firestore.js';
 import { state } from './state.js';
 import { initConfirmModal, showToast } from './utils.js';
-import { refreshPublicUI, filterPosts, filterBlogs, openPostDetail, closePostDetail } from './render.js';
+import { refreshPublicUI, filterPosts, filterBlogs, renderBlogCategories, openPostDetail, closePostDetail } from './render.js';
 import { initAdminGlobals, renderAdminUI, toggleAdminSubTab } from './admin.js';
 import { initLeadGlobals } from './leads.js';
 
@@ -64,7 +64,10 @@ window.changeTab = (tab, subTab = 'posts') => {
   });
 
   if (tab === 'home') refreshPublicUI();
-  if (tab === 'blog') filterBlogs();
+ if (tab === 'blog') {
+  renderBlogCategories();
+  filterBlogs();
+}
   if (tab === 'admin') {
     toggleAdminSubTab(subTab);
     renderAdminUI();
@@ -78,22 +81,8 @@ window.selectCategory = (catId) => {
 };
 window.selectBlogCategory = (catId) => {
   state.selectedBlogCategoryFilter = catId;
-
-  if (typeof window.filterBlogs === 'function') {
-    window.filterBlogs();
-  }
-
-  const buttons = document.querySelectorAll('[data-blog-category]');
-  buttons.forEach((btn) => {
-    btn.classList.remove('bg-teal-600', 'text-white', 'border-teal-600');
-    btn.classList.add('bg-white', 'text-slate-600', 'border-slate-200');
-  });
-
-  const activeBtn = document.querySelector(`[data-blog-category="${catId}"]`);
-  if (activeBtn) {
-    activeBtn.classList.remove('bg-white', 'text-slate-600', 'border-slate-200');
-    activeBtn.classList.add('bg-teal-600', 'text-white', 'border-teal-600');
-  }
+  renderBlogCategories();
+  filterBlogs();
 };
 window.clearFilters = () => {
   document.getElementById('search-input').value = '';
