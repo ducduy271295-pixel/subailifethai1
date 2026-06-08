@@ -76,7 +76,25 @@ window.selectCategory = (catId) => {
   state.selectedCategoryFilter = catId;
   refreshPublicUI();
 };
+window.selectBlogCategory = (catId) => {
+  state.selectedBlogCategoryFilter = catId;
 
+  if (typeof window.filterBlogs === 'function') {
+    window.filterBlogs();
+  }
+
+  const buttons = document.querySelectorAll('[data-blog-category]');
+  buttons.forEach((btn) => {
+    btn.classList.remove('bg-teal-600', 'text-white', 'border-teal-600');
+    btn.classList.add('bg-white', 'text-slate-600', 'border-slate-200');
+  });
+
+  const activeBtn = document.querySelector(`[data-blog-category="${catId}"]`);
+  if (activeBtn) {
+    activeBtn.classList.remove('bg-white', 'text-slate-600', 'border-slate-200');
+    activeBtn.classList.add('bg-teal-600', 'text-white', 'border-teal-600');
+  }
+};
 window.clearFilters = () => {
   document.getElementById('search-input').value = '';
   state.selectedCategoryFilter = 'all';
